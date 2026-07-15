@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Epidemic Modeling case study by Daniel Novo."
+    >
+
+    <title>Epidemic Modeling | Daniel Novo</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style type="text/tailwindcss">
+        @theme {
+            --font-display: "Barlow Condensed", sans-serif;
+            --font-body: "Inter", sans-serif;
+
+            --color-void: #03070c;
+            --color-panel: #07111b;
+            --color-panel-light: #0b1926;
+            --color-model: #43c8f5;
+            --color-model-light: #96e4ff;
+            --color-model-green: #67d9a3;
+            --color-model-red: #ef7180;
+            --color-muted: #8ea3b5;
+        }
+
+        @layer base {
+            html {
+                background: var(--color-void);
+            }
+
+            body {
+                font-family: var(--font-body);
+                overflow-x: hidden;
+                background:
+                    radial-gradient(
+                        circle at 78% 8%,
+                        rgba(67, 200, 245, 0.12),
+                        transparent 28%
+                    ),
+                    radial-gradient(
+                        circle at 20% 38%,
+                        rgba(103, 217, 163, 0.06),
+                        transparent 25%
+                    ),
+                    #03070c;
+                color: white;
+            }
+
+            ::selection {
+                background: rgba(67, 200, 245, 0.32);
+                color: white;
+            }
+
+            button,
+            a {
+                -webkit-tap-highlight-color: transparent;
+            }
+        }
+
+        @layer utilities {
+            .font-display {
+                font-family: var(--font-display);
+            }
+
+            .section-container {
+                width: min(100% - 2rem, 1280px);
+                margin-inline: auto;
+            }
+
+            .text-outline {
+                color: transparent;
+                -webkit-text-stroke: 1px rgba(255, 255, 255, 0.28);
+            }
+
+            .project-detail-tag {
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                padding: 0.58rem 0.82rem;
+                font-size: 0.65rem;
+                line-height: 1;
+                color: rgba(255, 255, 255, 0.68);
+                text-transform: uppercase;
+            }
+
+            .project-reveal {
+                opacity: 0;
+                transform: translateY(28px);
+                transition:
+                    opacity 800ms ease,
+                    transform 950ms cubic-bezier(0.22, 1, 0.36, 1);
+            }
+
+            .project-reveal.is-visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .model-card {
+                transition:
+                    transform 350ms cubic-bezier(0.22, 1, 0.36, 1),
+                    border-color 350ms ease,
+                    background 350ms ease;
+            }
+
+            .model-card:hover {
+                transform: translateY(-5px);
+                border-color: rgba(67, 200, 245, 0.32);
+                background: rgba(67, 200, 245, 0.025);
+            }
+
+            .population-node {
+                position: relative;
+                display: flex;
+                min-height: 9rem;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                background: rgba(255, 255, 255, 0.025);
+                padding: 1.5rem;
+                text-align: center;
+                transition:
+                    transform 350ms cubic-bezier(0.22, 1, 0.36, 1),
+                    border-color 350ms ease,
+                    background 350ms ease;
+            }
+
+            .population-node:hover {
+                transform: translateY(-4px);
+            }
+
+            .population-node-s {
+                border-color: rgba(67, 200, 245, 0.34);
+                background: rgba(67, 200, 245, 0.06);
+            }
+
+            .population-node-i {
+                border-color: rgba(239, 113, 128, 0.34);
+                background: rgba(239, 113, 128, 0.06);
+            }
+
+            .population-node-r {
+                border-color: rgba(103, 217, 163, 0.34);
+                background: rgba(103, 217, 163, 0.06);
+            }
+
+            .model-arrow {
+                position: relative;
+                height: 1px;
+                min-width: 4rem;
+                flex: 1;
+                background: linear-gradient(
+                    to right,
+                    rgba(255, 255, 255, 0.08),
+                    rgba(255, 255, 255, 0.55),
+                    rgba(255, 255, 255, 0.08)
+                );
+            }
+
+            .model-arrow::after {
+                content: "";
+                position: absolute;
+                top: 50%;
+                right: 0;
+                width: 0.55rem;
+                height: 0.55rem;
+                border-top: 1px solid rgba(255, 255, 255, 0.65);
+                border-right: 1px solid rgba(255, 255, 255, 0.65);
+                transform: translateY(-50%) rotate(45deg);
+            }
+
+            .equation-card {
+                position: relative;
+                overflow: hidden;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                background: rgba(255, 255, 255, 0.02);
+                padding: 1.5rem;
+            }
+
+            .equation-card::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                pointer-events: none;
+                background: linear-gradient(
+                    135deg,
+                    rgba(67, 200, 245, 0.05),
+                    transparent 55%
+                );
+            }
+
+            .chart-grid {
+                background:
+                    linear-gradient(
+                        rgba(255, 255, 255, 0.035) 1px,
+                        transparent 1px
+                    ),
+                    linear-gradient(
+                        90deg,
+                        rgba(255, 255, 255, 0.035) 1px,
+                        transparent 1px
+                    );
+                background-size: 42px 42px;
+            }
+
+            .chart-line {
+                fill: none;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                stroke-width: 4;
+                stroke-dasharray: 900;
+                stroke-dashoffset: 900;
+            }
+
+            .chart-line.is-visible {
+                animation: drawLine 2.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            }
+
+            .chart-line-i.is-visible {
+                animation-delay: 0.25s;
+            }
+
+            .chart-line-r.is-visible {
+                animation-delay: 0.5s;
+            }
+
+            @keyframes drawLine {
+                to {
+                    stroke-dashoffset: 0;
+                }
+            }
+
+            @media (max-width: 767px) {
+                .model-arrow {
+                    width: 1px;
+                    min-width: 1px;
+                    height: 3rem;
+                    margin-inline: auto;
+                    background: linear-gradient(
+                        to bottom,
+                        rgba(255, 255, 255, 0.08),
+                        rgba(255, 255, 255, 0.55),
+                        rgba(255, 255, 255, 0.08)
+                    );
+                }
+
+                .model-arrow::after {
+                    top: auto;
+                    right: auto;
+                    bottom: 0;
+                    left: 50%;
+                    transform: translateX(-50%) rotate(135deg);
+                }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                .project-reveal,
+                .model-card,
+                .population-node,
+                .chart-line {
+                    transition-duration: 1ms;
+                    animation: none;
+                    stroke-dashoffset: 0;
+                }
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header
+        class="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-[#03070c]/80 backdrop-blur-xl"
+    >
+        <nav class="section-container flex h-20 items-center justify-between">
+            <a
+                href="../index.html"
+                class="font-display text-2xl font-black text-white"
+            >
+                D<span class="text-model">N</span>
+            </a>
+
+            <a
+                href="../index.html#projects"
+                class="inline-flex items-center gap-3 text-xs font-bold text-white/60 uppercase transition hover:text-model-light"
+            >
+                <span>←</span>
+                Back to projects
+            </a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section
+            class="relative min-h-[760px] overflow-hidden border-b border-white/5 bg-[#020611] pt-20"
+        >
+            <div class="pointer-events-none absolute inset-0">
+                <div
+                    class="absolute inset-y-0 right-0 hidden w-[66%] overflow-hidden lg:block"
+                >
+                    <div class="chart-grid absolute inset-0"></div>
+
+                    <svg
+                        viewBox="0 0 720 500"
+                        class="absolute top-[15%] right-[2%] h-[560px] w-[720px]"
+                        aria-hidden="true"
+                    >
+                        <line
+                            x1="70"
+                            y1="420"
+                            x2="670"
+                            y2="420"
+                            stroke="rgba(255,255,255,0.12)"
+                        ></line>
+
+                        <line
+                            x1="70"
+                            y1="60"
+                            x2="70"
+                            y2="420"
+                            stroke="rgba(255,255,255,0.12)"
+                        ></line>
+
+                        <path
+                            d="M70 95 C180 110, 280 145, 370 220 S535 350, 670 392"
+                            fill="none"
+                            stroke="rgba(67,200,245,0.52)"
+                            stroke-width="5"
+                        ></path>
+
+                        <path
+                            d="M70 400 C165 394, 205 360, 265 230 S395 105, 465 240 S565 385, 670 400"
+                            fill="none"
+                            stroke="rgba(239,113,128,0.56)"
+                            stroke-width="5"
+                        ></path>
+
+                        <path
+                            d="M70 408 C210 406, 290 390, 365 330 S500 205, 670 125"
+                            fill="none"
+                            stroke="rgba(103,217,163,0.55)"
+                            stroke-width="5"
+                        ></path>
+
+                        <circle
+                            cx="70"
+                            cy="95"
+                            r="7"
+                            fill="rgba(67,200,245,0.75)"
+                        ></circle>
+
+                        <circle
+                            cx="365"
+                            cy="115"
+                            r="7"
+                            fill="rgba(239,113,128,0.75)"
+                        ></circle>
+
+                        <circle
+                            cx="670"
+                            cy="125"
+                            r="7"
+                            fill="rgba(103,217,163,0.75)"
+                        ></circle>
+                    </svg>
+
+                    <div
+                        class="absolute top-[28%] right-[12%] font-display text-[9rem] font-black leading-none text-model/[0.035]"
+                    >
+                        SIR
+                    </div>
+
+                    <div
+                        class="absolute inset-0 bg-gradient-to-l from-[#072033]/20 via-[#08121b]/50 to-[#020611]"
+                    ></div>
+
+                    <div
+                        class="absolute inset-0 bg-[radial-gradient(circle_at_70%_45%,rgba(67,200,245,0.14),transparent_42%)]"
+                    ></div>
+                </div>
+
+                <div
+                    class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#020611]/80"
+                ></div>
+            </div>
+
+            <div
+                class="section-container relative z-10 grid min-h-[680px] items-center py-16 lg:grid-cols-[0.94fr_1.06fr]"
+            >
+                <div class="project-reveal max-w-2xl">
+                    <p class="text-xs font-bold text-model-light uppercase">
+                        Academic project · Grade 17
+                    </p>
+
+                    <h1
+                        class="font-display mt-8 text-[clamp(4.4rem,9vw,8.5rem)] leading-[0.82] font-black uppercase"
+                    >
+                        Epidemic
+                        <span class="block text-outline">Modeling</span>
+                    </h1>
+
+                    <p class="mt-10 max-w-xl text-lg leading-9 text-white/75">
+                        A Java application that adapts the SIR epidemiological
+                        model to study the evolution of chemical dependencies
+                        through mathematical and numerical simulation.
+                    </p>
+
+                    <div class="mt-8 flex flex-wrap gap-3">
+                        <span class="project-detail-tag">Java</span>
+                        <span class="project-detail-tag">SIR Model</span>
+                        <span class="project-detail-tag">ODEs</span>
+                        <span class="project-detail-tag">
+                            Numerical methods
+                        </span>
+                        <span class="project-detail-tag">
+                            Data visualization
+                        </span>
+                    </div>
+                </div>
+
+                <div class="hidden lg:block"></div>
+            </div>
+        </section>
+
+        <!-- PROJECT INFORMATION -->
+        <section
+            class="relative overflow-hidden border-y border-white/10 bg-[#07111b]"
+        >
+            <div
+                class="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(67,200,245,0.04),transparent_35%,transparent_70%,rgba(103,217,163,0.025))]"
+            ></div>
+
+            <div
+                class="section-container relative z-10 grid sm:grid-cols-2 lg:grid-cols-4"
+            >
+                <article
+                    class="min-h-[180px] border-b border-white/10 p-8 transition hover:bg-white/[0.025] sm:border-r lg:border-b-0"
+                >
+                    <p class="text-[11px] font-bold text-white/35 uppercase">
+                        Role
+                    </p>
+
+                    <p
+                        class="font-display mt-6 text-4xl leading-none font-bold uppercase"
+                    >
+                        Software
+                        <span class="block text-model-light">Developer</span>
+                    </p>
+                </article>
+
+                <article
+                    class="min-h-[180px] border-b border-white/10 p-8 transition hover:bg-white/[0.025] lg:border-r lg:border-b-0"
+                >
+                    <p class="text-[11px] font-bold text-white/35 uppercase">
+                        Project type
+                    </p>
+
+                    <p
+                        class="font-display mt-6 text-4xl leading-none font-bold uppercase"
+                    >
+                        Academic
+                        <span class="block text-white/45">Project</span>
+                    </p>
+                </article>
+
+                <article
+                    class="min-h-[180px] border-b border-white/10 p-8 transition hover:bg-white/[0.025] sm:border-r sm:border-b-0"
+                >
+                    <p class="text-[11px] font-bold text-white/35 uppercase">
+                        Focus
+                    </p>
+
+                    <p
+                        class="font-display mt-6 text-4xl leading-none font-bold uppercase"
+                    >
+                        Mathematical
+                        <span class="block text-white/45">Modeling</span>
+                    </p>
+                </article>
+
+                <article
+                    class="min-h-[180px] p-8 transition hover:bg-model/[0.025]"
+                >
+                    <p class="text-[11px] font-bold text-white/35 uppercase">
+                        Result
+                    </p>
+
+                    <p
+                        class="font-display mt-6 text-6xl leading-none font-black text-model-light uppercase"
+                    >
+                        17
+                    </p>
+
+                    <p class="mt-3 text-xs text-white/40 uppercase">
+                        Out of 20
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <!-- OVERVIEW -->
+        <section class="py-20">
+            <div
+                class="section-container grid gap-12 lg:grid-cols-[0.78fr_1.22fr]"
+            >
+                <div class="project-reveal">
+                    <p class="text-xs font-bold text-model-light uppercase">
+                        01 · Overview
+                    </p>
+
+                    <h2
+                        class="font-display mt-4 text-5xl font-black uppercase md:text-7xl"
+                    >
+                        Modeling
+                        <span class="block text-outline">dependency</span>
+                    </h2>
+                </div>
+
+                <div class="project-reveal">
+                    <p class="text-lg leading-9 text-white/80">
+                        This project explored chemical dependencies as a
+                        population phenomenon by adapting the traditional SIR
+                        epidemiological model.
+                    </p>
+
+                    <p class="mt-6 leading-8 text-muted">
+                        Individuals are divided into susceptible, affected and
+                        recovered populations, allowing the application to
+                        simulate how dependency may evolve through time under
+                        different parameters.
+                    </p>
+
+                    <p class="mt-6 leading-8 text-muted">
+                        The application was implemented in Java and included
+                        numerical methods for solving systems of first-order
+                        ordinary differential equations, alongside a visual
+                        interface for analysing population trends and
+                        statistical data.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SIR MODEL -->
+        <section
+            class="relative overflow-hidden border-y border-white/5 bg-panel/30 py-20"
+        >
+            <div class="section-container">
+                <div
+                    class="project-reveal flex flex-col justify-between gap-6 md:flex-row md:items-end"
+                >
+                    <div>
+                        <p class="text-xs font-bold text-model-light uppercase">
+                            02 · Main experience
+                        </p>
+
+                        <h2
+                            class="font-display mt-4 text-5xl font-black uppercase md:text-7xl"
+                        >
+                            Adapted
+                            <span class="text-outline">SIR model</span>
+                        </h2>
+                    </div>
+
+                    <p class="max-w-md text-sm leading-7 text-muted">
+                        The population moves through three connected states,
+                        producing dynamic trends that can be simulated and
+                        compared over time.
+                    </p>
+                </div>
+
+                <div
+                    class="project-reveal relative mt-12 overflow-hidden border border-white/10 bg-[#06101a] p-6 md:p-10"
+                >
+                    <div class="chart-grid pointer-events-none absolute inset-0"></div>
+
+                    <div
+                        class="pointer-events-none absolute top-10 right-10 font-display text-[8rem] font-black leading-none text-model/[0.035]"
+                    >
+                        SIR
+                    </div>
+
+                    <div
+                        class="relative z-10 flex flex-col items-stretch gap-5 md:flex-row md:items-center"
+                    >
+                        <article
+                            class="population-node population-node-s flex-1"
+                        >
+                            <div>
+                                <p
+                                    class="font-display text-6xl font-black text-model"
+                                >
+                                    S
+                                </p>
+
+                                <h3
+                                    class="font-display mt-3 text-2xl font-bold uppercase"
+                                >
+                                    Susceptible
+                                </h3>
+
+                                <p class="mt-3 text-xs leading-6 text-muted">
+                                    Individuals who may develop a chemical
+                                    dependency.
+                                </p>
+                            </div>
+                        </article>
+
+                        <div class="model-arrow"></div>
+
+                        <article
+                            class="population-node population-node-i flex-1"
+                        >
+                            <div>
+                                <p
+                                    class="font-display text-6xl font-black text-model-red"
+                                >
+                                    I
+                                </p>
+
+                                <h3
+                                    class="font-display mt-3 text-2xl font-bold uppercase"
+                                >
+                                    Affected
+                                </h3>
+
+                                <p class="mt-3 text-xs leading-6 text-muted">
+                                    Individuals currently affected by the
+                                    dependency.
+                                </p>
+                            </div>
+                        </article>
+
+                        <div class="model-arrow"></div>
+
+                        <article
+                            class="population-node population-node-r flex-1"
+                        >
+                            <div>
+                                <p
+                                    class="font-display text-6xl font-black text-model-green"
+                                >
+                                    R
+                                </p>
+
+                                <h3
+                                    class="font-display mt-3 text-2xl font-bold uppercase"
+                                >
+                                    Recovered
+                                </h3>
+
+                                <p class="mt-3 text-xs leading-6 text-muted">
+                                    Individuals who have moved out of the
+                                    affected population.
+                                </p>
+                            </div>
+                        </article>
+                    </div>
+
+                    <div
+                        class="relative z-10 mt-10 grid gap-4 md:grid-cols-3"
+                    >
+                        <div class="equation-card">
+                            <p class="text-[10px] font-bold text-model uppercase">
+                                Susceptible variation
+                            </p>
+
+                            <p
+                                class="font-display relative mt-4 text-3xl font-semibold"
+                            >
+                                dS / dt
+                            </p>
+
+                            <p class="relative mt-3 text-xs leading-6 text-muted">
+                                Describes the rate at which susceptible
+                                individuals leave the initial population.
+                            </p>
+                        </div>
+
+                        <div class="equation-card">
+                            <p
+                                class="text-[10px] font-bold text-model-red uppercase"
+                            >
+                                Affected variation
+                            </p>
+
+                            <p
+                                class="font-display relative mt-4 text-3xl font-semibold"
+                            >
+                                dI / dt
+                            </p>
+
+                            <p class="relative mt-3 text-xs leading-6 text-muted">
+                                Represents the balance between new cases and
+                                recovery.
+                            </p>
+                        </div>
+
+                        <div class="equation-card">
+                            <p
+                                class="text-[10px] font-bold text-model-green uppercase"
+                            >
+                                Recovery variation
+                            </p>
+
+                            <p
+                                class="font-display relative mt-4 text-3xl font-semibold"
+                            >
+                                dR / dt
+                            </p>
+
+                            <p class="relative mt-3 text-xs leading-6 text-muted">
+                                Describes how individuals move into the
+                                recovered population.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NUMERICAL ANALYSIS -->
+        <section class="py-20">
+            <div class="section-container">
+                <div
+                    class="project-reveal grid gap-10 lg:grid-cols-[0.7fr_1.3fr]"
+                >
+                    <div>
+                        <p class="text-xs font-bold text-model-light uppercase">
+                            03 · Numerical analysis
+                        </p>
+
+                        <h2
+                            class="font-display mt-4 text-5xl font-black uppercase md:text-7xl"
+                        >
+                            From equations
+                            <span class="block text-outline">to data</span>
+                        </h2>
+
+                        <p class="mt-6 max-w-md text-sm leading-7 text-muted">
+                            Numerical methods transform the differential model
+                            into discrete population values that can be
+                            calculated and visualized by the application.
+                        </p>
+                    </div>
+
+                    <div class="grid gap-4 sm:grid-cols-2">
+                        <article
+                            class="model-card border border-white/10 bg-panel p-7"
+                        >
+                            <p
+                                class="text-[10px] font-bold text-model-light uppercase"
+                            >
+                                Differential system
+                            </p>
+
+                            <h3
+                                class="font-display mt-4 text-3xl font-bold uppercase"
+                            >
+                                First-order ODEs
+                            </h3>
+
+                            <p class="mt-4 text-sm leading-7 text-muted">
+                                Population changes are represented through a
+                                connected system of ordinary differential
+                                equations.
+                            </p>
+                        </article>
+
+                        <article
+                            class="model-card border border-white/10 bg-panel p-7"
+                        >
+                            <p
+                                class="text-[10px] font-bold text-model-light uppercase"
+                            >
+                                Approximation
+                            </p>
+
+                            <h3
+                                class="font-display mt-4 text-3xl font-bold uppercase"
+                            >
+                                Numerical resolution
+                            </h3>
+
+                            <p class="mt-4 text-sm leading-7 text-muted">
+                                Numerical methods estimate the population values
+                                for each moment of the simulation.
+                            </p>
+                        </article>
+
+                        <article
+                            class="model-card border border-white/10 bg-panel p-7"
+                        >
+                            <p
+                                class="text-[10px] font-bold text-model-light uppercase"
+                            >
+                                Parameters
+                            </p>
+
+                            <h3
+                                class="font-display mt-4 text-3xl font-bold uppercase"
+                            >
+                                Scenario analysis
+                            </h3>
+
+                            <p class="mt-4 text-sm leading-7 text-muted">
+                                Different parameter values allow multiple
+                                dependency scenarios to be compared.
+                            </p>
+                        </article>
+
+                        <article
+                            class="model-card border border-white/10 bg-panel p-7"
+                        >
+                            <p
+                                class="text-[10px] font-bold text-model-light uppercase"
+                            >
+                                Results
+                            </p>
+
+                            <h3
+                                class="font-display mt-4 text-3xl font-bold uppercase"
+                            >
+                                Statistical output
+                            </h3>
+
+                            <p class="mt-4 text-sm leading-7 text-muted">
+                                Calculated values are transformed into readable
+                                trends, tables and statistical indicators.
+                            </p>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VISUAL ANALYSIS -->
+        <section class="border-y border-white/5 bg-panel/30 py-20">
+            <div class="section-container">
+                <div
+                    class="project-reveal flex flex-col justify-between gap-6 md:flex-row md:items-end"
+                >
+                    <div>
+                        <p class="text-xs font-bold text-model-light uppercase">
+                            04 · Visual analysis
+                        </p>
+
+                        <h2
+                            class="font-display mt-4 text-5xl font-black uppercase md:text-7xl"
+                        >
+                            Population
+                            <span class="text-outline">trends</span>
+                        </h2>
+                    </div>
+
+                    <p class="max-w-md text-sm leading-7 text-muted">
+                        The visual interface allows users to compare the
+                        susceptible, affected and recovered populations
+                        throughout the simulation.
+                    </p>
+                </div>
+
+                <div
+                    class="project-reveal relative mt-12 overflow-hidden border border-white/10 bg-[#06101a] p-6 md:p-10"
+                >
+                    <div class="chart-grid pointer-events-none absolute inset-0"></div>
+
+                    <div
+                        class="relative z-10 grid gap-8 lg:grid-cols-[1.45fr_0.55fr]"
+                    >
+                        <div class="min-h-[420px]">
+                            <svg
+                                viewBox="0 0 760 440"
+                                class="h-full w-full"
+                                aria-label="Illustration of SIR population curves"
+                            >
+                                <line
+                                    x1="70"
+                                    y1="370"
+                                    x2="710"
+                                    y2="370"
+                                    stroke="rgba(255,255,255,0.18)"
+                                ></line>
+
+                                <line
+                                    x1="70"
+                                    y1="45"
+                                    x2="70"
+                                    y2="370"
+                                    stroke="rgba(255,255,255,0.18)"
+                                ></line>
+
+                                <text
+                                    x="690"
+                                    y="405"
+                                    fill="rgba(255,255,255,0.4)"
+                                    font-size="14"
+                                >
+                                    Time
+                                </text>
+
+                                <text
+                                    x="18"
+                                    y="55"
+                                    fill="rgba(255,255,255,0.4)"
+                                    font-size="14"
+                                >
+                                    Population
+                                </text>
+
+                                <path
+                                    class="chart-line chart-line-s"
+                                    d="M70 80 C180 95, 285 125, 380 200 S560 315, 710 350"
+                                    stroke="#43c8f5"
+                                ></path>
+
+                                <path
+                                    class="chart-line chart-line-i"
+                                    d="M70 355 C170 350, 220 315, 285 180 S420 80, 495 220 S615 350, 710 355"
+                                    stroke="#ef7180"
+                                ></path>
+
+                                <path
+                                    class="chart-line chart-line-r"
+                                    d="M70 360 C205 358, 300 340, 390 290 S565 160, 710 95"
+                                    stroke="#67d9a3"
+                                ></path>
+                            </svg>
+                        </div>
+
+                        <div class="grid content-center gap-4">
+                            <div
+                                class="border border-model/25 bg-model/[0.05] p-5"
+                            >
+                                <div class="flex items-center gap-3">
+                                    <span
+                                        class="h-2.5 w-2.5 rounded-full bg-model"
+                                    ></span>
+
+                                    <p
+                                        class="text-[10px] font-bold text-model-light uppercase"
+                                    >
+                                        Susceptible
+                                    </p>
+                                </div>
+
+                                <p class="mt-3 text-sm leading-6 text-muted">
+                                    Generally decreases as individuals move into
+                                    the affected population.
+                                </p>
+                            </div>
+
+                            <div
+                                class="border border-model-red/25 bg-model-red/[0.05] p-5"
+                            >
+                                <div class="flex items-center gap-3">
+                                    <span
+                                        class="h-2.5 w-2.5 rounded-full bg-model-red"
+                                    ></span>
+
+                                    <p
+                                        class="text-[10px] font-bold text-model-red uppercase"
+                                    >
+                                        Affected
+                                    </p>
+                                </div>
+
+                                <p class="mt-3 text-sm leading-6 text-muted">
+                                    May rise to a peak before decreasing as
+                                    recovery progresses.
+                                </p>
+                            </div>
+
+                            <div
+                                class="border border-model-green/25 bg-model-green/[0.05] p-5"
+                            >
+                                <div class="flex items-center gap-3">
+                                    <span
+                                        class="h-2.5 w-2.5 rounded-full bg-model-green"
+                                    ></span>
+
+                                    <p
+                                        class="text-[10px] font-bold text-model-green uppercase"
+                                    >
+                                        Recovered
+                                    </p>
+                                </div>
+
+                                <p class="mt-3 text-sm leading-6 text-muted">
+                                    Increases as affected individuals transition
+                                    out of the dependency state.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DEVELOPMENT AREAS -->
+        <section class="py-20">
+            <div class="section-container">
+                <div
+                    class="project-reveal flex flex-col justify-between gap-6 md:flex-row md:items-end"
+                >
+                    <div>
+                        <p class="text-xs font-bold text-model-light uppercase">
+                            05 · Project areas
+                        </p>
+
+                        <h2
+                            class="font-display mt-4 text-5xl font-black uppercase md:text-7xl"
+                        >
+                            Logic, mathematics
+                            <span class="text-outline">and communication</span>
+                        </h2>
+                    </div>
+
+                    <p class="max-w-md text-sm leading-7 text-muted">
+                        The project combined mathematical reasoning, software
+                        implementation, visual analysis and technical
+                        documentation.
+                    </p>
+                </div>
+
+                <div class="mt-12 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+                    <article
+                        class="model-card project-reveal border border-white/10 bg-panel p-6"
+                    >
+                        <p class="text-[10px] font-bold text-model-light uppercase">
+                            Mathematics
+                        </p>
+
+                        <h3
+                            class="font-display mt-4 text-2xl font-bold uppercase"
+                        >
+                            Numerical analysis
+                        </h3>
+
+                        <p class="mt-4 text-sm leading-7 text-muted">
+                            Resolution and interpretation of numerical
+                            approximations.
+                        </p>
+                    </article>
+
+                    <article
+                        class="model-card project-reveal border border-white/10 bg-panel p-6"
+                    >
+                        <p class="text-[10px] font-bold text-model-light uppercase">
+                            Collaboration
+                        </p>
+
+                        <h3
+                            class="font-display mt-4 text-2xl font-bold uppercase"
+                        >
+                            Team development
+                        </h3>
+
+                        <p class="mt-4 text-sm leading-7 text-muted">
+                            Collaborative implementation and validation of the
+                            final application.
+                        </p>
+                    </article>
+
+                    <article
+                        class="model-card project-reveal border border-white/10 bg-panel p-6"
+                    >
+                        <p class="text-[10px] font-bold text-model-light uppercase">
+                            Modeling
+                        </p>
+
+                        <h3
+                            class="font-display mt-4 text-2xl font-bold uppercase"
+                        >
+                            Mathematical model
+                        </h3>
+
+                        <p class="mt-4 text-sm leading-7 text-muted">
+                            Adaptation of the SIR model to chemical
+                            dependencies.
+                        </p>
+                    </article>
+
+                    <article
+                        class="model-card project-reveal border border-white/10 bg-panel p-6"
+                    >
+                        <p class="text-[10px] font-bold text-model-light uppercase">
+                            Development
+                        </p>
+
+                        <h3
+                            class="font-display mt-4 text-2xl font-bold uppercase"
+                        >
+                            Java algorithms
+                        </h3>
+
+                        <p class="mt-4 text-sm leading-7 text-muted">
+                            Implementation of the model, calculations and
+                            application logic.
+                        </p>
+                    </article>
+
+                    <article
+                        class="model-card project-reveal border border-white/10 bg-panel p-6"
+                    >
+                        <p class="text-[10px] font-bold text-model-light uppercase">
+                            Communication
+                        </p>
+
+                        <h3
+                            class="font-display mt-4 text-2xl font-bold uppercase"
+                        >
+                            Documentation
+                        </h3>
+
+                        <p class="mt-4 text-sm leading-7 text-muted">
+                            Explanation of the model, numerical methods and
+                            obtained results.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- TECHNICAL STACK -->
+        <section class="border-y border-white/5 bg-panel/30 py-20">
+            <div class="section-container">
+                <div class="overflow-hidden border border-white/10 bg-[#07111b]">
+                    <div class="grid lg:grid-cols-[0.86fr_1.14fr]">
+                        <div
+                            class="project-reveal border-b border-white/10 p-8 md:p-10 lg:border-r lg:border-b-0"
+                        >
+                            <p class="text-xs font-bold text-model-light uppercase">
+                                06 · Technologies
+                            </p>
+
+                            <h2
+                                class="font-display mt-5 text-5xl font-black uppercase md:text-7xl"
+                            >
+                                Technical stack
+                            </h2>
+
+                            <p
+                                class="mt-6 max-w-lg text-base leading-8 text-white/65"
+                            >
+                                Technologies and scientific concepts used to
+                                implement, calculate and visualize the adapted
+                                epidemiological model.
+                            </p>
+                        </div>
+
+                        <div class="project-reveal p-8 md:p-10">
+                            <div
+                                class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3"
+                            >
+                                <div
+                                    class="border border-white/10 bg-white/[0.02] p-5"
+                                >
+                                    <p
+                                        class="text-[10px] font-bold text-white/35 uppercase"
+                                    >
+                                        Programming
+                                    </p>
+
+                                    <p class="mt-3 text-lg font-semibold">
+                                        Java
+                                    </p>
+                                </div>
+
+                                <div
+                                    class="border border-white/10 bg-white/[0.02] p-5"
+                                >
+                                    <p
+                                        class="text-[10px] font-bold text-white/35 uppercase"
+                                    >
+                                        Model
+                                    </p>
+
+                                    <p class="mt-3 text-lg font-semibold">
+                                        SIR
+                                    </p>
+                                </div>
+
+                                <div
+                                    class="border border-white/10 bg-white/[0.02] p-5"
+                                >
+                                    <p
+                                        class="text-[10px] font-bold text-white/35 uppercase"
+                                    >
+                                        Equations
+                                    </p>
+
+                                    <p class="mt-3 text-lg font-semibold">
+                                        First-order ODEs
+                                    </p>
+                                </div>
+
+                                <div
+                                    class="border border-white/10 bg-white/[0.02] p-5"
+                                >
+                                    <p
+                                        class="text-[10px] font-bold text-white/35 uppercase"
+                                    >
+                                        Mathematics
+                                    </p>
+
+                                    <p class="mt-3 text-lg font-semibold">
+                                        Numerical methods
+                                    </p>
+                                </div>
+
+                                <div
+                                    class="border border-white/10 bg-white/[0.02] p-5"
+                                >
+                                    <p
+                                        class="text-[10px] font-bold text-white/35 uppercase"
+                                    >
+                                        Analysis
+                                    </p>
+
+                                    <p class="mt-3 text-lg font-semibold">
+                                        Population trends
+                                    </p>
+                                </div>
+
+                                <div
+                                    class="border border-white/10 bg-white/[0.02] p-5"
+                                >
+                                    <p
+                                        class="text-[10px] font-bold text-white/35 uppercase"
+                                    >
+                                        Interface
+                                    </p>
+
+                                    <p class="mt-3 text-lg font-semibold">
+                                        Data visualization
+                                    </p>
+                                </div>
+
+                                <div
+                                    class="border border-white/10 bg-white/[0.02] p-5"
+                                >
+                                    <p
+                                        class="text-[10px] font-bold text-white/35 uppercase"
+                                    >
+                                        Logic
+                                    </p>
+
+                                    <p class="mt-3 text-lg font-semibold">
+                                        Algorithms
+                                    </p>
+                                </div>
+
+                                <div
+                                    class="border border-white/10 bg-white/[0.02] p-5"
+                                >
+                                    <p
+                                        class="text-[10px] font-bold text-white/35 uppercase"
+                                    >
+                                        Process
+                                    </p>
+
+                                    <p class="mt-3 text-lg font-semibold">
+                                        Team development
+                                    </p>
+                                </div>
+
+                                <div
+                                    class="border border-white/10 bg-white/[0.02] p-5"
+                                >
+                                    <p
+                                        class="text-[10px] font-bold text-white/35 uppercase"
+                                    >
+                                        Communication
+                                    </p>
+
+                                    <p class="mt-3 text-lg font-semibold">
+                                        Technical documentation
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEXT PROJECT -->
+        <section class="py-20">
+            <div class="section-container">
+                <a
+                    href="./smartport.html"
+                    class="group relative block overflow-hidden border border-white/10 bg-panel/70 transition duration-500 hover:border-cyan/35"
+                >
+                    <div
+                        class="absolute inset-0 bg-[radial-gradient(circle_at_right,rgba(0,200,255,0.11),transparent_45%)]"
+                    ></div>
+
+                    <div
+                        class="absolute inset-y-0 right-0 w-[38%] bg-gradient-to-l from-cyan/[0.06] to-transparent"
+                    ></div>
+
+                    <div
+                        class="relative z-10 grid gap-10 p-8 md:p-12 lg:grid-cols-[1fr_auto] lg:items-end"
+                    >
+                        <div>
+                            <p class="text-xs font-bold text-cyan uppercase">
+                                Back to first project
+                            </p>
+
+                            <h2
+                                class="font-display mt-5 text-5xl font-black uppercase md:text-7xl"
+                            >
+                                SmartPort
+                            </h2>
+
+                            <p
+                                class="mt-5 max-w-2xl text-base leading-8 text-white/65"
+                            >
+                                An integrated port and logistics management
+                                platform combining operational workflows,
+                                intelligent planning and interactive 3D
+                                visualization.
+                            </p>
+
+                            <div class="mt-6 flex flex-wrap gap-3">
+                                <span class="project-detail-tag">
+                                    REST APIs
+                                </span>
+
+                                <span class="project-detail-tag">
+                                    Three.js
+                                </span>
+
+                                <span class="project-detail-tag">
+                                    Full stack
+                                </span>
+
+                                <span class="project-detail-tag">
+                                    Artificial intelligence
+                                </span>
+                            </div>
+                        </div>
+
+                        <div
+                            class="flex items-center gap-4 text-white/55 transition duration-500 group-hover:text-cyan"
+                        >
+                            <span class="text-sm font-semibold uppercase">
+                                View project
+                            </span>
+
+                            <span
+                                class="text-2xl transition duration-500 group-hover:translate-x-1"
+                            >
+                                →
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-white/5 py-7">
+        <div
+            class="section-container flex flex-col gap-3 text-center text-[10px] text-white/30 uppercase sm:flex-row sm:justify-between sm:text-left"
+        >
+            <p>© 2026 Daniel Filipe Flores Novo</p>
+            <p>Epidemic Modeling case study</p>
+        </div>
+    </footer>
+
+    <script>
+        const revealElements = document.querySelectorAll(
+            ".project-reveal",
+        );
+
+        const chartLines = document.querySelectorAll(
+            ".chart-line",
+        );
+
+        const revealObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    }
+
+                    entry.target.classList.add("is-visible");
+                    revealObserver.unobserve(entry.target);
+                });
+            },
+            {
+                threshold: 0.12,
+            },
+        );
+
+        revealElements.forEach((element) => {
+            revealObserver.observe(element);
+        });
+
+        chartLines.forEach((line) => {
+            revealObserver.observe(line);
+        });
+    </script>
+</body>
+</html>

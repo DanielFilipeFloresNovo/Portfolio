@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="KeepItSimple case study by Daniel Novo."
+    >
+
+    <title>KeepItSimple | Daniel Novo</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style type="text/tailwindcss">
+        @theme {
+            --font-display: "Barlow Condensed", sans-serif;
+            --font-body: "Inter", sans-serif;
+
+            --color-void: #03070c;
+            --color-panel: #07111b;
+            --color-panel-light: #0b1926;
+            --color-industrial: #f6a84b;
+            --color-industrial-light: #ffd08a;
+            --color-muted: #8ea3b5;
+        }
+
+        @layer base {
+            html {
+                background: var(--color-void);
+            }
+
+            body {
+                font-family: var(--font-body);
+                overflow-x: hidden;
+                background:
+                    radial-gradient(
+                        circle at 78% 7%,
+                        rgba(246, 168, 75, 0.11),
+                        transparent 28%
+                    ),
+                    #03070c;
+                color: white;
+            }
+
+            ::selection {
+                background: rgba(246, 168, 75, 0.3);
+                color: white;
+            }
+
+            button,
+            a {
+                -webkit-tap-highlight-color: transparent;
+            }
+        }
+
+        @layer utilities {
+            .font-display {
+                font-family: var(--font-display);
+            }
+
+            .section-container {
+                width: min(100% - 2rem, 1280px);
+                margin-inline: auto;
+            }
+
+            .text-outline {
+                color: transparent;
+                -webkit-text-stroke: 1px rgba(255, 255, 255, 0.28);
+            }
+
+            .project-detail-tag {
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                padding: 0.58rem 0.82rem;
+                font-size: 0.65rem;
+                line-height: 1;
+                color: rgba(255, 255, 255, 0.68);
+                text-transform: uppercase;
+            }
+
+            .project-reveal {
+                opacity: 0;
+                transform: translateY(28px);
+                transition:
+                    opacity 800ms ease,
+                    transform 950ms cubic-bezier(0.22, 1, 0.36, 1);
+            }
+
+            .project-reveal.is-visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .industrial-card {
+                transition:
+                    transform 350ms cubic-bezier(0.22, 1, 0.36, 1),
+                    border-color 350ms ease,
+                    background 350ms ease;
+            }
+
+            .industrial-card:hover {
+                transform: translateY(-5px);
+                border-color: rgba(246, 168, 75, 0.3);
+                background: rgba(246, 168, 75, 0.025);
+            }
+
+            .system-node {
+                position: relative;
+                display: flex;
+                min-height: 5.5rem;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                background: rgba(255, 255, 255, 0.025);
+                padding: 1.25rem;
+                text-align: center;
+                transition:
+                    transform 350ms cubic-bezier(0.22, 1, 0.36, 1),
+                    border-color 350ms ease,
+                    background 350ms ease;
+            }
+
+            .system-node:hover {
+                transform: translateY(-3px);
+                border-color: rgba(246, 168, 75, 0.42);
+                background: rgba(246, 168, 75, 0.04);
+            }
+
+            .system-node-primary {
+                border-color: rgba(246, 168, 75, 0.35);
+                background: rgba(246, 168, 75, 0.07);
+            }
+
+            .flow-line {
+                position: relative;
+                height: 3.5rem;
+                width: 1px;
+                margin-inline: auto;
+                background: linear-gradient(
+                    to bottom,
+                    rgba(246, 168, 75, 0.15),
+                    rgba(246, 168, 75, 0.75),
+                    rgba(246, 168, 75, 0.15)
+                );
+            }
+
+            .flow-line::after {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                width: 0.55rem;
+                height: 0.55rem;
+                border-right: 1px solid rgba(246, 168, 75, 0.8);
+                border-bottom: 1px solid rgba(246, 168, 75, 0.8);
+                transform: translateX(-50%) rotate(45deg);
+            }
+
+            .data-pulse {
+                animation: dataPulse 2.8s ease-in-out infinite;
+            }
+
+            .data-pulse-delay {
+                animation-delay: 0.7s;
+            }
+
+            .data-pulse-delay-two {
+                animation-delay: 1.4s;
+            }
+
+            @keyframes dataPulse {
+                0%,
+                100% {
+                    opacity: 0.25;
+                    transform: scaleX(0.72);
+                }
+
+                50% {
+                    opacity: 1;
+                    transform: scaleX(1);
+                }
+            }
+
+            .factory-column {
+                position: absolute;
+                bottom: 0;
+                width: 5.5rem;
+                border: 1px solid rgba(246, 168, 75, 0.08);
+                background: linear-gradient(
+                    to top,
+                    rgba(246, 168, 75, 0.07),
+                    rgba(246, 168, 75, 0.01)
+                );
+            }
+
+            .factory-column::before,
+            .factory-column::after {
+                content: "";
+                position: absolute;
+                left: 1rem;
+                right: 1rem;
+                height: 1px;
+                background: rgba(246, 168, 75, 0.1);
+            }
+
+            .factory-column::before {
+                top: 30%;
+            }
+
+            .factory-column::after {
+                top: 62%;
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                .project-reveal,
+                .industrial-card,
+                .system-node,
+                .data-pulse {
+                    transition-duration: 1ms;
+                    animation: none;
+                }
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header
+        class="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-[#03070c]/80 backdrop-blur-xl"
+    >
+        <nav
+            class="section-container flex h-20 items-center justify-between"
+        >
+            <a
+                href="../index.html"
+                class="font-display text-2xl font-black text-white"
+            >
+                D<span class="text-industrial">N</span>
+            </a>
+
+            <a
+                href="../index.html#projects"
+                class="inline-flex items-center gap-3 text-xs font-bold text-white/60 uppercase transition hover:text-industrial"
+            >
+                <span>←</span>
+                Back to projects
+            </a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HERO -->
+<section
+    class="relative min-h-[760px] overflow-hidden border-b border-white/5 bg-[#020611] pt-20"
+>
+    <div class="pointer-events-none absolute inset-0">
+        <div
+            class="absolute inset-y-0 right-0 hidden w-[62%] overflow-hidden lg:block"
+        >
+            <div
+                class="absolute inset-0 bg-[linear-gradient(rgba(246,168,75,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(246,168,75,0.035)_1px,transparent_1px)] bg-[size:52px_52px]"
+            ></div>
+
+            <div class="factory-column right-[8%] h-[55%]"></div>
+            <div class="factory-column right-[24%] h-[72%]"></div>
+            <div class="factory-column right-[40%] h-[46%]"></div>
+            <div class="factory-column right-[56%] h-[64%]"></div>
+
+            <div
+                class="absolute right-[9%] bottom-[18%] flex items-end gap-3"
+            >
+                <div
+                    class="h-20 w-20 border border-industrial/15 bg-industrial/[0.035]"
+                ></div>
+
+                <div
+                    class="h-28 w-28 border border-industrial/15 bg-industrial/[0.04]"
+                ></div>
+
+                <div
+                    class="h-16 w-24 border border-industrial/15 bg-industrial/[0.03]"
+                ></div>
+            </div>
+
+            <div
+                class="absolute top-[32%] right-[15%] font-display text-[10rem] font-black leading-none text-industrial/[0.035]"
+            >
+                KIS
+            </div>
+
+            <div
+                class="absolute inset-0 bg-gradient-to-l from-[#1c1308]/20 via-[#0b0d10]/52 to-[#020611]"
+            ></div>
+
+            <div
+                class="absolute inset-0 bg-[radial-gradient(circle_at_68%_45%,rgba(246,168,75,0.14),transparent_40%)]"
+            ></div>
+        </div>
+
+        <div
+            class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#020611]/80"
+        ></div>
+    </div>
+
+    <div
+        class="section-container relative z-10 grid min-h-[680px] items-center py-16 lg:grid-cols-[0.92fr_1.08fr]"
+    >
+        <div class="project-reveal max-w-2xl">
+            <p class="text-xs font-bold text-industrial uppercase">
+                Academic project · Grade 16
+            </p>
+
+            <h1
+                class="font-display mt-8 text-[clamp(4.5rem,9vw,8.5rem)] leading-[0.82] font-black uppercase"
+            >
+                Keep It
+                <span class="block text-outline">Simple</span>
+            </h1>
+
+            <p class="mt-10 max-w-xl text-lg leading-9 text-white/75">
+                An integrated software solution designed to support
+                production management and ensure reliable data flow
+                across a complex industrial facility.
+            </p>
+
+            <div class="mt-8 flex flex-wrap gap-3">
+    <span class="project-detail-tag">Java</span>
+    <span class="project-detail-tag">Oracle SQL</span>
+    <span class="project-detail-tag">PL/SQL</span>
+    <span class="project-detail-tag">System integration</span>
+    <span class="project-detail-tag">Relational modeling</span>
+</div>
+        </div>
+
+        <div class="hidden lg:block"></div>
+    </div>
+</section>
+
+        <!-- PROJECT INFORMATION -->
+<section
+    class="relative overflow-hidden border-y border-white/10 bg-[#07111b]"
+>
+    <div
+        class="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(246,168,75,0.035),transparent_35%,transparent_70%,rgba(246,168,75,0.02))]"
+    ></div>
+
+    <div
+        class="section-container relative z-10 grid sm:grid-cols-2 lg:grid-cols-4"
+    >
+        <article
+            class="min-h-[180px] border-b border-white/10 p-8 transition hover:bg-white/[0.025] sm:border-r lg:border-b-0"
+        >
+            <p class="text-[11px] font-bold text-white/35 uppercase">
+                Role
+            </p>
+
+            <p
+                class="font-display mt-6 text-4xl leading-none font-bold uppercase"
+            >
+                Software
+                <span class="block text-industrial">Developer</span>
+            </p>
+        </article>
+
+        <article
+            class="min-h-[180px] border-b border-white/10 p-8 transition hover:bg-white/[0.025] lg:border-r lg:border-b-0"
+        >
+            <p class="text-[11px] font-bold text-white/35 uppercase">
+                Project type
+            </p>
+
+            <p
+                class="font-display mt-6 text-4xl leading-none font-bold uppercase"
+            >
+                Academic
+                <span class="block text-white/45">Project</span>
+            </p>
+        </article>
+
+        <article
+            class="min-h-[180px] border-b border-white/10 p-8 transition hover:bg-white/[0.025] sm:border-r sm:border-b-0"
+        >
+            <p class="text-[11px] font-bold text-white/35 uppercase">
+                Focus
+            </p>
+
+            <p
+                class="font-display mt-6 text-4xl leading-none font-bold uppercase"
+            >
+                Production
+                <span class="block text-white/45">Management</span>
+            </p>
+        </article>
+
+        <article
+            class="min-h-[180px] p-8 transition hover:bg-industrial/[0.025]"
+        >
+            <p class="text-[11px] font-bold text-white/35 uppercase">
+                Result
+            </p>
+
+            <p
+                class="font-display mt-6 text-6xl leading-none font-black text-industrial uppercase"
+            >
+                16
+            </p>
+
+            <p class="mt-3 text-xs text-white/40 uppercase">
+                Out of 20
+            </p>
+        </article>
+    </div>
+</section>
+
+        <!-- OVERVIEW -->
+        <section class="py-20">
+            <div
+                class="section-container grid gap-12 lg:grid-cols-[0.78fr_1.22fr]"
+            >
+                <div class="project-reveal">
+                    <p class="text-xs font-bold text-industrial uppercase">
+                        01 · Overview
+                    </p>
+
+                    <h2
+                        class="font-display mt-4 text-5xl font-black uppercase md:text-7xl"
+                    >
+                        Connecting
+                        <span class="block text-outline">the factory</span>
+                    </h2>
+                </div>
+
+                <div class="project-reveal">
+                    <p class="text-lg leading-9 text-white/80">
+                        KeepItSimple was developed as an integrated computer
+                        solution for managing production within a complex
+                        industrial facility.
+                    </p>
+
+                    <p class="mt-6 leading-8 text-muted">
+                        The project connected a remote central database with
+                        factory-floor workstations, allowing information to move
+                        consistently between different technological layers.
+                    </p>
+
+                    <p class="mt-6 leading-8 text-muted">
+                        The implementation focused on preserving data integrity,
+                        applying complex business rules and ensuring that
+                        production information remained reliable throughout the
+                        complete operational workflow.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- MAIN EXPERIENCE -->
+        <section
+            class="relative overflow-hidden border-y border-white/5 bg-panel/30 py-20"
+        >
+            <div class="section-container">
+                <div
+                    class="project-reveal flex flex-col justify-between gap-6 md:flex-row md:items-end"
+                >
+                    <div>
+                        <p class="text-xs font-bold text-industrial uppercase">
+                            02 · Main experience
+                        </p>
+
+                        <h2
+                            class="font-display mt-4 text-5xl font-black uppercase md:text-7xl"
+                        >
+                            Industrial
+                            <span class="text-outline">data flow</span>
+                        </h2>
+                    </div>
+
+                    <p class="max-w-md text-sm leading-7 text-muted">
+                        Information moves from factory-floor operations to a
+                        centralized database while remaining consistent,
+                        validated and available throughout the system.
+                    </p>
+                </div>
+
+                <div
+                    class="project-reveal relative mt-12 overflow-hidden border border-white/10 bg-[#06101a] p-6 md:p-10"
+                >
+                    <div
+                        class="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(246,168,75,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(246,168,75,0.025)_1px,transparent_1px)] bg-[size:42px_42px]"
+                    ></div>
+
+                    <div
+                        class="pointer-events-none absolute top-10 right-10 font-display text-[7rem] font-black leading-none text-industrial/[0.035]"
+                    >
+                        FLOW
+                    </div>
+
+                    <div
+                        class="relative z-10 mx-auto grid max-w-3xl"
+                    >
+                        <!-- FACTORY FLOOR -->
+                        <div class="system-node system-node-primary">
+                            <div>
+                                <p
+                                    class="text-[10px] font-bold text-industrial uppercase"
+                                >
+                                    Operational layer
+                                </p>
+
+                                <p
+                                    class="font-display mt-2 text-2xl font-bold uppercase"
+                                >
+                                    Factory-floor workstations
+                                </p>
+
+                                <p class="mt-2 text-xs leading-6 text-muted">
+                                    Production data is created and updated close
+                                    to the industrial operation.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-line"></div>
+
+                        <!-- VALIDATION -->
+                        <div class="system-node">
+                            <div>
+                                <p
+                                    class="text-[10px] font-bold text-white/35 uppercase"
+                                >
+                                    Application layer
+                                </p>
+
+                                <p
+                                    class="font-display mt-2 text-2xl font-bold uppercase"
+                                >
+                                    Validation and business rules
+                                </p>
+
+                                <p class="mt-2 text-xs leading-6 text-muted">
+                                    Information is verified before affecting the
+                                    production state.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-line"></div>
+
+                        <!-- COMMUNICATION -->
+                        <div class="system-node">
+                            <div>
+                                <p
+                                    class="text-[10px] font-bold text-white/35 uppercase"
+                                >
+                                    Communication layer
+                                </p>
+
+                                <p
+                                    class="font-display mt-2 text-2xl font-bold uppercase"
+                                >
+                                    Structured data exchange
+                                </p>
+
+                                <p class="mt-2 text-xs leading-6 text-muted">
+                                    Data travels consistently between local
+                                    stations and the remote system.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-line"></div>
+
+                        <!-- DATABASE -->
+                        <div class="system-node system-node-primary">
+                            <div>
+                                <p
+                                    class="text-[10px] font-bold text-industrial uppercase"
+                                >
+                                    Central layer
+                                </p>
+
+                                <p
+                                    class="font-display mt-2 text-2xl font-bold uppercase"
+                                >
+                                    Remote DBMS
+                                </p>
+
+                                <p class="mt-2 text-xs leading-6 text-muted">
+                                    Centralized and reliable persistence of
+                                    industrial production information.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FLOW HIGHLIGHTS -->
+                <div class="mt-6 grid gap-4 md:grid-cols-3">
+                    <article
+                        class="industrial-card project-reveal border border-white/10 bg-[#07111b] p-7"
+                    >
+                        <div
+                            class="mb-6 flex h-12 w-12 items-center justify-center border border-industrial/25 bg-industrial/[0.05] text-industrial"
+                        >
+                            <svg
+                                viewBox="0 0 24 24"
+                                class="h-6 w-6"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.6"
+                                aria-hidden="true"
+                            >
+                                <ellipse cx="12" cy="5" rx="7" ry="3"></ellipse>
+                                <path d="M5 5v6c0 1.7 3.1 3 7 3s7-1.3 7-3V5"></path>
+                                <path d="M5 11v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"></path>
+                            </svg>
+                        </div>
+
+                        <p class="text-[10px] font-bold text-industrial uppercase">
+                            Integrity
+                        </p>
+
+                        <h3
+                            class="font-display mt-3 text-3xl font-bold uppercase"
+                        >
+                            Reliable data
+                        </h3>
+
+                        <p class="mt-4 text-sm leading-7 text-muted">
+                            Validation rules protect the consistency and
+                            reliability of production information.
+                        </p>
+                    </article>
+
+                    <article
+                        class="industrial-card project-reveal border border-white/10 bg-[#07111b] p-7"
+                    >
+                        <div
+                            class="mb-6 flex h-12 w-12 items-center justify-center border border-industrial/25 bg-industrial/[0.05] text-industrial"
+                        >
+                            <svg
+                                viewBox="0 0 24 24"
+                                class="h-6 w-6"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.6"
+                                aria-hidden="true"
+                            >
+                                <path d="M5 7h11"></path>
+                                <path d="M13 4l3 3-3 3"></path>
+                                <path d="M19 17H8"></path>
+                                <path d="M11 14l-3 3 3 3"></path>
+                            </svg>
+                        </div>
+
+                        <p class="text-[10px] font-bold text-industrial uppercase">
+                            Integration
+                        </p>
+
+                        <h3
+                            class="font-display mt-3 text-3xl font-bold uppercase"
+                        >
+                            Continuous flow
+                        </h3>
+
+                        <p class="mt-4 text-sm leading-7 text-muted">
+                            Different technological layers exchange information
+                            without breaking the production workflow.
+                        </p>
+                    </article>
+
+                    <article
+                        class="industrial-card project-reveal border border-white/10 bg-[#07111b] p-7"
+                    >
+                        <div
+                            class="mb-6 flex h-12 w-12 items-center justify-center border border-industrial/25 bg-industrial/[0.05] text-industrial"
+                        >
+                            <svg
+                                viewBox="0 0 24 24"
+                                class="h-6 w-6"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.6"
+                                aria-hidden="true"
+                            >
+                                <path d="M4 18h16"></path>
+                                <path d="M6 18V9h4v9"></path>
+                                <path d="M14 18V5h4v13"></path>
+                            </svg>
+                        </div>
+
+                        <p class="text-[10px] font-bold text-industrial uppercase">
+                            Efficiency
+                        </p>
+
+                        <h3
+                            class="font-display mt-3 text-3xl font-bold uppercase"
+                        >
+                            Operational support
+                        </h3>
+
+                        <p class="mt-4 text-sm leading-7 text-muted">
+                            Business rules support production decisions and help
+                            maintain an efficient industrial process.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- BUSINESS RULES -->
+        <section class="py-20">
+            <div class="section-container">
+                <div
+                    class="project-reveal grid gap-10 lg:grid-cols-[0.7fr_1.3fr]"
+                >
+                    <div>
+                        <p class="text-xs font-bold text-industrial uppercase">
+                            03 · System priorities
+                        </p>
+
+                        <h2
+                            class="font-display mt-4 text-5xl font-black uppercase md:text-7xl"
+                        >
+                            Business
+                            <span class="block text-outline">rules</span>
+                        </h2>
+                    </div>
+
+                    <div class="grid gap-4 sm:grid-cols-2">
+                        <article
+                            class="industrial-card border border-white/10 bg-panel p-7"
+                        >
+                            <p
+                                class="text-[10px] font-bold text-industrial uppercase"
+                            >
+                                Validation
+                            </p>
+
+                            <h3
+                                class="font-display mt-4 text-3xl font-bold uppercase"
+                            >
+                                Consistent operations
+                            </h3>
+
+                            <p class="mt-4 text-sm leading-7 text-muted">
+                                Production actions are validated before data is
+                                accepted by the central system.
+                            </p>
+                        </article>
+
+                        <article
+                            class="industrial-card border border-white/10 bg-panel p-7"
+                        >
+                            <p
+                                class="text-[10px] font-bold text-industrial uppercase"
+                            >
+                                Coordination
+                            </p>
+
+                            <h3
+                                class="font-display mt-4 text-3xl font-bold uppercase"
+                            >
+                                Shared information
+                            </h3>
+
+                            <p class="mt-4 text-sm leading-7 text-muted">
+                                Workstations operate with coherent information
+                                from the same centralized source.
+                            </p>
+                        </article>
+
+                        <article
+                            class="industrial-card border border-white/10 bg-panel p-7"
+                        >
+                            <p
+                                class="text-[10px] font-bold text-industrial uppercase"
+                            >
+                                Persistence
+                            </p>
+
+                            <h3
+                                class="font-display mt-4 text-3xl font-bold uppercase"
+                            >
+                                Reliable records
+                            </h3>
+
+                            <p class="mt-4 text-sm leading-7 text-muted">
+                                Production records remain available and
+                                consistent across the complete system.
+                            </p>
+                        </article>
+
+                        <article
+                            class="industrial-card border border-white/10 bg-panel p-7"
+                        >
+                            <p
+                                class="text-[10px] font-bold text-industrial uppercase"
+                            >
+                                Performance
+                            </p>
+
+                            <h3
+                                class="font-display mt-4 text-3xl font-bold uppercase"
+                            >
+                                Efficient processing
+                            </h3>
+
+                            <p class="mt-4 text-sm leading-7 text-muted">
+                                Information is processed with minimal disruption
+                                to factory-floor activity.
+                            </p>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TECHNICAL STACK -->
+<section class="border-y border-white/5 bg-panel/30 py-20">
+    <div class="section-container">
+        <div class="overflow-hidden border border-white/10 bg-[#07111b]">
+            <div class="grid lg:grid-cols-[0.82fr_1.18fr]">
+                <div
+                    class="project-reveal border-b border-white/10 p-8 md:p-10 lg:border-r lg:border-b-0"
+                >
+                    <p class="text-xs font-bold text-industrial uppercase">
+                        04 · Technologies and practices
+                    </p>
+
+                    <h2
+                        class="font-display mt-5 text-5xl font-black uppercase md:text-7xl"
+                    >
+                        Technical stack
+                    </h2>
+
+                    <p class="mt-6 max-w-lg text-base leading-8 text-white/65">
+                        Technologies, database concepts and engineering
+                        practices used to connect production operations with a
+                        centralized relational data system.
+                    </p>
+                </div>
+
+                <div class="project-reveal p-8 md:p-10">
+                    <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                        <article
+                            class="border border-white/10 bg-white/[0.02] p-5 transition hover:border-industrial/30 hover:bg-industrial/[0.025]"
+                        >
+                            <p class="text-[10px] font-bold text-white/35 uppercase">
+                                Programming
+                            </p>
+
+                            <p class="mt-3 text-lg font-semibold">
+                                Java
+                            </p>
+                        </article>
+
+                        <article
+                            class="border border-white/10 bg-white/[0.02] p-5 transition hover:border-industrial/30 hover:bg-industrial/[0.025]"
+                        >
+                            <p class="text-[10px] font-bold text-white/35 uppercase">
+                                Paradigm
+                            </p>
+
+                            <p class="mt-3 text-lg font-semibold">
+                                Object-oriented programming
+                            </p>
+                        </article>
+
+                        <article
+                            class="border border-white/10 bg-white/[0.02] p-5 transition hover:border-industrial/30 hover:bg-industrial/[0.025]"
+                        >
+                            <p class="text-[10px] font-bold text-white/35 uppercase">
+                                Database
+                            </p>
+
+                            <p class="mt-3 text-lg font-semibold">
+                                Oracle SQL
+                            </p>
+                        </article>
+
+                        <article
+                            class="border border-white/10 bg-white/[0.02] p-5 transition hover:border-industrial/30 hover:bg-industrial/[0.025]"
+                        >
+                            <p class="text-[10px] font-bold text-white/35 uppercase">
+                                Database logic
+                            </p>
+
+                            <p class="mt-3 text-lg font-semibold">
+                                PL/SQL
+                            </p>
+                        </article>
+
+                        <article
+                            class="border border-white/10 bg-white/[0.02] p-5 transition hover:border-industrial/30 hover:bg-industrial/[0.025]"
+                        >
+                            <p class="text-[10px] font-bold text-white/35 uppercase">
+                                Data design
+                            </p>
+
+                            <p class="mt-3 text-lg font-semibold">
+                                Relational modeling
+                            </p>
+                        </article>
+
+                        <article
+                            class="border border-white/10 bg-white/[0.02] p-5 transition hover:border-industrial/30 hover:bg-industrial/[0.025]"
+                        >
+                            <p class="text-[10px] font-bold text-white/35 uppercase">
+                                Integration
+                            </p>
+
+                            <p class="mt-3 text-lg font-semibold">
+                                System integration
+                            </p>
+                        </article>
+
+                        <article
+                            class="border border-white/10 bg-white/[0.02] p-5 transition hover:border-industrial/30 hover:bg-industrial/[0.025]"
+                        >
+                            <p class="text-[10px] font-bold text-white/35 uppercase">
+                                Engineering
+                            </p>
+
+                            <p class="mt-3 text-lg font-semibold">
+                                Software best practices
+                            </p>
+                        </article>
+
+                        <article
+                            class="border border-white/10 bg-white/[0.02] p-5 transition hover:border-industrial/30 hover:bg-industrial/[0.025]"
+                        >
+                            <p class="text-[10px] font-bold text-white/35 uppercase">
+                                Domain
+                            </p>
+
+                            <p class="mt-3 text-lg font-semibold">
+                                Production management
+                            </p>
+                        </article>
+
+                        <article
+                            class="border border-white/10 bg-white/[0.02] p-5 transition hover:border-industrial/30 hover:bg-industrial/[0.025]"
+                        >
+                            <p class="text-[10px] font-bold text-white/35 uppercase">
+                                Collaboration
+                            </p>
+
+                            <p class="mt-3 text-lg font-semibold">
+                                Team development
+                            </p>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+        <!-- NEXT PROJECT -->
+        <section class="py-20">
+            <div class="section-container">
+                <a
+                    href="./esc.html"
+                    class="group relative block overflow-hidden border border-white/10 bg-panel/70 transition duration-500 hover:border-[#ffad73]/35"
+                >
+                    <div
+                        class="absolute inset-0 bg-[radial-gradient(circle_at_right,rgba(255,173,115,0.11),transparent_45%)]"
+                    ></div>
+
+                    <div
+                        class="absolute inset-y-0 right-0 w-[38%] bg-gradient-to-l from-[#ffad73]/[0.06] to-transparent"
+                    ></div>
+
+                    <div
+                        class="relative z-10 grid gap-10 p-8 md:p-12 lg:grid-cols-[1fr_auto] lg:items-end"
+                    >
+                        <div>
+                            <p
+                                class="text-xs font-bold text-[#ffad73] uppercase"
+                            >
+                                Next project
+                            </p>
+
+                            <h2
+                                class="font-display mt-5 text-5xl font-black uppercase md:text-7xl"
+                            >
+                                Esc
+                            </h2>
+
+                            <p
+                                class="mt-5 max-w-2xl text-base leading-8 text-white/65"
+                            >
+                                An experimental Game Jam project focused on
+                                gameplay, interaction, enemy behaviour and visual
+                                design.
+                            </p>
+
+                            <div class="mt-6 flex flex-wrap gap-3">
+                                <span class="project-detail-tag">
+                                    Game Jam
+                                </span>
+
+                                <span class="project-detail-tag">
+                                    Godot
+                                </span>
+
+                                <span class="project-detail-tag">
+                                    Gameplay
+                                </span>
+
+                                <span class="project-detail-tag">
+                                    UI design
+                                </span>
+                            </div>
+                        </div>
+
+                        <div
+                            class="flex items-center gap-4 text-white/55 transition duration-500 group-hover:text-[#ffad73]"
+                        >
+                            <span class="text-sm font-semibold uppercase">
+                                View project
+                            </span>
+
+                            <span
+                                class="text-2xl transition duration-500 group-hover:translate-x-1"
+                            >
+                                →
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-white/5 py-7">
+        <div
+            class="section-container flex flex-col gap-3 text-center text-[10px] text-white/30 uppercase sm:flex-row sm:justify-between sm:text-left"
+        >
+            <p>© 2026 Daniel Filipe Flores Novo</p>
+            <p>KeepItSimple case study</p>
+        </div>
+    </footer>
+
+    <script>
+        const revealElements = document.querySelectorAll(
+            ".project-reveal",
+        );
+
+        const revealObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    }
+
+                    entry.target.classList.add("is-visible");
+                    revealObserver.unobserve(entry.target);
+                });
+            },
+            {
+                threshold: 0.12,
+            },
+        );
+
+        revealElements.forEach((element) => {
+            revealObserver.observe(element);
+        });
+    </script>
+</body>
+</html>

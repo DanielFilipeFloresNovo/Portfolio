@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Shodrone drone fleet management and simulation case study by Daniel Novo."
+    >
+
+    <title>Shodrone | Daniel Novo</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style type="text/tailwindcss">
+        @theme {
+            --font-display: "Barlow Condensed", sans-serif;
+            --font-body: "Inter", sans-serif;
+
+            --color-void: #03070c;
+            --color-panel: #07111b;
+            --color-panel-light: #0b1926;
+            --color-drone: #9b8cff;
+            --color-drone-light: #c4bbff;
+            --color-drone-blue: #72baff;
+            --color-muted: #8ea3b5;
+        }
+
+        @layer base {
+            html {
+                background: var(--color-void);
+            }
+
+            body {
+                font-family: var(--font-body);
+                overflow-x: hidden;
+                background:
+                    radial-gradient(
+                        circle at 78% 8%,
+                        rgba(155, 140, 255, 0.13),
+                        transparent 28%
+                    ),
+                    radial-gradient(
+                        circle at 22% 38%,
+                        rgba(114, 186, 255, 0.07),
+                        transparent 25%
+                    ),
+                    #03070c;
+                color: white;
+            }
+
+            ::selection {
+                background: rgba(155, 140, 255, 0.34);
+                color: white;
+            }
+
+            button,
+            a {
+                -webkit-tap-highlight-color: transparent;
+            }
+        }
+
+        @layer utilities {
+            .font-display {
+                font-family: var(--font-display);
+            }
+
+            .section-container {
+                width: min(100% - 2rem, 1280px);
+                margin-inline: auto;
+            }
+
+            .text-outline {
+                color: transparent;
+                -webkit-text-stroke: 1px rgba(255, 255, 255, 0.28);
+            }
+
+            .project-detail-tag {
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                padding: 0.58rem 0.82rem;
+                font-size: 0.65rem;
+                line-height: 1;
+                color: rgba(255, 255, 255, 0.68);
+                text-transform: uppercase;
+            }
+
+            .project-reveal {
+                opacity: 0;
+                transform: translateY(28px);
+                transition:
+                    opacity 800ms ease,
+                    transform 950ms cubic-bezier(0.22, 1, 0.36, 1);
+            }
+
+            .project-reveal.is-visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .system-card {
+                transition:
+                    transform 350ms cubic-bezier(0.22, 1, 0.36, 1),
+                    border-color 350ms ease,
+                    background 350ms ease;
+            }
+
+            .system-card:hover {
+                transform: translateY(-5px);
+                border-color: rgba(155, 140, 255, 0.34);
+                background: rgba(155, 140, 255, 0.025);
+            }
+
+            .architecture-node {
+                position: relative;
+                display: flex;
+                min-height: 6rem;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                background: rgba(255, 255, 255, 0.025);
+                padding: 1.25rem;
+                text-align: center;
+                transition:
+                    transform 350ms cubic-bezier(0.22, 1, 0.36, 1),
+                    border-color 350ms ease,
+                    background 350ms ease;
+            }
+
+            .architecture-node:hover {
+                transform: translateY(-3px);
+                border-color: rgba(155, 140, 255, 0.45);
+                background: rgba(155, 140, 255, 0.045);
+            }
+
+            .architecture-node-primary {
+                border-color: rgba(155, 140, 255, 0.38);
+                background: rgba(155, 140, 255, 0.075);
+            }
+
+            .architecture-node-blue {
+                border-color: rgba(114, 186, 255, 0.34);
+                background: rgba(114, 186, 255, 0.055);
+            }
+
+            .flow-line {
+                position: relative;
+                height: 3.5rem;
+                width: 1px;
+                margin-inline: auto;
+                background: linear-gradient(
+                    to bottom,
+                    rgba(155, 140, 255, 0.12),
+                    rgba(155, 140, 255, 0.8),
+                    rgba(155, 140, 255, 0.12)
+                );
+            }
+
+            .flow-line::after {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                width: 0.55rem;
+                height: 0.55rem;
+                border-right: 1px solid rgba(155, 140, 255, 0.85);
+                border-bottom: 1px solid rgba(155, 140, 255, 0.85);
+                transform: translateX(-50%) rotate(45deg);
+            }
+
+            .drone-orbit {
+                position: absolute;
+                border: 1px solid rgba(155, 140, 255, 0.12);
+                border-radius: 999px;
+                animation: orbitPulse 4s ease-in-out infinite;
+            }
+
+            .drone-orbit-secondary {
+                animation-delay: 1.2s;
+            }
+
+            .signal-line {
+                animation: signalPulse 2.4s ease-in-out infinite;
+            }
+
+            .signal-line-delay {
+                animation-delay: 0.7s;
+            }
+
+            .signal-line-delay-two {
+                animation-delay: 1.4s;
+            }
+
+            @keyframes orbitPulse {
+                0%,
+                100% {
+                    opacity: 0.18;
+                    transform: scale(0.96);
+                }
+
+                50% {
+                    opacity: 0.5;
+                    transform: scale(1.03);
+                }
+            }
+
+            @keyframes signalPulse {
+                0%,
+                100% {
+                    opacity: 0.2;
+                }
+
+                50% {
+                    opacity: 1;
+                }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                .project-reveal,
+                .system-card,
+                .architecture-node,
+                .drone-orbit,
+                .signal-line {
+                    transition-duration: 1ms;
+                    animation: none;
+                }
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header
+        class="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-[#03070c]/80 backdrop-blur-xl"
+    >
+        <nav class="section-container flex h-20 items-center justify-between">
+            <a
+                href="../index.html"
+                class="font-display text-2xl font-black text-white"
+            >
+                D<span class="text-drone">N</span>
+            </a>
+
+            <a
+                href="../index.html#projects"
+                class="inline-flex items-center gap-3 text-xs font-bold text-white/60 uppercase transition hover:text-drone-light"
+            >
+                <span>←</span>
+                Back to projects
+            </a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section
+            class="relative min-h-[760px] overflow-hidden border-b border-white/5 bg-[#020611] pt-20"
+        >
+            <div class="pointer-events-none absolute inset-0">
+                <div
+                    class="absolute inset-y-0 right-0 hidden w-[64%] overflow-hidden lg:block"
+                >
+                    <div
+                        class="absolute inset-0 bg-[linear-gradient(rgba(155,140,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(155,140,255,0.035)_1px,transparent_1px)] bg-[size:48px_48px]"
+                    ></div>
+
+                    <div
+                        class="drone-orbit top-[17%] right-[9%] h-[460px] w-[460px]"
+                    ></div>
+
+                    <div
+                        class="drone-orbit drone-orbit-secondary top-[27%] right-[17%] h-[300px] w-[300px]"
+                    ></div>
+
+                    <div
+                        class="absolute top-1/2 right-[24%] -translate-y-1/2"
+                    >
+                        <svg
+                            viewBox="0 0 280 220"
+                            class="h-[360px] w-[430px] text-drone"
+                            fill="none"
+                            stroke="currentColor"
+                            aria-hidden="true"
+                        >
+                            <circle
+                                cx="140"
+                                cy="110"
+                                r="26"
+                                fill="rgba(155,140,255,0.08)"
+                                stroke-width="2"
+                            ></circle>
+
+                            <path
+                                d="M114 92L78 62M166 92l36-30M114 128l-36 30M166 128l36 30"
+                                stroke-width="3"
+                            ></path>
+
+                            <circle cx="64" cy="50" r="28" stroke-width="2"></circle>
+                            <circle cx="216" cy="50" r="28" stroke-width="2"></circle>
+                            <circle cx="64" cy="170" r="28" stroke-width="2"></circle>
+                            <circle cx="216" cy="170" r="28" stroke-width="2"></circle>
+
+                            <path d="M40 50h48M192 50h48M40 170h48M192 170h48" stroke-width="2"></path>
+                            <path d="M64 26v48M216 26v48M64 146v48M216 146v48" stroke-width="2"></path>
+
+                            <path
+                                d="M140 82V42M140 138v40"
+                                stroke-width="2"
+                                stroke-dasharray="6 8"
+                                class="signal-line"
+                            ></path>
+
+                            <path
+                                d="M112 110H54M168 110h58"
+                                stroke-width="2"
+                                stroke-dasharray="6 8"
+                                class="signal-line signal-line-delay"
+                            ></path>
+                        </svg>
+                    </div>
+
+                    <div
+                        class="absolute top-[34%] right-[8%] font-display text-[8rem] font-black leading-none text-drone/[0.035]"
+                    >
+                        DRONE
+                    </div>
+
+                    <div
+                        class="absolute inset-0 bg-gradient-to-l from-[#17122c]/20 via-[#09101a]/52 to-[#020611]"
+                    ></div>
+
+                    <div
+                        class="absolute inset-0 bg-[radial-gradient(circle_at_68%_45%,rgba(155,140,255,0.15),transparent_40%)]"
+                    ></div>
+                </div>
+
+                <div
+                    class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#020611]/80"
+                ></div>
+            </div>
+
+            <div
+                class="section-container relative z-10 grid min-h-[680px] items-center py-16 lg:grid-cols-[0.92fr_1.08fr]"
+            >
+                <div class="project-reveal max-w-2xl">
+                    <p class="text-xs font-bold text-drone-light uppercase">
+                        Academic project · Grade 16
+                    </p>
+
+                    <h1
+                        class="font-display mt-8 text-[clamp(5rem,11vw,9.5rem)] leading-[0.82] font-black uppercase"
+                    >
+                        Sho
+                        <span class="block text-outline">drone</span>
+                    </h1>
+
+                    <p class="mt-10 max-w-xl text-lg leading-9 text-white/75">
+                        A drone fleet management and simulation ecosystem
+                        combining network communication, concurrent processing,
+                        shared memory synchronization and automated flight-plan
+                        validation.
+                    </p>
+
+                    <div class="mt-8 flex flex-wrap gap-3">
+                        <span class="project-detail-tag">C</span>
+                        <span class="project-detail-tag">Pthreads</span>
+                        <span class="project-detail-tag">Sockets</span>
+                        <span class="project-detail-tag">Shared memory</span>
+                        <span class="project-detail-tag">ANTLR</span>
+                    </div>
+                </div>
+
+                <div class="hidden lg:block"></div>
+            </div>
+        </section>
+
+        <!-- PROJECT INFORMATION -->
+        <section
+            class="relative overflow-hidden border-y border-white/10 bg-[#07111b]"
+        >
+            <div
+                class="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(155,140,255,0.04),transparent_35%,transparent_70%,rgba(114,186,255,0.025))]"
+            ></div>
+
+            <div
+                class="section-container relative z-10 grid sm:grid-cols-2 lg:grid-cols-4"
+            >
+                <article
+                    class="min-h-[180px] border-b border-white/10 p-8 transition hover:bg-white/[0.025] sm:border-r lg:border-b-0"
+                >
+                    <p class="text-[11px] font-bold text-white/35 uppercase">
+                        Role
+                    </p>
+
+                    <p
+                        class="font-display mt-6 text-4xl leading-none font-bold uppercase"
+                    >
+                        Systems
+                        <span class="block text-drone-light">Developer</span>
+                    </p>
+                </article>
+
+                <article
+                    class="min-h-[180px] border-b border-white/10 p-8 transition hover:bg-white/[0.025] lg:border-r lg:border-b-0"
+                >
+                    <p class="text-[11px] font-bold text-white/35 uppercase">
+                        Project type
+                    </p>
+
+                    <p
+                        class="font-display mt-6 text-4xl leading-none font-bold uppercase"
+                    >
+                        Academic
+                        <span class="block text-white/45">Project</span>
+                    </p>
+                </article>
+
+                <article
+                    class="min-h-[180px] border-b border-white/10 p-8 transition hover:bg-white/[0.025] sm:border-r sm:border-b-0"
+                >
+                    <p class="text-[11px] font-bold text-white/35 uppercase">
+                        Focus
+                    </p>
+
+                    <p
+                        class="font-display mt-6 text-4xl leading-none font-bold uppercase"
+                    >
+                        Concurrent
+                        <span class="block text-white/45">Systems</span>
+                    </p>
+                </article>
+
+                <article
+                    class="min-h-[180px] p-8 transition hover:bg-drone/[0.025]"
+                >
+                    <p class="text-[11px] font-bold text-white/35 uppercase">
+                        Result
+                    </p>
+
+                    <p
+                        class="font-display mt-6 text-6xl leading-none font-black text-drone-light uppercase"
+                    >
+                        16
+                    </p>
+
+                    <p class="mt-3 text-xs text-white/40 uppercase">
+                        Out of 20
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <!-- OVERVIEW -->
+        <section class="py-20">
+            <div
+                class="section-container grid gap-12 lg:grid-cols-[0.78fr_1.22fr]"
+            >
+                <div class="project-reveal">
+                    <p class="text-xs font-bold text-drone-light uppercase">
+                        01 · Overview
+                    </p>
+
+                    <h2
+                        class="font-display mt-4 text-5xl font-black uppercase md:text-7xl"
+                    >
+                        Managing a
+                        <span class="block text-outline">drone fleet</span>
+                    </h2>
+                </div>
+
+                <div class="project-reveal">
+                    <p class="text-lg leading-9 text-white/80">
+                        Shodrone was designed as a complete ecosystem for drone
+                        fleet management, communication and high-performance
+                        simulation.
+                    </p>
+
+                    <p class="mt-6 leading-8 text-muted">
+                        The project required the implementation of a custom
+                        application-level network protocol capable of exchanging
+                        structured messages between the different components of
+                        the system.
+                    </p>
+
+                    <p class="mt-6 leading-8 text-muted">
+                        It also included a multithreaded simulation engine,
+                        synchronization between parent and child processes, and
+                        a domain-specific language for validating drone flight
+                        plans before execution.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SYSTEM ARCHITECTURE -->
+        <section
+            class="relative overflow-hidden border-y border-white/5 bg-panel/30 py-20"
+        >
+            <div class="section-container">
+                <div
+                    class="project-reveal flex flex-col justify-between gap-6 md:flex-row md:items-end"
+                >
+                    <div>
+                        <p class="text-xs font-bold text-drone-light uppercase">
+                            02 · Main experience
+                        </p>
+
+                        <h2
+                            class="font-display mt-4 text-5xl font-black uppercase md:text-7xl"
+                        >
+                            Distributed
+                            <span class="text-outline">drone ecosystem</span>
+                        </h2>
+                    </div>
+
+                    <p class="max-w-md text-sm leading-7 text-muted">
+                        Multiple processes communicate, synchronize and process
+                        drone data while maintaining a consistent simulation
+                        state.
+                    </p>
+                </div>
+
+                <div
+                    class="project-reveal relative mt-12 overflow-hidden border border-white/10 bg-[#06101a] p-6 md:p-10"
+                >
+                    <div
+                        class="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(155,140,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(155,140,255,0.025)_1px,transparent_1px)] bg-[size:42px_42px]"
+                    ></div>
+
+                    <div
+                        class="pointer-events-none absolute top-10 right-10 font-display text-[7rem] font-black leading-none text-drone/[0.035]"
+                    >
+                        SYSTEM
+                    </div>
+
+                    <div class="relative z-10 mx-auto grid max-w-4xl">
+                        <div class="architecture-node architecture-node-primary">
+                            <div>
+                                <p
+                                    class="text-[10px] font-bold text-drone-light uppercase"
+                                >
+                                    Control layer
+                                </p>
+
+                                <p
+                                    class="font-display mt-2 text-2xl font-bold uppercase"
+                                >
+                                    Fleet management application
+                                </p>
+
+                                <p class="mt-2 text-xs leading-6 text-muted">
+                                    Receives commands, monitors drone states and
+                                    coordinates the complete fleet.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-line"></div>
+
+                        <div class="grid gap-4 md:grid-cols-2">
+                            <div class="architecture-node architecture-node-blue">
+                                <div>
+                                    <p
+                                        class="text-[10px] font-bold text-drone-blue uppercase"
+                                    >
+                                        Communication
+                                    </p>
+
+                                    <p
+                                        class="font-display mt-2 text-2xl font-bold uppercase"
+                                    >
+                                        Custom network protocol
+                                    </p>
+
+                                    <p class="mt-2 text-xs leading-6 text-muted">
+                                        Structured TCP and UDP communication
+                                        between the ecosystem components.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="architecture-node">
+                                <div>
+                                    <p
+                                        class="text-[10px] font-bold text-white/35 uppercase"
+                                    >
+                                        Validation
+                                    </p>
+
+                                    <p
+                                        class="font-display mt-2 text-2xl font-bold uppercase"
+                                    >
+                                        Flight-plan DSL
+                                    </p>
+
+                                    <p class="mt-2 text-xs leading-6 text-muted">
+                                        Automated analysis and validation of
+                                        drone flight instructions.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flow-line"></div>
+
+                        <div class="architecture-node architecture-node-primary">
+                            <div>
+                                <p
+                                    class="text-[10px] font-bold text-drone-light uppercase"
+                                >
+                                    Simulation layer
+                                </p>
+
+                                <p
+                                    class="font-display mt-2 text-2xl font-bold uppercase"
+                                >
+                                    Multithreaded simulation engine
+                                </p>
+
+                                <p class="mt-2 text-xs leading-6 text-muted">
+                                    Concurrent drone processing with synchronized
+                                    access to shared simulation data.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flow-line"></div>
+
+                        <div class="grid gap-4 md:grid-cols-3">
+                            <div class="architecture-node">
+                                <div>
+                                    <p
+                                        class="text-[10px] font-bold text-white/35 uppercase"
+                                    >
+                                        IPC
+                                    </p>
+
+                                    <p
+                                        class="font-display mt-2 text-xl font-bold uppercase"
+                                    >
+                                        Shared memory
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="architecture-node">
+                                <div>
+                                    <p
+                                        class="text-[10px] font-bold text-white/35 uppercase"
+                                    >
+                                        Synchronization
+                                    </p>
+
+                                    <p
+                                        class="font-display mt-2 text-xl font-bold uppercase"
+                                    >
+                                        Semaphores
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="architecture-node">
+                                <div>
+                                    <p
+                                        class="text-[10px] font-bold text-white/35 uppercase"
+                                    >
+                                        Concurrency
+                                    </p>
+
+                                    <p
+                                        class="font-display mt-2 text-xl font-bold uppercase"
+                                    >
+                                        Pthreads
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ARCHITECTURE HIGHLIGHTS -->
+                <div class="mt-6 grid gap-4 md:grid-cols-3">
+                    <article
+                        class="system-card project-reveal border border-white/10 bg-[#07111b] p-7"
+                    >
+                        <div
+                            class="flex h-12 w-12 items-center justify-center border border-drone/30 bg-drone/[0.05] text-drone-light"
+                        >
+                            <svg
+                                viewBox="0 0 24 24"
+                                class="h-6 w-6"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.6"
+                                aria-hidden="true"
+                            >
+                                <path d="M5 7h14"></path>
+                                <path d="M5 12h14"></path>
+                                <path d="M5 17h14"></path>
+                                <circle cx="8" cy="7" r="1"></circle>
+                                <circle cx="16" cy="12" r="1"></circle>
+                                <circle cx="11" cy="17" r="1"></circle>
+                            </svg>
+                        </div>
+
+                        <p class="mt-6 text-[10px] font-bold text-drone-light uppercase">
+                            Communication
+                        </p>
+
+                        <h3
+                            class="font-display mt-3 text-3xl font-bold uppercase"
+                        >
+                            Network protocol
+                        </h3>
+
+                        <p class="mt-4 text-sm leading-7 text-muted">
+                            A custom application-level protocol structures and
+                            transports drone commands and telemetry.
+                        </p>
+                    </article>
+
+                    <article
+                        class="system-card project-reveal border border-white/10 bg-[#07111b] p-7"
+                    >
+                        <div
+                            class="flex h-12 w-12 items-center justify-center border border-drone/30 bg-drone/[0.05] text-drone-light"
+                        >
+                            <svg
+                                viewBox="0 0 24 24"
+                                class="h-6 w-6"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.6"
+                                aria-hidden="true"
+                            >
+                                <circle cx="7" cy="7" r="3"></circle>
+                                <circle cx="17" cy="7" r="3"></circle>
+                                <circle cx="7" cy="17" r="3"></circle>
+                                <circle cx="17" cy="17" r="3"></circle>
+                                <path d="M10 7h4M7 10v4M17 10v4M10 17h4"></path>
+                            </svg>
+                        </div>
+
+                        <p class="mt-6 text-[10px] font-bold text-drone-light uppercase">
+                            Performance
+                        </p>
+
+                        <h3
+                            class="font-display mt-3 text-3xl font-bold uppercase"
+                        >
+                            Concurrent simulation
+                        </h3>
+
+                        <p class="mt-4 text-sm leading-7 text-muted">
+                            Multiple threads process drones simultaneously while
+                            preserving the integrity of shared state.
+                        </p>
+                    </article>
+
+                    <article
+                        class="system-card project-reveal border border-white/10 bg-[#07111b] p-7"
+                    >
+                        <div
+                            class="flex h-12 w-12 items-center justify-center border border-drone/30 bg-drone/[0.05] text-drone-light"
+                        >
+                            <svg
+                                viewBox="0 0 24 24"
+                                class="h-6 w-6"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.6"
+                                aria-hidden="true"
+                            >
+                                <path d="M4 6h16"></path>
+                                <path d="M4 12h10"></path>
+                                <path d="M4 18h7"></path>
+                                <path d="M17 14l3 3-5 5-3-3z"></path>
+                            </svg>
+                        </div>
+
+                        <p class="mt-6 text-[10px] font-bold text-drone-light uppercase">
+                            Validation
+                        </p>
+
+                        <h3
+                            class="font-display mt-3 text-3xl font-bold uppercase"
+                        >
+                            Flight-plan language
+                        </h3>
+
+                        <p class="mt-4 text-sm leading-7 text-muted">
+                            A dedicated language enables the automatic analysis
+                            and validation of drone missions.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- CORE CHALLENGES -->
+        <section class="py-20">
+            <div class="section-container">
+                <div
+                    class="project-reveal grid gap-10 lg:grid-cols-[0.7fr_1.3fr]"
+                >
+                    <div>
+                        <p class="text-xs font-bold text-drone-light uppercase">
+                            03 · Core challenges
+                        </p>
+
+                        <h2
+                            class="font-display mt-4 text-5xl font-black uppercase md:text-7xl"
+                        >
+                            Low-level
+                            <span class="block text-outline">engineering</span>
+                        </h2>
+                    </div>
+
+                    <div class="grid gap-4 sm:grid-cols-2">
+                        <article
+                            class="system-card border border-white/10 bg-panel p-7"
+                        >
+                            <p class="text-[10px] font-bold text-drone-light uppercase">
+                                Synchronization
+                            </p>
+
+                            <h3
+                                class="font-display mt-4 text-3xl font-bold uppercase"
+                            >
+                                Shared resources
+                            </h3>
+
+                            <p class="mt-4 text-sm leading-7 text-muted">
+                                Semaphores prevent race conditions when several
+                                processes access the shared simulation state.
+                            </p>
+                        </article>
+
+                        <article
+                            class="system-card border border-white/10 bg-panel p-7"
+                        >
+                            <p class="text-[10px] font-bold text-drone-light uppercase">
+                                Communication
+                            </p>
+
+                            <h3
+                                class="font-display mt-4 text-3xl font-bold uppercase"
+                            >
+                                Reliable messaging
+                            </h3>
+
+                            <p class="mt-4 text-sm leading-7 text-muted">
+                                The custom protocol ensures that commands and
+                                telemetry follow a predictable structure.
+                            </p>
+                        </article>
+
+                        <article
+                            class="system-card border border-white/10 bg-panel p-7"
+                        >
+                            <p class="text-[10px] font-bold text-drone-light uppercase">
+                                Performance
+                            </p>
+
+                            <h3
+                                class="font-display mt-4 text-3xl font-bold uppercase"
+                            >
+                                Parallel execution
+                            </h3>
+
+                            <p class="mt-4 text-sm leading-7 text-muted">
+                                The simulator processes multiple drones
+                                concurrently to support a larger fleet.
+                            </p>
+                        </article>
+
+                        <article
+                            class="system-card border border-white/10 bg-panel p-7"
+                        >
+                            <p class="text-[10px] font-bold text-drone-light uppercase">
+                                Language processing
+                            </p>
+
+                            <h3
+                                class="font-display mt-4 text-3xl font-bold uppercase"
+                            >
+                                Automated validation
+                            </h3>
+
+                            <p class="mt-4 text-sm leading-7 text-muted">
+                                The DSL detects invalid instructions before they
+                                reach the simulation engine.
+                            </p>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TECHNICAL STACK -->
+        <section class="border-y border-white/5 bg-panel/30 py-20">
+            <div class="section-container">
+                <div class="overflow-hidden border border-white/10 bg-[#07111b]">
+                    <div class="grid lg:grid-cols-[0.86fr_1.14fr]">
+                        <div
+                            class="project-reveal border-b border-white/10 p-8 md:p-10 lg:border-r lg:border-b-0"
+                        >
+                            <p class="text-xs font-bold text-drone-light uppercase">
+                                04 · Technologies
+                            </p>
+
+                            <h2
+                                class="font-display mt-5 text-5xl font-black uppercase md:text-7xl"
+                            >
+                                Technical stack
+                            </h2>
+
+                            <p
+                                class="mt-6 max-w-lg text-base leading-8 text-white/65"
+                            >
+                                Technologies and system concepts used to build
+                                the fleet manager, communication protocol,
+                                simulator and flight-plan validator.
+                            </p>
+                        </div>
+
+                        <div class="project-reveal p-8 md:p-10">
+                            <div
+                                class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3"
+                            >
+                                <div
+                                    class="border border-white/10 bg-white/[0.02] p-5"
+                                >
+                                    <p class="text-[10px] font-bold text-white/35 uppercase">
+                                        Programming
+                                    </p>
+
+                                    <p class="mt-3 text-lg font-semibold">
+                                        C
+                                    </p>
+                                </div>
+
+                                <div
+                                    class="border border-white/10 bg-white/[0.02] p-5"
+                                >
+                                    <p class="text-[10px] font-bold text-white/35 uppercase">
+                                        Networking
+                                    </p>
+
+                                    <p class="mt-3 text-lg font-semibold">
+                                        TCP / UDP sockets
+                                    </p>
+                                </div>
+
+                                <div
+                                    class="border border-white/10 bg-white/[0.02] p-5"
+                                >
+                                    <p class="text-[10px] font-bold text-white/35 uppercase">
+                                        Concurrency
+                                    </p>
+
+                                    <p class="mt-3 text-lg font-semibold">
+                                        Pthreads
+                                    </p>
+                                </div>
+
+                                <div
+                                    class="border border-white/10 bg-white/[0.02] p-5"
+                                >
+                                    <p class="text-[10px] font-bold text-white/35 uppercase">
+                                        IPC
+                                    </p>
+
+                                    <p class="mt-3 text-lg font-semibold">
+                                        Shared memory
+                                    </p>
+                                </div>
+
+                                <div
+                                    class="border border-white/10 bg-white/[0.02] p-5"
+                                >
+                                    <p class="text-[10px] font-bold text-white/35 uppercase">
+                                        Synchronization
+                                    </p>
+
+                                    <p class="mt-3 text-lg font-semibold">
+                                        Semaphores
+                                    </p>
+                                </div>
+
+                                <div
+                                    class="border border-white/10 bg-white/[0.02] p-5"
+                                >
+                                    <p class="text-[10px] font-bold text-white/35 uppercase">
+                                        Language tools
+                                    </p>
+
+                                    <p class="mt-3 text-lg font-semibold">
+                                        ANTLR
+                                    </p>
+                                </div>
+
+                                <div
+                                    class="border border-white/10 bg-white/[0.02] p-5"
+                                >
+                                    <p class="text-[10px] font-bold text-white/35 uppercase">
+                                        Design
+                                    </p>
+
+                                    <p class="mt-3 text-lg font-semibold">
+                                        Custom protocol
+                                    </p>
+                                </div>
+
+                                <div
+                                    class="border border-white/10 bg-white/[0.02] p-5"
+                                >
+                                    <p class="text-[10px] font-bold text-white/35 uppercase">
+                                        Simulation
+                                    </p>
+
+                                    <p class="mt-3 text-lg font-semibold">
+                                        Multithreading
+                                    </p>
+                                </div>
+
+                                <div
+                                    class="border border-white/10 bg-white/[0.02] p-5"
+                                >
+                                    <p class="text-[10px] font-bold text-white/35 uppercase">
+                                        Collaboration
+                                    </p>
+
+                                    <p class="mt-3 text-lg font-semibold">
+                                        Team development
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEXT PROJECT -->
+        <section class="py-20">
+            <div class="section-container">
+                <a
+                    href="./smart-garden.html"
+                    class="group relative block overflow-hidden border border-white/10 bg-panel/70 transition duration-500 hover:border-green-300/35"
+                >
+                    <div
+                        class="absolute inset-0 bg-[radial-gradient(circle_at_right,rgba(134,239,172,0.11),transparent_45%)]"
+                    ></div>
+
+                    <div
+                        class="absolute inset-y-0 right-0 w-[38%] bg-gradient-to-l from-green-300/[0.06] to-transparent"
+                    ></div>
+
+                    <div
+                        class="relative z-10 grid gap-10 p-8 md:p-12 lg:grid-cols-[1fr_auto] lg:items-end"
+                    >
+                        <div>
+                            <p
+                                class="text-xs font-bold text-green-300 uppercase"
+                            >
+                                Next project
+                            </p>
+
+                            <h2
+                                class="font-display mt-5 text-5xl font-black uppercase md:text-7xl"
+                            >
+                                Smart Garden
+                            </h2>
+
+                            <p
+                                class="mt-5 max-w-2xl text-base leading-8 text-white/65"
+                            >
+                                A green space and resource management application
+                                developed with Java, JavaFX, persistence and
+                                automated testing.
+                            </p>
+
+                            <div class="mt-6 flex flex-wrap gap-3">
+                                <span class="project-detail-tag">Java</span>
+                                <span class="project-detail-tag">JavaFX</span>
+                                <span class="project-detail-tag">JUnit 5</span>
+                                <span class="project-detail-tag">JaCoCo</span>
+                            </div>
+                        </div>
+
+                        <div
+                            class="flex items-center gap-4 text-white/55 transition duration-500 group-hover:text-green-300"
+                        >
+                            <span class="text-sm font-semibold uppercase">
+                                View project
+                            </span>
+
+                            <span
+                                class="text-2xl transition duration-500 group-hover:translate-x-1"
+                            >
+                                →
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-white/5 py-7">
+        <div
+            class="section-container flex flex-col gap-3 text-center text-[10px] text-white/30 uppercase sm:flex-row sm:justify-between sm:text-left"
+        >
+            <p>© 2026 Daniel Filipe Flores Novo</p>
+            <p>Shodrone case study</p>
+        </div>
+    </footer>
+
+    <script>
+        const revealElements = document.querySelectorAll(
+            ".project-reveal",
+        );
+
+        const revealObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    }
+
+                    entry.target.classList.add("is-visible");
+                    revealObserver.unobserve(entry.target);
+                });
+            },
+            {
+                threshold: 0.12,
+            },
+        );
+
+        revealElements.forEach((element) => {
+            revealObserver.observe(element);
+        });
+    </script>
+</body>
+</html>

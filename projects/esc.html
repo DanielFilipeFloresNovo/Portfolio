@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Esc game jam project case study by Daniel Novo."
+    >
+
+    <title>Esc | Daniel Novo</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style type="text/tailwindcss">
+        @theme {
+            --font-display: "Barlow Condensed", sans-serif;
+            --font-body: "Inter", sans-serif;
+
+            --color-void: #03070c;
+            --color-panel: #07111b;
+            --color-panel-light: #0b1926;
+            --color-esc: #d76f9f;
+            --color-esc-light: #f2a7c9;
+            --color-esc-blue: #58d5f5;
+            --color-muted: #8ea3b5;
+        }
+
+        @layer base {
+            html {
+                background: var(--color-void);
+            }
+
+            body {
+                font-family: var(--font-body);
+                overflow-x: hidden;
+                background:
+                    radial-gradient(
+                        circle at 76% 8%,
+                        rgba(215, 111, 159, 0.13),
+                        transparent 28%
+                    ),
+                    radial-gradient(
+                        circle at 20% 35%,
+                        rgba(88, 213, 245, 0.07),
+                        transparent 25%
+                    ),
+                    #03070c;
+                color: white;
+            }
+
+            ::selection {
+                background: rgba(215, 111, 159, 0.35);
+                color: white;
+            }
+
+            button,
+            a {
+                -webkit-tap-highlight-color: transparent;
+            }
+        }
+
+        @layer utilities {
+            .font-display {
+                font-family: var(--font-display);
+            }
+
+            .section-container {
+                width: min(100% - 2rem, 1280px);
+                margin-inline: auto;
+            }
+
+            .text-outline {
+                color: transparent;
+                -webkit-text-stroke: 1px rgba(255, 255, 255, 0.28);
+            }
+
+            .project-detail-tag {
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                padding: 0.58rem 0.82rem;
+                font-size: 0.65rem;
+                line-height: 1;
+                color: rgba(255, 255, 255, 0.68);
+                text-transform: uppercase;
+            }
+
+            .project-reveal {
+                opacity: 0;
+                transform: translateY(28px);
+                transition:
+                    opacity 800ms ease,
+                    transform 950ms cubic-bezier(0.22, 1, 0.36, 1);
+            }
+
+            .project-reveal.is-visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .project-image-reveal {
+                opacity: 0;
+                clip-path: inset(0 8% 0 0);
+                transform: translateY(22px);
+                transition:
+                    opacity 800ms ease,
+                    clip-path 1050ms cubic-bezier(0.22, 1, 0.36, 1),
+                    transform 950ms cubic-bezier(0.22, 1, 0.36, 1);
+            }
+
+            .project-image-reveal.is-visible {
+                opacity: 1;
+                clip-path: inset(0 0 0 0);
+                transform: translateY(0);
+            }
+
+            .project-gallery-item {
+                position: relative;
+                cursor: zoom-in;
+            }
+
+            .project-gallery-item img {
+                transition:
+                    transform 600ms cubic-bezier(0.22, 1, 0.36, 1),
+                    filter 600ms ease;
+            }
+
+            .project-gallery-item:hover img {
+                transform: scale(1.035);
+                filter: brightness(1.06);
+            }
+
+            .project-gallery-item::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                z-index: 3;
+                pointer-events: none;
+                border: 1px solid transparent;
+                transition:
+                    border-color 300ms ease,
+                    background 300ms ease;
+            }
+
+            .project-gallery-item:hover::after {
+                border-color: rgba(215, 111, 159, 0.34);
+                background: rgba(215, 111, 159, 0.015);
+            }
+
+            .project-gallery-zoom {
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                z-index: 8;
+                display: flex;
+                width: 2.75rem;
+                height: 2.75rem;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                background: rgba(3, 7, 12, 0.76);
+                color: rgba(255, 255, 255, 0.72);
+                opacity: 0;
+                backdrop-filter: blur(10px);
+                transition:
+                    opacity 300ms ease,
+                    border-color 300ms ease,
+                    color 300ms ease;
+            }
+
+            .project-gallery-item:hover .project-gallery-zoom {
+                opacity: 1;
+            }
+
+            .project-gallery-zoom:hover {
+                border-color: rgba(215, 111, 159, 0.7);
+                color: var(--color-esc-light);
+            }
+
+            .project-lightbox {
+                pointer-events: none;
+                opacity: 0;
+                visibility: hidden;
+                background: rgba(2, 5, 10, 0);
+                backdrop-filter: blur(0);
+                transition:
+                    opacity 450ms ease,
+                    background 450ms ease,
+                    backdrop-filter 450ms ease,
+                    visibility 0s linear 450ms;
+            }
+
+            .project-lightbox.is-visible {
+                pointer-events: auto;
+                opacity: 1;
+                visibility: visible;
+                background: rgba(2, 5, 10, 0.92);
+                backdrop-filter: blur(10px);
+                transition:
+                    opacity 450ms ease,
+                    background 450ms ease,
+                    backdrop-filter 450ms ease,
+                    visibility 0s;
+            }
+
+            .project-lightbox-panel {
+                opacity: 0;
+                transform: scale(0.9) translateY(22px);
+                transition:
+                    opacity 450ms ease,
+                    transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+            }
+
+            .project-lightbox.is-visible .project-lightbox-panel {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+
+            .project-lightbox-image {
+                width: auto;
+                max-width: 100%;
+                max-height: calc(100vh - 12rem);
+                object-fit: contain;
+            }
+
+            .contribution-card {
+                transition:
+                    transform 350ms cubic-bezier(0.22, 1, 0.36, 1),
+                    border-color 350ms ease,
+                    background 350ms ease;
+            }
+
+            .contribution-card:hover {
+                transform: translateY(-5px);
+                border-color: rgba(215, 111, 159, 0.3);
+                background: rgba(215, 111, 159, 0.025);
+            }
+
+            @media (max-width: 767px) {
+                .project-gallery-zoom {
+                    opacity: 1;
+                }
+
+                .project-lightbox-image {
+                    max-height: calc(100vh - 10rem);
+                }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                .project-reveal,
+                .project-image-reveal,
+                .project-gallery-item img,
+                .project-lightbox,
+                .project-lightbox-panel,
+                .contribution-card {
+                    transition-duration: 1ms;
+                }
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header
+        class="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-[#03070c]/80 backdrop-blur-xl"
+    >
+        <nav class="section-container flex h-20 items-center justify-between">
+            <a
+                href="../index.html"
+                class="font-display text-2xl font-black text-white"
+            >
+                D<span class="text-esc">N</span>
+            </a>
+
+            <a
+                href="../index.html#projects"
+                class="inline-flex items-center gap-3 text-xs font-bold text-white/60 uppercase transition hover:text-esc-light"
+            >
+                <span>←</span>
+                Back to projects
+            </a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section
+            class="relative min-h-[760px] overflow-hidden border-b border-white/5 bg-[#020611] pt-20"
+        >
+            <div class="pointer-events-none absolute inset-0">
+                <div
+                    class="absolute inset-y-0 right-0 hidden w-[65%] overflow-hidden lg:block"
+                >
+                    <img
+                        src="../assets/images/Projects/Esc/esc_mainmenu.png"
+                        alt=""
+                        class="absolute inset-0 h-full w-full object-cover object-center opacity-55"
+                    >
+
+                    <div
+                        class="absolute inset-0 bg-gradient-to-l from-[#54243e]/15 via-[#10101b]/42 to-[#020611]"
+                    ></div>
+
+                    <div
+                        class="absolute inset-0 bg-gradient-to-b from-[#020611]/10 via-transparent to-[#020611]/75"
+                    ></div>
+
+                    <div
+                        class="absolute inset-0 bg-[radial-gradient(circle_at_68%_45%,rgba(215,111,159,0.14),transparent_40%)]"
+                    ></div>
+                </div>
+
+                <div
+                    class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#020611]/70"
+                ></div>
+            </div>
+
+            <div
+                class="section-container relative z-10 grid min-h-[680px] items-center py-16 lg:grid-cols-[0.9fr_1.1fr]"
+            >
+                <div class="project-reveal max-w-2xl">
+                    <p class="text-xs font-bold text-esc-light uppercase">
+                        MAD Game Jam · February 2026
+                    </p>
+
+                    <h1
+                        class="font-display mt-8 text-[clamp(6rem,13vw,11rem)] leading-[0.8] font-black uppercase"
+                    >
+                        Esc
+                    </h1>
+
+                    <p class="mt-10 max-w-xl text-lg leading-9 text-white/75">
+                        A Game Jam project developed through rapid collaboration,
+                        experimentation and creative iteration, combining
+                        gameplay, enemy design, interface design and implementation.
+                    </p>
+
+                    <div class="mt-8 flex flex-wrap gap-3">
+    <span class="project-detail-tag">Game design</span>
+    <span class="project-detail-tag">Gameplay</span>
+    <span class="project-detail-tag">UI/UX</span>
+    <span class="project-detail-tag">Godot</span>
+    <span class="project-detail-tag">HTML5</span>
+</div>
+
+                    <a
+                        href="https://davidsousa01.itch.io/esc"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="mt-8 inline-flex items-center gap-3 border border-esc/35 bg-esc/[0.06] px-5 py-3 text-xs font-bold text-esc-light uppercase transition hover:border-esc-light hover:bg-esc/[0.12]"
+                    >
+                        Play on itch.io
+                        <span>↗</span>
+                    </a>
+                </div>
+
+                <div class="hidden lg:block"></div>
+            </div>
+        </section>
+
+        <!-- PROJECT INFORMATION -->
+        <section
+            class="relative overflow-hidden border-y border-white/10 bg-[#07111b]"
+        >
+            <div
+                class="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(215,111,159,0.04),transparent_35%,transparent_70%,rgba(88,213,245,0.025))]"
+            ></div>
+
+            <div
+                class="section-container relative z-10 grid sm:grid-cols-2 lg:grid-cols-4"
+            >
+                <article
+                    class="min-h-[180px] border-b border-white/10 p-8 transition hover:bg-white/[0.025] sm:border-r lg:border-b-0"
+                >
+                    <p class="text-[11px] font-bold text-white/35 uppercase">
+                        Role
+                    </p>
+
+                    <p
+                        class="font-display mt-6 text-4xl leading-none font-bold uppercase"
+                    >
+                        Game
+                        <span class="block text-esc-light">Developer</span>
+                    </p>
+                </article>
+
+                <article
+                    class="min-h-[180px] border-b border-white/10 p-8 transition hover:bg-white/[0.025] lg:border-r lg:border-b-0"
+                >
+                    <p class="text-[11px] font-bold text-white/35 uppercase">
+                        Project type
+                    </p>
+
+                    <p
+                        class="font-display mt-6 text-4xl leading-none font-bold uppercase"
+                    >
+                        MAD
+                        <span class="block text-white/45">Game Jam</span>
+                    </p>
+                </article>
+
+                <article
+                    class="min-h-[180px] border-b border-white/10 p-8 transition hover:bg-white/[0.025] sm:border-r sm:border-b-0"
+                >
+                    <p class="text-[11px] font-bold text-white/35 uppercase">
+                        Date
+                    </p>
+
+                    <p
+                        class="font-display mt-6 text-4xl leading-none font-bold uppercase"
+                    >
+                        February
+                        <span class="block text-white/45">2026</span>
+                    </p>
+                </article>
+
+                <article
+                    class="min-h-[180px] p-8 transition hover:bg-esc/[0.025]"
+                >
+                    <p class="text-[11px] font-bold text-white/35 uppercase">
+                        Focus
+                    </p>
+
+                    <p
+                        class="font-display mt-6 text-4xl leading-none font-black text-esc-light uppercase"
+                    >
+                        Gameplay
+                        <span class="block">and design</span>
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <!-- OVERVIEW -->
+        <section class="py-20">
+            <div
+                class="section-container grid gap-12 lg:grid-cols-[0.78fr_1.22fr]"
+            >
+                <div class="project-reveal">
+                    <p class="text-xs font-bold text-esc-light uppercase">
+                        01 · Overview
+                    </p>
+
+                    <h2
+                        class="font-display mt-4 text-5xl font-black uppercase md:text-7xl"
+                    >
+                        Built under
+                        <span class="block text-outline">time pressure</span>
+                    </h2>
+                </div>
+
+                <div class="project-reveal">
+                    <p class="text-lg leading-9 text-white/80">
+                        Esc was developed during a Game Jam, requiring the team
+                        to turn a creative concept into a functional game within
+                        a limited development period.
+                    </p>
+
+                    <p class="mt-6 leading-8 text-muted">
+                        I contributed to gameplay decisions, enemy behaviour,
+                        interface design, visual ideas and implementation,
+                        helping connect the game mechanics with its visual
+                        identity.
+                    </p>
+
+                    <p class="mt-6 leading-8 text-muted">
+                        The final experience combines a circuit-board inspired
+                        environment, keyboard-based enemy interactions, health
+                        and score systems, and a distinctive hand-drawn visual
+                        style.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTRIBUTION -->
+        <section class="border-y border-white/5 bg-panel/30 py-20">
+            <div class="section-container">
+                <div
+                    class="project-reveal flex flex-col justify-between gap-6 md:flex-row md:items-end"
+                >
+                    <div>
+                        <p class="text-xs font-bold text-esc-light uppercase">
+                            02 · My contribution
+                        </p>
+
+                        <h2
+                            class="font-display mt-4 text-5xl font-black uppercase md:text-7xl"
+                        >
+                            Design
+                            <span class="text-outline">and implementation</span>
+                        </h2>
+                    </div>
+
+                    <p class="max-w-md text-sm leading-7 text-muted">
+                        My work covered both creative decisions and practical
+                        implementation during the rapid Game Jam development.
+                    </p>
+                </div>
+
+                <div class="mt-12 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                    <article
+                        class="contribution-card project-reveal border border-white/10 bg-[#07111b] p-7"
+                    >
+                        <div
+                            class="flex h-12 w-12 items-center justify-center border border-esc/30 bg-esc/[0.05] text-esc-light"
+                        >
+                            <svg
+                                viewBox="0 0 24 24"
+                                class="h-6 w-6"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.6"
+                                aria-hidden="true"
+                            >
+                                <path d="M8 5l8 7-8 7z"></path>
+                            </svg>
+                        </div>
+
+                        <p class="mt-6 text-[10px] font-bold text-esc-light uppercase">
+                            Mechanics
+                        </p>
+
+                        <h3
+                            class="font-display mt-3 text-3xl font-bold uppercase"
+                        >
+                            Gameplay
+                        </h3>
+
+                        <p class="mt-4 text-sm leading-7 text-muted">
+                            Contributed ideas and implementation decisions for
+                            the main gameplay loop and player interaction.
+                        </p>
+                    </article>
+
+                    <article
+                        class="contribution-card project-reveal border border-white/10 bg-[#07111b] p-7"
+                    >
+                        <div
+                            class="flex h-12 w-12 items-center justify-center border border-esc/30 bg-esc/[0.05] text-esc-light"
+                        >
+                            <svg
+                                viewBox="0 0 24 24"
+                                class="h-6 w-6"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.6"
+                                aria-hidden="true"
+                            >
+                                <path d="M7 8l5-4 5 4v8l-5 4-5-4z"></path>
+                                <path d="M9 11h.01"></path>
+                                <path d="M15 11h.01"></path>
+                                <path d="M10 15h4"></path>
+                            </svg>
+                        </div>
+
+                        <p class="mt-6 text-[10px] font-bold text-esc-light uppercase">
+                            Behaviour
+                        </p>
+
+                        <h3
+                            class="font-display mt-3 text-3xl font-bold uppercase"
+                        >
+                            Enemy design
+                        </h3>
+
+                        <p class="mt-4 text-sm leading-7 text-muted">
+                            Helped define enemy concepts, interaction patterns
+                            and their role inside the game challenge.
+                        </p>
+                    </article>
+
+                    <article
+                        class="contribution-card project-reveal border border-white/10 bg-[#07111b] p-7"
+                    >
+                        <div
+                            class="flex h-12 w-12 items-center justify-center border border-esc/30 bg-esc/[0.05] text-esc-light"
+                        >
+                            <svg
+                                viewBox="0 0 24 24"
+                                class="h-6 w-6"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.6"
+                                aria-hidden="true"
+                            >
+                                <rect x="3" y="4" width="18" height="16" rx="1"></rect>
+                                <path d="M3 9h18"></path>
+                                <path d="M8 13h3"></path>
+                                <path d="M8 16h6"></path>
+                            </svg>
+                        </div>
+
+                        <p class="mt-6 text-[10px] font-bold text-esc-light uppercase">
+                            Interface
+                        </p>
+
+                        <h3
+                            class="font-display mt-3 text-3xl font-bold uppercase"
+                        >
+                            UI design
+                        </h3>
+
+                        <p class="mt-4 text-sm leading-7 text-muted">
+                            Contributed to interface elements, menu presentation,
+                            game feedback and visual consistency.
+                        </p>
+                    </article>
+
+                    <article
+                        class="contribution-card project-reveal border border-white/10 bg-[#07111b] p-7"
+                    >
+                        <div
+                            class="flex h-12 w-12 items-center justify-center border border-esc/30 bg-esc/[0.05] text-esc-light"
+                        >
+                            <svg
+                                viewBox="0 0 24 24"
+                                class="h-6 w-6"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.6"
+                                aria-hidden="true"
+                            >
+                                <path d="M8 8l-4 4 4 4"></path>
+                                <path d="M16 8l4 4-4 4"></path>
+                                <path d="M14 5l-4 14"></path>
+                            </svg>
+                        </div>
+
+                        <p class="mt-6 text-[10px] font-bold text-esc-light uppercase">
+                            Development
+                        </p>
+
+                        <h3
+                            class="font-display mt-3 text-3xl font-bold uppercase"
+                        >
+                            Implementation
+                        </h3>
+
+                        <p class="mt-4 text-sm leading-7 text-muted">
+                            Supported the implementation and integration of
+                            mechanics and visual elements in the final build.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROJECT SHOWCASE -->
+        <section
+            class="relative overflow-hidden border-y border-white/5 bg-[#040a11] py-20"
+        >
+            <div class="section-container">
+                <div
+                    class="project-reveal flex flex-col justify-between gap-6 md:flex-row md:items-end"
+                >
+                    <div>
+                        <p class="text-xs font-bold text-esc-light uppercase">
+                            03 · Project showcase
+                        </p>
+
+                        <h2
+                            class="font-display mt-4 text-5xl font-black uppercase md:text-7xl"
+                        >
+                            Gameplay
+                            <span class="text-outline">and visual identity</span>
+                        </h2>
+                    </div>
+
+                    <p class="max-w-md text-sm leading-7 text-muted">
+                        A selection of gameplay states, interface elements and
+                        visual compositions created for the final game.
+                    </p>
+                </div>
+
+                <!-- MAIN EXPERIENCE -->
+<figure
+    class="project-gallery-item project-image-reveal relative mt-12 overflow-hidden border border-white/10 bg-[#07111b]"
+    data-gallery-title="Main menu"
+    data-gallery-description="The main menu establishes the visual identity of Esc through neon lighting, hand-drawn typography and large physical interface elements."
+>
+    <img
+        src="../assets/images/Projects/Esc/esc_mainmenu.png"
+        alt="Esc main menu"
+        class="h-[440px] w-full object-cover object-center md:h-[620px]"
+    >
+
+    <button
+        type="button"
+        class="project-gallery-zoom"
+        aria-label="Enlarge Esc main menu"
+    >
+        <svg
+            viewBox="0 0 24 24"
+            class="h-5 w-5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            aria-hidden="true"
+        >
+            <path d="M8 3H3v5"></path>
+            <path d="M16 3h5v5"></path>
+            <path d="M8 21H3v-5"></path>
+            <path d="M16 21h5v5"></path>
+        </svg>
+    </button>
+
+    <div
+        class="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#03070c]/84 via-[#03070c]/18 to-transparent"
+    ></div>
+
+    <div
+        class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#03070c]/82 via-transparent to-transparent"
+    ></div>
+
+    <figcaption
+        class="pointer-events-none absolute inset-y-0 left-0 flex max-w-2xl items-end p-7 md:p-10"
+    >
+        <div>
+            <p class="text-[10px] font-bold text-esc-light uppercase">
+                Main experience
+            </p>
+
+            <h3
+                class="font-display mt-3 text-4xl font-bold uppercase md:text-6xl"
+            >
+                Visual identity and interface
+            </h3>
+
+            <p class="mt-4 max-w-xl text-sm leading-7 text-white/72">
+                The main menu introduces the game through a distinctive
+                hand-drawn style, neon lighting and large interactive elements
+                that establish the visual language of the experience.
+            </p>
+        </div>
+    </figcaption>
+</figure>
+
+                <!-- SECONDARY IMAGES -->
+                <div class="mt-6 grid gap-6 md:grid-cols-2">
+                    <figure
+                        class="project-gallery-item project-image-reveal overflow-hidden border border-white/10 bg-[#07111b]"
+                        data-gallery-title="Gameplay variation"
+                        data-gallery-description="A second gameplay state showing different enemy positions, keyboard prompts and player health."
+                    >
+                        <div class="relative overflow-hidden">
+                            <img
+                                src="../assets/images/Projects/Esc/esc_gameplay2.png"
+                                alt="Esc gameplay with multiple enemy prompts"
+                                class="h-80 w-full object-cover object-center"
+                            >
+
+                            <button
+                                type="button"
+                                class="project-gallery-zoom"
+                                aria-label="Enlarge second Esc gameplay image"
+                            >
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    class="h-5 w-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                    aria-hidden="true"
+                                >
+                                    <path d="M8 3H3v5"></path>
+                                    <path d="M16 3h5v5"></path>
+                                    <path d="M8 21H3v-5"></path>
+                                    <path d="M16 21h5v5"></path>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <figcaption class="p-6">
+                            <p class="text-[10px] font-bold text-esc-light uppercase">
+                                Gameplay state
+                            </p>
+
+                            <h4
+                                class="font-display mt-3 text-3xl font-bold uppercase"
+                            >
+                                Enemy interaction
+                            </h4>
+
+                            <p class="mt-3 text-sm leading-7 text-muted">
+                                Enemies appear with different keyboard prompts,
+                                requiring quick recognition and input.
+                            </p>
+                        </figcaption>
+                    </figure>
+
+                    <figure
+    class="project-gallery-item project-image-reveal overflow-hidden border border-white/10 bg-[#07111b]"
+    data-gallery-title="Gameplay experience"
+    data-gallery-description="The player faces enemies identified by keyboard inputs while managing health and score inside a circuit-board inspired environment."
+>
+    <div class="relative overflow-hidden">
+        <img
+            src="../assets/images/Projects/Esc/esc_gameplay1.png"
+            alt="Esc gameplay with player, enemies, health and score"
+            class="h-80 w-full object-cover object-center"
+        >
+
+        <button
+            type="button"
+            class="project-gallery-zoom"
+            aria-label="Enlarge Esc gameplay image"
+        >
+            <svg
+                viewBox="0 0 24 24"
+                class="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                aria-hidden="true"
+            >
+                <path d="M8 3H3v5"></path>
+                <path d="M16 3h5v5"></path>
+                <path d="M8 21H3v-5"></path>
+                <path d="M16 21h5v5"></path>
+            </svg>
+        </button>
+    </div>
+
+    <figcaption class="p-6">
+        <p class="text-[10px] font-bold text-esc-light uppercase">
+            Gameplay
+        </p>
+
+        <h4
+            class="font-display mt-3 text-3xl font-bold uppercase"
+        >
+            Fast input interaction
+        </h4>
+
+        <p class="mt-3 text-sm leading-7 text-muted">
+            Players react to enemy prompts while protecting their health and
+            increasing their score.
+        </p>
+    </figcaption>
+</figure>
+                </div>
+
+                <!-- LOSE SCREEN -->
+                <figure
+                    class="project-gallery-item project-image-reveal relative mt-6 overflow-hidden border border-white/10 bg-[#07111b]"
+                    data-gallery-title="Game over screen"
+                    data-gallery-description="The game over screen continues the same visual language while providing clear retry and navigation options."
+                >
+                    <img
+                        src="../assets/images/Projects/Esc/esc_losescreen.png"
+                        alt="Esc game over screen"
+                        class="h-[380px] w-full object-cover object-center md:h-[520px]"
+                    >
+
+                    <button
+                        type="button"
+                        class="project-gallery-zoom"
+                        aria-label="Enlarge Esc game over screen"
+                    >
+                        <svg
+                            viewBox="0 0 24 24"
+                            class="h-5 w-5"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                            aria-hidden="true"
+                        >
+                            <path d="M8 3H3v5"></path>
+                            <path d="M16 3h5v5"></path>
+                            <path d="M8 21H3v-5"></path>
+                            <path d="M16 21h5v5"></path>
+                        </svg>
+                    </button>
+
+                    <div
+                        class="pointer-events-none absolute inset-0 bg-gradient-to-l from-[#03070c]/76 via-transparent to-transparent"
+                    ></div>
+
+                    <figcaption
+                        class="pointer-events-none absolute inset-y-0 right-0 flex max-w-lg items-end p-7 text-right md:p-10"
+                    >
+                        <div>
+                            <p class="text-[10px] font-bold text-esc-light uppercase">
+                                Player feedback
+                            </p>
+
+                            <h3
+                                class="font-display mt-3 text-4xl font-bold uppercase md:text-5xl"
+                            >
+                                Game over
+                            </h3>
+
+                            <p class="mt-4 text-sm leading-7 text-white/72">
+                                Clear retry and navigation options maintain the
+                                visual identity while guiding the player back
+                                into the experience.
+                            </p>
+                        </div>
+                    </figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <!-- TECHNICAL STACK -->
+<section class="py-20">
+    <div class="section-container">
+        <div class="overflow-hidden border border-white/10 bg-panel/80">
+            <div class="grid lg:grid-cols-[0.82fr_1.18fr]">
+                <div
+                    class="project-reveal border-b border-white/10 p-8 md:p-10 lg:border-r lg:border-b-0"
+                >
+                    <p class="text-xs font-bold text-esc-light uppercase">
+                        04 · Design and development
+                    </p>
+
+                    <h2
+                        class="font-display mt-5 text-5xl font-black uppercase md:text-7xl"
+                    >
+                        Project areas
+                    </h2>
+
+                    <p class="mt-6 max-w-lg text-base leading-8 text-white/65">
+                        Creative and technical areas combined during the rapid
+                        development of the Game Jam project, from gameplay and
+                        interface design to implementation and player experience.
+                    </p>
+                </div>
+
+                <div class="project-reveal p-8 md:p-10">
+                    <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                        <article
+                            class="border border-white/10 bg-white/[0.02] p-5 transition hover:border-esc/30 hover:bg-esc/[0.025]"
+                        >
+                            <p class="text-[10px] font-bold text-white/35 uppercase">
+                                Creative direction
+                            </p>
+
+                            <p class="mt-3 text-lg font-semibold">
+                                Visual design
+                            </p>
+                        </article>
+
+                        <article
+                            class="border border-white/10 bg-white/[0.02] p-5 transition hover:border-esc/30 hover:bg-esc/[0.025]"
+                        >
+                            <p class="text-[10px] font-bold text-white/35 uppercase">
+                                Player experience
+                            </p>
+
+                            <p class="mt-3 text-lg font-semibold">
+                                UX design
+                            </p>
+                        </article>
+
+                        <article
+                            class="border border-white/10 bg-white/[0.02] p-5 transition hover:border-esc/30 hover:bg-esc/[0.025]"
+                        >
+                            <p class="text-[10px] font-bold text-white/35 uppercase">
+                                Interface
+                            </p>
+
+                            <p class="mt-3 text-lg font-semibold">
+                                UI design
+                            </p>
+                        </article>
+
+                        <article
+                            class="border border-white/10 bg-white/[0.02] p-5 transition hover:border-esc/30 hover:bg-esc/[0.025]"
+                        >
+                            <p class="text-[10px] font-bold text-white/35 uppercase">
+                                Mechanics
+                            </p>
+
+                            <p class="mt-3 text-lg font-semibold">
+                                Gameplay design
+                            </p>
+                        </article>
+
+                        <article
+                            class="border border-white/10 bg-white/[0.02] p-5 transition hover:border-esc/30 hover:bg-esc/[0.025]"
+                        >
+                            <p class="text-[10px] font-bold text-white/35 uppercase">
+                                Development
+                            </p>
+
+                            <p class="mt-3 text-lg font-semibold">
+                                Game programming
+                            </p>
+                        </article>
+
+                        <article
+                            class="border border-white/10 bg-white/[0.02] p-5 transition hover:border-esc/30 hover:bg-esc/[0.025]"
+                        >
+                            <p class="text-[10px] font-bold text-white/35 uppercase">
+                                Interaction
+                            </p>
+
+                            <p class="mt-3 text-lg font-semibold">
+                                Playability
+                            </p>
+                        </article>
+
+                        <article
+                            class="border border-white/10 bg-white/[0.02] p-5 transition hover:border-esc/30 hover:bg-esc/[0.025]"
+                        >
+                            <p class="text-[10px] font-bold text-white/35 uppercase">
+                                Platform
+                            </p>
+
+                            <p class="mt-3 text-lg font-semibold">
+                                HTML5 game
+                            </p>
+                        </article>
+
+                        <article
+                            class="border border-white/10 bg-white/[0.02] p-5 transition hover:border-esc/30 hover:bg-esc/[0.025]"
+                        >
+                            <p class="text-[10px] font-bold text-white/35 uppercase">
+                                Engine
+                            </p>
+
+                            <p class="mt-3 text-lg font-semibold">
+                                Godot
+                            </p>
+                        </article>
+
+                        <article
+                            class="border border-white/10 bg-white/[0.02] p-5 transition hover:border-esc/30 hover:bg-esc/[0.025]"
+                        >
+                            <p class="text-[10px] font-bold text-white/35 uppercase">
+                                Process
+                            </p>
+
+                            <p class="mt-3 text-lg font-semibold">
+                                Rapid prototyping
+                            </p>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+        <!-- NEXT PROJECT -->
+        <section class="pb-20">
+            <div class="section-container">
+                <a
+                    href="./shodrone.html"
+                    class="group relative block overflow-hidden border border-white/10 bg-panel/70 transition duration-500 hover:border-[#76baff]/35"
+                >
+                    <div
+                        class="absolute inset-0 bg-[radial-gradient(circle_at_right,rgba(118,186,255,0.11),transparent_45%)]"
+                    ></div>
+
+                    <div
+                        class="absolute inset-y-0 right-0 w-[38%] bg-gradient-to-l from-[#76baff]/[0.06] to-transparent"
+                    ></div>
+
+                    <div
+                        class="relative z-10 grid gap-10 p-8 md:p-12 lg:grid-cols-[1fr_auto] lg:items-end"
+                    >
+                        <div>
+                            <p
+                                class="text-xs font-bold text-[#76baff] uppercase"
+                            >
+                                Next project
+                            </p>
+
+                            <h2
+                                class="font-display mt-5 text-5xl font-black uppercase md:text-7xl"
+                            >
+                                Shodrone
+                            </h2>
+
+                            <p
+                                class="mt-5 max-w-2xl text-base leading-8 text-white/65"
+                            >
+                                A systems programming project combining
+                                concurrent processing, shared memory, semaphores
+                                and a domain-specific language.
+                            </p>
+
+                            <div class="mt-6 flex flex-wrap gap-3">
+                                <span class="project-detail-tag">C</span>
+                                <span class="project-detail-tag">Pthreads</span>
+                                <span class="project-detail-tag">
+                                    Shared memory
+                                </span>
+                                <span class="project-detail-tag">
+                                    Semaphores
+                                </span>
+                            </div>
+                        </div>
+
+                        <div
+                            class="flex items-center gap-4 text-white/55 transition duration-500 group-hover:text-[#76baff]"
+                        >
+                            <span class="text-sm font-semibold uppercase">
+                                View project
+                            </span>
+
+                            <span
+                                class="text-2xl transition duration-500 group-hover:translate-x-1"
+                            >
+                                →
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-white/5 py-7">
+        <div
+            class="section-container flex flex-col gap-3 text-center text-[10px] text-white/30 uppercase sm:flex-row sm:justify-between sm:text-left"
+        >
+            <p>© 2026 Daniel Filipe Flores Novo</p>
+            <p>Esc case study</p>
+        </div>
+    </footer>
+
+    <!-- IMAGE LIGHTBOX -->
+    <div
+        id="project-lightbox"
+        class="project-lightbox fixed inset-0 z-[300] flex items-center justify-center p-4 md:p-8"
+        aria-hidden="true"
+    >
+        <button
+            id="project-lightbox-backdrop"
+            type="button"
+            class="absolute inset-0"
+            aria-label="Close enlarged image"
+        ></button>
+
+        <div
+            class="project-lightbox-panel relative z-10 flex max-h-full w-full max-w-[1500px] flex-col overflow-hidden border border-white/10 bg-[#07111b] shadow-[0_35px_120px_rgba(0,0,0,0.7)]"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="project-lightbox-title"
+        >
+            <button
+                id="project-lightbox-close"
+                type="button"
+                class="absolute top-4 right-4 z-20 flex h-12 w-12 items-center justify-center border border-white/15 bg-[#03070c]/85 text-2xl text-white backdrop-blur-md transition hover:border-esc hover:text-esc-light"
+                aria-label="Close enlarged image"
+            >
+                ×
+            </button>
+
+            <div
+                class="flex min-h-0 flex-1 items-center justify-center bg-[#02060b] p-3 md:p-6"
+            >
+                <img
+                    id="project-lightbox-image"
+                    src=""
+                    alt=""
+                    class="project-lightbox-image"
+                >
+            </div>
+
+            <div class="border-t border-white/10 p-5 md:p-6">
+                <p
+                    id="project-lightbox-title"
+                    class="font-display text-2xl font-bold uppercase md:text-3xl"
+                ></p>
+
+                <p
+                    id="project-lightbox-description"
+                    class="mt-2 max-w-3xl text-sm leading-7 text-muted"
+                ></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const revealElements = document.querySelectorAll(
+            ".project-reveal, .project-image-reveal",
+        );
+
+        const revealObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    }
+
+                    entry.target.classList.add("is-visible");
+                    revealObserver.unobserve(entry.target);
+                });
+            },
+            {
+                threshold: 0.12,
+            },
+        );
+
+        revealElements.forEach((element) => {
+            revealObserver.observe(element);
+        });
+
+        const galleryItems = document.querySelectorAll(
+            ".project-gallery-item",
+        );
+
+        const projectLightbox = document.querySelector(
+            "#project-lightbox",
+        );
+
+        const projectLightboxImage = document.querySelector(
+            "#project-lightbox-image",
+        );
+
+        const projectLightboxTitle = document.querySelector(
+            "#project-lightbox-title",
+        );
+
+        const projectLightboxDescription = document.querySelector(
+            "#project-lightbox-description",
+        );
+
+        const projectLightboxClose = document.querySelector(
+            "#project-lightbox-close",
+        );
+
+        const projectLightboxBackdrop = document.querySelector(
+            "#project-lightbox-backdrop",
+        );
+
+        let lastFocusedGalleryElement = null;
+
+        function openProjectLightbox(galleryItem) {
+            if (
+                !galleryItem ||
+                !projectLightbox ||
+                !projectLightboxImage
+            ) {
+                return;
+            }
+
+            const image = galleryItem.querySelector("img");
+
+            if (!image) {
+                return;
+            }
+
+            lastFocusedGalleryElement = document.activeElement;
+
+            projectLightboxImage.src = image.currentSrc || image.src;
+            projectLightboxImage.alt = image.alt || "";
+
+            projectLightboxTitle.textContent =
+                galleryItem.dataset.galleryTitle ||
+                image.alt ||
+                "Project image";
+
+            projectLightboxDescription.textContent =
+                galleryItem.dataset.galleryDescription || "";
+
+            projectLightbox.classList.add("is-visible");
+            projectLightbox.setAttribute("aria-hidden", "false");
+            document.body.style.overflow = "hidden";
+
+            window.setTimeout(() => {
+                projectLightboxClose?.focus();
+            }, 100);
+        }
+
+        function closeProjectLightbox() {
+            if (!projectLightbox) {
+                return;
+            }
+
+            projectLightbox.classList.remove("is-visible");
+            projectLightbox.setAttribute("aria-hidden", "true");
+            document.body.style.overflow = "";
+
+            window.setTimeout(() => {
+                projectLightboxImage.src = "";
+                projectLightboxImage.alt = "";
+                projectLightboxTitle.textContent = "";
+                projectLightboxDescription.textContent = "";
+
+                if (
+                    lastFocusedGalleryElement &&
+                    typeof lastFocusedGalleryElement.focus === "function"
+                ) {
+                    lastFocusedGalleryElement.focus();
+                }
+            }, 450);
+        }
+
+        galleryItems.forEach((galleryItem) => {
+            galleryItem.setAttribute("tabindex", "0");
+            galleryItem.setAttribute("role", "button");
+
+            galleryItem.addEventListener("click", (event) => {
+                if (event.target.closest("a")) {
+                    return;
+                }
+
+                openProjectLightbox(galleryItem);
+            });
+
+            galleryItem.addEventListener("keydown", (event) => {
+                if (
+                    event.key !== "Enter" &&
+                    event.key !== " "
+                ) {
+                    return;
+                }
+
+                event.preventDefault();
+                openProjectLightbox(galleryItem);
+            });
+        });
+
+        projectLightboxClose?.addEventListener(
+            "click",
+            closeProjectLightbox,
+        );
+
+        projectLightboxBackdrop?.addEventListener(
+            "click",
+            closeProjectLightbox,
+        );
+
+        document.addEventListener("keydown", (event) => {
+            if (
+                event.key === "Escape" &&
+                projectLightbox?.classList.contains("is-visible")
+            ) {
+                closeProjectLightbox();
+            }
+        });
+    </script>
+</body>
+</html>
