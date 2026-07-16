@@ -116,6 +116,11 @@
                 -webkit-text-stroke: 1px rgba(255, 255, 255, 0.28);
             }
 
+            .text-outline-white {
+                color: transparent;
+                -webkit-text-stroke: 2px rgba(255, 255, 255, 0.682);
+            }
+
             .project-card {
                 transition:
                     transform 300ms ease,
@@ -946,187 +951,782 @@
     }
 }
 
+.about-orb {
+    transform-origin: 50% 50%;
+    animation: aboutOrbFloat 12s ease-in-out infinite;
+    filter: blur(0.4px) saturate(0.95);
+    will-change: transform;
+}
+
+.about-orb img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transform-origin: 50% 50%;
+    animation:
+        aboutOrbSpin 10s linear infinite,
+        aboutOrbPulse 4.8s ease-in-out infinite;
+    will-change: transform, filter;
+}
+
+.about-orb-mobile img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transform-origin: 50% 50%;
+    animation:
+        aboutOrbSpin 10s linear infinite,
+        aboutOrbPulse 4.8s ease-in-out infinite;
+    will-change: transform, filter;
+}
+
+.about-orb-mobile img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transform-origin: 50% 50%;
+    animation: aboutOrbSpin 10s linear infinite;
+    will-change: transform;
+}
+
+@keyframes aboutOrbPulse {
+    0%,
+    100% {
+        filter:
+            brightness(0.92)
+            saturate(0.95)
+            drop-shadow(0 0 0 rgba(128, 90, 255, 0));
+    }
+
+    50% {
+        filter:
+            brightness(1.12)
+            saturate(1.08)
+            drop-shadow(0 0 26px rgba(128, 90, 255, 0.28));
+    }
+}
+
+@keyframes aboutOrbFloat {
+    0% {
+        transform:
+            translate(-50%, -50%)
+            translate(0, 0)
+            scale(0.98);
+    }
+
+    16% {
+        transform:
+            translate(-50%, -50%)
+            translate(-16px, 14px)
+            scale(1.02);
+    }
+
+    33% {
+        transform:
+            translate(-50%, -50%)
+            translate(18px, 26px)
+            scale(1.05);
+    }
+
+    50% {
+        transform:
+            translate(-50%, -50%)
+            translate(-12px, 38px)
+            scale(1.01);
+    }
+
+    67% {
+        transform:
+            translate(-50%, -50%)
+            translate(10px, 18px)
+            scale(1.04);
+    }
+
+    84% {
+        transform:
+            translate(-50%, -50%)
+            translate(8px, -10px)
+            scale(1);
+    }
+
+    100% {
+        transform:
+            translate(-50%, -50%)
+            translate(0, 0)
+            scale(0.98);
+    }
+}
+
+@keyframes aboutOrbFloatMobile {
+    0% {
+        transform:
+            translate(-50%, -50%)
+            translate(0, 0)
+            scale(0.96);
+    }
+
+    20% {
+        transform:
+            translate(-50%, -50%)
+            translate(-10px, 10px)
+            scale(1.01);
+    }
+
+    40% {
+        transform:
+            translate(-50%, -50%)
+            translate(12px, 20px)
+            scale(1.04);
+    }
+
+    60% {
+        transform:
+            translate(-50%, -50%)
+            translate(-8px, 28px)
+            scale(1);
+    }
+
+    80% {
+        transform:
+            translate(-50%, -50%)
+            translate(8px, 10px)
+            scale(0.98);
+    }
+
+    100% {
+        transform:
+            translate(-50%, -50%)
+            translate(0, 0)
+            scale(0.96);
+    }
+}
+
+@keyframes aboutOrbSpin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 1023px) {
+    .about-orb {
+        left: 50%;
+        top: 78%;
+        height: 28rem;
+        width: 28rem;
+        opacity: 0.22;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .about-orb,
+    .about-orb img,
+    .about-orb-mobile,
+    .about-orb-mobile img {
+        animation: none;
+    }
+}
+
+.hero-orbit {
+    animation: heroOrbitRotate 28s linear infinite;
+    transform-origin: center;
+    will-change: transform;
+}
+
+.hero-interface {
+    animation: heroInterfaceFloat 9s ease-in-out infinite;
+    will-change: transform;
+}
+
+.hero-code {
+    animation: heroCodeFloat 7s ease-in-out infinite;
+    will-change: transform, opacity;
+}
+
+.hero-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-dn-mark {
+    position: absolute;
+    left: 54%;
+    top: 52%;
+    z-index: 1;
+
+    display: flex;
+    align-items: center;
+    gap: 0;
+
+    transform: translate(-50%, -50%);
+
+    font-family: var(--font-display), sans-serif;
+    font-size: clamp(20rem, 31vw, 36rem);
+    font-weight: 900;
+    line-height: 0.75;
+    white-space: nowrap;
+
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.70;
+}
+
+.hero-dn-d,
+.hero-dn-n {
+    color: transparent;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-style: solid;
+}
+
+.hero-dn-d {
+    -webkit-text-stroke-color: rgba(255, 255, 255, 0.32);
+}
+
+.hero-dn-n {
+    -webkit-text-stroke-color: rgba(0, 200, 255, 0.42);
+}
+
+@keyframes heroOrbitRotate {
+    from {
+        transform:
+            translate(-50%, -50%)
+            rotate(0deg);
+    }
+
+    to {
+        transform:
+            translate(-50%, -50%)
+            rotate(360deg);
+    }
+}
+
+@keyframes heroInterfaceFloat {
+    0%,
+    100% {
+        transform:
+            translate(-50%, -50%)
+            translateY(0);
+    }
+
+    50% {
+        transform:
+            translate(-50%, -50%)
+            translateY(-12px);
+    }
+}
+
+@keyframes heroCodeFloat {
+    0%,
+    100% {
+        transform: translateY(0);
+        opacity: 0.55;
+    }
+
+    50% {
+        transform: translateY(14px);
+        opacity: 0.9;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-orbit,
+    .hero-interface,
+    .hero-code {
+        animation: none;
+    }
+}
+
+.hero-info-labels {
+    position: absolute;
+    top: 50%;
+    right: max(2.5rem, calc((100vw - 1280px) / 2));
+    z-index: 20;
+
+    display: flex;
+    width: 260px;
+    flex-direction: column;
+    gap: 18px;
+
+    transform: translateY(-50%);
+}
+
+.hero-info-label {
+    width: 260px;
+    padding: 18px 20px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background:
+        linear-gradient(
+            135deg,
+            rgba(7, 17, 27, 0.96),
+            rgba(5, 13, 22, 0.82)
+        );
+    backdrop-filter: blur(12px);
+    transition:
+        transform 0.35s ease,
+        border-color 0.35s ease,
+        box-shadow 0.35s ease,
+        background 0.35s ease;
+    will-change: transform;
+}
+
+.hero-info-label:hover {
+    transform: translateX(-10px) scale(1.03);
+    border-color: rgba(0, 200, 255, 0.45);
+    box-shadow:
+        0 18px 40px rgba(0, 0, 0, 0.32),
+        0 0 26px rgba(0, 200, 255, 0.08);
+    background:
+        linear-gradient(
+            135deg,
+            rgba(9, 23, 35, 0.98),
+            rgba(6, 16, 27, 0.9)
+        );
+}
+
+.hero-info-label-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: rgba(255, 255, 255, 0.55);
+    transition: color 0.3s ease;
+}
+
+.hero-info-label:hover .hero-info-label-title {
+    color: #00c8ff;
+}
+
+.hero-info-label-dot {
+    width: 7px;
+    height: 7px;
+    flex-shrink: 0;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 200, 255, 0.8);
+}
+
+.hero-info-label-dot-active {
+    background: #00c8ff;
+    box-shadow: 0 0 14px rgba(0, 200, 255, 0.85);
+}
+
+.hero-info-label-content {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+@media (max-width: 1023px) {
+    .hero-info-labels {
+        display: none;
+    }
+
+    .hero-dn-mark {
+        left: 62%;
+        font-size: clamp(13rem, 44vw, 22rem);
+        opacity: 0.22;
+    }
+}
+
+/* Home responsive layout */
+.home-rings {
+    overflow: hidden;
+}
+
+.home-ring-top-outer {
+    width: 46rem;
+    height: 46rem;
+    top: -20rem;
+    right: -20rem;
+}
+
+.home-ring-top-inner {
+    width: 26rem;
+    height: 26rem;
+    top: -10rem;
+    right: -9rem;
+}
+
+.home-ring-bottom-outer {
+    width: 50rem;
+    height: 50rem;
+    bottom: -24rem;
+    left: -20rem;
+}
+
+.home-ring-bottom-inner {
+    width: 28rem;
+    height: 28rem;
+    bottom: -10rem;
+    left: -8rem;
+}
+
+.home-title-primary,
+.home-title-outline {
+    font-size: clamp(5.5rem, 9vw, 9.5rem);
+    line-height: 0.72;
+}
+
+@media (max-width: 1023px) {
+    .home-layout {
+        min-height: auto;
+        padding-top: 4.5rem;
+        padding-bottom: 6.5rem;
+    }
+
+    .home-labels {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem;
+    }
+
+    .home-labels article {
+        min-height: 100%;
+        padding: 1.25rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .section-container {
+        width: min(100% - 1.25rem, 1280px);
+    }
+
+    .home-section {
+        padding-top: 5rem;
+    }
+
+    .home-layout {
+        gap: 2.5rem;
+        padding-top: 3rem;
+        padding-bottom: 5rem;
+    }
+
+    .home-title-primary,
+    .home-title-outline {
+        font-size: clamp(4rem, 22vw, 5.75rem);
+        line-height: 0.78;
+    }
+
+    .home-title-outline {
+        margin-top: 1.1rem;
+    }
+
+    .home-labels {
+        grid-template-columns: 1fr;
+        gap: 0.85rem;
+    }
+
+    .home-labels article {
+        padding: 1.15rem;
+    }
+
+    .home-labels article:hover {
+        transform: none;
+    }
+
+    .home-ring-top-outer {
+        width: 27rem;
+        height: 27rem;
+        top: -12rem;
+        right: -15rem;
+    }
+
+    .home-ring-top-inner {
+        width: 16rem;
+        height: 16rem;
+        top: -5rem;
+        right: -8rem;
+    }
+
+    .home-ring-bottom-outer {
+        width: 30rem;
+        height: 30rem;
+        bottom: -15rem;
+        left: -19rem;
+    }
+
+    .home-ring-bottom-inner {
+        width: 18rem;
+        height: 18rem;
+        bottom: -7rem;
+        left: -10rem;
+    }
+}
+
+@media (max-width: 420px) {
+    .home-title-primary,
+    .home-title-outline {
+        font-size: clamp(3.5rem, 21vw, 4.75rem);
+    }
+
+    .home-layout .flex.flex-wrap.gap-4 {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .home-layout .flex.flex-wrap.gap-4 a {
+        width: 100%;
+        justify-content: center;
+    }
+}
         }
     </style>
 </head>
 
 <body>
     <header
-        id="navbar"
-        class="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-[#03070c]/70 backdrop-blur-xl"
-    >
-        <nav class="section-container flex h-20 items-center justify-between">
-            <a
-                href="#home"
-                class="font-display text-2xl font-black text-white"
-                aria-label="Daniel Novo home"
-            >
-                D<span class="text-cyan">N</span>
-            </a>
-
-            <div class="hidden items-center gap-9 text-sm text-white/65 md:flex">
-                <a class="nav-link text-white" href="#home">Home</a>
-                <a class="nav-link" href="#projects">Projects</a>
-                <a class="nav-link" href="#profile">About</a>
-                <a class="nav-link" href="#experience">Experience</a>
-                <a class="nav-link" href="#contact">Contact</a>
-            </div>
-
-            <button
-                id="menu-button"
-                type="button"
-                class="flex h-10 w-10 items-center justify-center border border-white/10 md:hidden"
-                aria-label="Open navigation"
-                aria-expanded="false"
-            >
-                <span class="text-xl">☰</span>
-            </button>
-        </nav>
-
-        <div
-            id="mobile-menu"
-            class="hidden border-t border-white/5 bg-[#03070c] px-6 py-6 md:hidden"
+    id="navbar"
+    class="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-[#03070c]/70 backdrop-blur-xl"
+>
+    <nav class="section-container flex h-20 items-center justify-between">
+        <a
+            href="#home"
+            class="font-display text-2xl font-black text-white"
+            aria-label="Daniel Novo home"
         >
-            <div class="flex flex-col gap-5 text-sm text-white/70">
-                <a href="#home">Home</a>
-                <a href="#projects">Projects</a>
-                <a href="#profile">About</a>
-                <a href="#experience">Experience</a>
-                <a href="#contact">Contact</a>
-            </div>
+            D<span class="text-cyan">N</span>
+        </a>
+
+        <div class="hidden items-center gap-8 text-sm text-white/65 md:flex">
+            <a class="nav-link" href="#projects">Projects</a>
+            <a class="nav-link" href="#profile">About</a>
+            <a class="nav-link" href="#experience">Experience</a>
+            <a class="nav-link" href="#skills">Skills & Tools</a>
+            <a class="nav-link" href="#contact">Contact</a>
         </div>
-    </header>
+
+        <button
+            id="menu-button"
+            type="button"
+            class="flex h-10 w-10 items-center justify-center border border-white/10 md:hidden"
+            aria-label="Open navigation"
+            aria-expanded="false"
+        >
+            <span class="text-xl">☰</span>
+        </button>
+    </nav>
+
+    <div
+        id="mobile-menu"
+        class="hidden border-t border-white/5 bg-[#03070c] px-6 py-6 md:hidden"
+    >
+        <div class="flex flex-col gap-5 text-sm text-white/70">
+            <a href="#projects">Projects</a>
+            <a href="#profile">About</a>
+            <a href="#experience">Experience</a>
+            <a href="#skills">Skills & Tools</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </div>
+</header>
 
     <main>
-    <!-- HERO -->
-    <section
-        id="home"
-        class="relative flex min-h-screen items-center overflow-hidden pt-20"
+    <!-- HOME -->
+<section
+    id="home"
+    class="home-section relative min-h-screen overflow-hidden border-b border-white/5 pt-20"
+>
+    <div
+        class="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.018)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.018)_1px,transparent_1px)] bg-[size:52px_52px]"
+    ></div>
+
+    <div
+        class="pointer-events-none absolute -left-48 top-10 h-[42rem] w-[42rem] rounded-full bg-cyan/[0.045] blur-[150px]"
+    ></div>
+
+    <div
+        class="pointer-events-none absolute -right-32 top-0 h-[50rem] w-[50rem] rounded-full bg-indigo-500/[0.055] blur-[170px]"
+    ></div>
+
+    <!-- DECORATIVE CORNER RINGS -->
+<div
+    class="home-rings pointer-events-none absolute inset-0 z-[1]"
+    aria-hidden="true"
+>
+    <!-- TOP RIGHT -->
+    <div
+        class="home-ring home-ring-top-outer absolute rounded-full border border-white/20"
+    ></div>
+
+    <div
+        class="home-ring home-ring-top-inner absolute rounded-full border border-white/20"
+    ></div>
+
+    <!-- BOTTOM LEFT -->
+    <div
+        class="home-ring home-ring-bottom-outer absolute rounded-full border border-white/20"
+    ></div>
+
+    <div
+        class="home-ring home-ring-bottom-inner absolute rounded-full border border-white/20"
+    ></div>
+</div>
+
+    <div
+        class="home-layout section-container relative z-10 grid min-h-[calc(100vh-5rem)] items-center gap-12 py-16 md:py-20 lg:grid-cols-[minmax(0,1.05fr)_minmax(300px,0.9fr)]"
     >
-        <!-- Background -->
-        <div class="absolute inset-0">
-            <div
-                class="absolute inset-0 bg-[radial-gradient(circle_at_75%_30%,rgba(0,200,255,0.14),transparent_30%),radial-gradient(circle_at_20%_80%,rgba(30,100,255,0.08),transparent_32%)]"
-            ></div>
-
-            <div
-                class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.022)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.022)_1px,transparent_1px)] bg-[size:52px_52px]"
-            ></div>
-
-            <div
-                class="absolute inset-0 bg-[linear-gradient(90deg,#03070c_0%,rgba(3,7,12,0.97)_45%,rgba(3,7,12,0.72)_100%)]"
-            ></div>
-        </div>
-
-        <!-- Decorative visual -->
-        <div
-            class="pointer-events-none absolute top-1/2 right-[-140px] hidden h-[620px] w-[620px] -translate-y-1/2 lg:block"
-        >
-            <div
-                class="absolute inset-0 rounded-full border border-cyan/10"
-            ></div>
-
-            <div
-                class="absolute inset-[72px] rotate-45 border border-white/5"
-            ></div>
-
-            <div
-                class="absolute inset-[150px] rounded-full border border-cyan/15"
-            ></div>
-
-            <div
-                class="absolute inset-[220px] rounded-full bg-cyan/10 blur-3xl"
-            ></div>
-
-            <div
-                class="absolute top-1/2 left-[-70px] h-px w-[460px] bg-gradient-to-r from-transparent via-cyan/40 to-transparent"
-            ></div>
-        </div>
-
-        <div class="section-container relative z-10 py-24">
-            <div class="max-w-4xl">
-                <div
-                    class="mb-7 flex items-center gap-4 text-[11px] font-bold text-cyan uppercase"
-                >
-                    <span class="h-px w-10 bg-cyan"></span>
+        <div class="relative z-10 max-w-[700px]">
+            <div class="flex items-center gap-4">
+                <span class="h-px w-10 bg-cyan"></span>
+                <p class="text-[10px] font-bold uppercase text-cyan">
                     Software engineering · Creative technology
-                </div>
-
-                <p
-                    class="mb-3 text-sm font-medium text-white/50 uppercase"
-                >
-                    Creative Software Engineer
                 </p>
+            </div>
 
-                <h1
-                    class="font-display text-[clamp(5rem,13vw,11rem)] leading-[0.74] font-black uppercase"
+            <p class="mt-8 text-xs font-bold uppercase text-white/45">
+                Creative Software Engineer
+            </p>
+
+            <h1 class="mt-5 font-display font-black uppercase">
+                <span
+                    class="home-title-primary block text-white"
                 >
                     Daniel
-                    <span class="block text-outline">Novo</span>
-                </h1>
+                </span>
 
-                <p
-                    class="mt-10 max-w-2xl text-base leading-8 text-muted md:text-lg"
+                <span
+                    class="home-title-outline mt-7 block text-outline-white"
                 >
-                    I design and develop software systems, automated workflows
-                    and interactive digital experiences, combining engineering,
-                    creativity and visual thinking.
-                </p>
+                    Novo
+                </span>
+            </h1>
 
-                <div class="mt-10 flex flex-wrap gap-4">
-                    <a
-                        href="#projects"
-                        class="group inline-flex items-center gap-4 bg-cyan px-7 py-4 text-xs font-black text-void uppercase transition hover:bg-white"
-                    >
-                        View projects
-                        <span class="transition group-hover:translate-x-1">
-                            →
-                        </span>
-                    </a>
+            <p class="mt-12 max-w-xl text-base leading-8 text-muted md:text-lg">
+                I design and develop software systems, automated workflows and
+                interactive digital experiences, combining engineering,
+                creativity and visual thinking.
+            </p>
 
-                    <a
-                        href="#profile"
-                        class="inline-flex items-center gap-3 border border-white/20 px-7 py-4 text-xs font-bold text-white uppercase transition hover:border-cyan hover:text-cyan"
-                    >
-                        About me
-                    </a>
-                </div>
-
-                <div
-                    class="mt-14 flex flex-wrap gap-x-10 gap-y-4 text-[11px] text-white/40 uppercase"
+            <div class="mt-10 flex flex-wrap gap-4">
+                <a
+                    href="#projects"
+                    class="inline-flex min-h-14 items-center gap-5 bg-cyan px-7 text-xs font-black uppercase text-black transition duration-300 hover:-translate-y-1 hover:bg-white"
                 >
-                    <span>
-                        Location
-                        <strong class="ml-2 text-white/75">
-                            Vila do Conde, Porto
-                        </strong>
-                    </span>
+                    View projects
+                    <span>→</span>
+                </a>
 
-                    <span>
-                        Focus
-                        <strong class="ml-2 text-white/75">
-                            Software · Automation · Interactive Media
-                        </strong>
-                    </span>
-
-                    <span>
-                        Status
-                        <strong class="ml-2 text-cyan">
-                            Open to opportunities
-                        </strong>
-                    </span>
-                </div>
+                <a
+                    href="#profile"
+                    class="inline-flex min-h-14 items-center border border-white/15 px-7 text-xs font-black uppercase text-white transition duration-300 hover:-translate-y-1 hover:border-cyan hover:text-cyan"
+                >
+                    About me
+                </a>
             </div>
         </div>
 
-<a
-    href="#projects"
-    aria-label="Scroll to projects"
-    class="absolute bottom-8 left-1/2 z-10 hidden -translate-x-1/2 items-center justify-center text-cyan transition hover:translate-y-1 md:flex"
->
-    <span class="text-3xl">↓</span>
-</a>
-    </section>
+        <div class="home-labels flex w-full flex-col gap-6 lg:w-[340px] lg:justify-self-end">
+    <article
+        class="w-full border border-white/10 bg-[#050a10]/85 p-7 backdrop-blur-sm transition duration-300 hover:-translate-x-2 hover:border-cyan/40"
+    >
+
+                <div class="flex items-center gap-3">
+                    <span
+                        class="h-2 w-2 rounded-full bg-cyan shadow-[0_0_14px_rgba(0,200,255,0.9)]"
+                    ></span>
+                    <p class="text-xs font-bold uppercase text-white/70">
+                        Location
+                    </p>
+                </div>
+
+                <div class="mt-5 border-t border-white/10 pt-5">
+                    <p class="text-[10px] uppercase text-white/30">
+                        Currently in
+                    </p>
+                    <p class="mt-3 text-sm font-bold uppercase text-white">
+                        Vila do Conde
+                    </p>
+                    <p class="mt-1 text-[11px] font-semibold uppercase text-cyan">
+                        Porto, Portugal
+                    </p>
+                </div>
+            </article>
+
+            <article
+        class="w-full border border-white/10 bg-[#050a10]/85 p-7 backdrop-blur-sm transition duration-300 hover:-translate-x-2 hover:border-cyan/40"
+    >
+                <div class="flex items-center gap-3">
+                    <span
+                        class="h-2 w-2 rounded-full bg-cyan shadow-[0_0_14px_rgba(0,200,255,0.9)]"
+                    ></span>
+                    <p class="text-xs font-bold uppercase text-white/70">
+                        Focus
+                    </p>
+                </div>
+
+                <div class="mt-5 border-t border-white/10 pt-5">
+                    <p class="text-[10px] uppercase text-white/30">
+                        Main areas
+                    </p>
+                    <p class="mt-3 text-sm font-bold uppercase leading-6 text-white">
+                        Software, Automation,
+                    </p>
+                    <p class="mt-3 text-sm font-bold uppercase leading-6 text-white">
+                        Interactive Media
+                    </p>
+                </div>
+            </article>
+
+            <article
+        class="w-full border border-white/10 bg-[#050a10]/85 p-7 backdrop-blur-sm transition duration-300 hover:-translate-x-2 hover:border-cyan/40"
+    >
+                <div class="flex items-center gap-3">
+                    <span
+                        class="h-2 w-2 rounded-full bg-cyan shadow-[0_0_14px_rgba(0,200,255,0.9)]"
+                    ></span>
+                    <p class="text-xs font-bold uppercase text-white/70">
+                        Status
+                    </p>
+                </div>
+
+                <div class="mt-5 border-t border-white/10 pt-5">
+                    <p class="text-[10px] uppercase text-white/30">
+                        Availability
+                    </p>
+                    <p class="mt-3 text-sm font-bold uppercase leading-6 text-cyan">
+                        Open to new opportunities
+                    </p>
+                </div>
+            </article>
+        </div>
+    </div>
+
+    <a
+        href="#projects"
+        aria-label="Scroll to projects"
+        class="group absolute bottom-7 left-1/2 z-20 hidden -translate-x-1/2 md:block"
+    >
+        <svg
+            viewBox="0 0 24 34"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-9 w-6 text-cyan transition duration-300 group-hover:translate-y-1"
+            aria-hidden="true"
+        >
+            <path
+                d="M12 2V29"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+            ></path>
+            <path
+                d="M4 21L12 29L20 21"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            ></path>
+        </svg>
+    </a>
+</section>
 
     <!-- PROJECTS -->
 <section
@@ -1188,7 +1788,9 @@
                     </div>
                 </a>
 
-                <div class="project-card-content flex flex-1 flex-col p-7 md:p-10">
+                <div
+                    class="project-card-content flex flex-1 flex-col p-7 md:p-10"
+                >
                     <p class="text-[10px] font-bold text-cyan uppercase">
                         Full-stack · Logistics · 3D visualization
                     </p>
@@ -1209,7 +1811,9 @@
                         <span class="project-tag">REST APIs</span>
                         <span class="project-tag">Three.js</span>
                         <span class="project-tag">Full Stack</span>
-                        <span class="project-tag">Artificial Intelligence</span>
+                        <span class="project-tag">
+                            Artificial Intelligence
+                        </span>
                     </div>
 
                     <div
@@ -1221,12 +1825,12 @@
                             </p>
 
                             <a
-                                href="./projects/smartport.html"
-                                class="project-open-link inline-flex items-center gap-3 text-xs font-black text-cyan uppercase transition hover:text-white"
-                            >
-                                View case study
-                                <span>→</span>
-                            </a>
+    href="./projects/smartport.html"
+    class="project-open-link inline-flex items-center gap-3 text-xs font-black uppercase text-[#00c8ff] transition hover:text-white"
+>
+    View case study
+    <span>→</span>
+</a>
                         </div>
 
                         <a
@@ -1242,162 +1846,172 @@
             </article>
 
             <!-- XD FUSION -->
-<article
-    class="project-card project-link-card group flex h-full flex-col overflow-hidden border border-white/10 bg-panel"
->
-    <a
-        href="./projects/xd-fusion.html"
-        class="project-case-study block"
-        aria-label="Open XD Fusion case study"
-    >
-        <div
-            class="project-card-image relative h-[360px] overflow-hidden md:h-[420px]"
-        >
-            <img
-                src="./assets/images/Projects/XD-Fusion/XD-SOFTWARE-640x640.png"
-                alt="XD Fusion event-driven automation architecture"
-                class="h-full w-full object-cover object-center transition duration-700 group-hover:scale-105"
+            <article
+                class="project-card project-link-card group flex h-full flex-col overflow-hidden border border-white/10 bg-panel"
             >
+                <a
+                    href="./projects/xd-fusion.html"
+                    class="project-case-study block"
+                    aria-label="Open XD Fusion case study"
+                >
+                    <div
+                        class="project-card-image relative h-[360px] overflow-hidden md:h-[420px]"
+                    >
+                        <img
+                            src="./assets/images/Projects/XD-Fusion/XD-SOFTWARE-640x640.png"
+                            alt="XD Fusion event-driven automation architecture"
+                            class="h-full w-full object-cover object-center transition duration-700 group-hover:scale-105"
+                        >
 
-            <div
-                class="absolute inset-0 bg-gradient-to-t from-[#07111b] via-[#07111b]/10 to-transparent"
-            ></div>
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-[#07111b] via-[#07111b]/10 to-transparent"
+                        ></div>
 
-            <div
-                class="absolute top-5 right-5 border border-white/15 bg-[#03070c]/75 px-3 py-2 text-[10px] text-white/75 uppercase backdrop-blur-md"
-            >
-                Grade 16
-            </div>
-        </div>
-    </a>
+                        <div
+                            class="absolute top-5 right-5 border border-white/15 bg-[#03070c]/75 px-3 py-2 text-[10px] text-white/75 uppercase backdrop-blur-md"
+                        >
+                            Grade 16
+                        </div>
+                    </div>
+                </a>
 
-    <div class="project-card-content flex flex-1 flex-col p-7 md:p-10">
-        <p class="text-[10px] font-bold text-[#ff806b] uppercase">
-            Automation · Event-driven systems · CRM
-        </p>
+                <div
+                    class="project-card-content flex flex-1 flex-col p-7 md:p-10"
+                >
+                    <p
+                        class="text-[10px] font-bold text-[#ff806b] uppercase"
+                    >
+                        Automation · Event-driven systems · CRM
+                    </p>
 
-        <h3
-            class="font-display mt-4 text-5xl font-black uppercase md:text-6xl"
-        >
-            XD Fusion
-        </h3>
+                    <h3
+                        class="font-display mt-4 text-5xl font-black uppercase md:text-6xl"
+                    >
+                        XD Fusion
+                    </h3>
 
-        <p class="mt-5 max-w-xl text-sm leading-7 text-muted">
-            Event-driven CRM automation integrating ERP events,
-            Webhooks, Redis and n8n workflows with external
-            communication and marketing services.
-        </p>
+                    <p class="mt-5 max-w-xl text-sm leading-7 text-muted">
+                        Event-driven CRM automation integrating ERP events,
+                        Webhooks, Redis and n8n workflows with external
+                        communication and marketing services.
+                    </p>
 
-        <div class="mt-6 flex flex-wrap gap-2">
-    <span class="project-tag">C#</span>
-    <span class="project-tag">.NET 8</span>
-    <span class="project-tag">Redis</span>
-    <span class="project-tag">n8n</span>
-    <span class="project-tag">Webhooks</span>
-    <span class="project-tag">JWT</span>
-</div>
+                    <div class="mt-6 flex flex-wrap gap-2">
+                        <span class="project-tag">C#</span>
+                        <span class="project-tag">.NET 8</span>
+                        <span class="project-tag">Redis</span>
+                        <span class="project-tag">n8n</span>
+                        <span class="project-tag">Webhooks</span>
+                        <span class="project-tag">JWT</span>
+                    </div>
 
-        <div class="mt-auto pt-8">
-            <p class="mb-4 text-[10px] text-white/35 uppercase">
-                Internship project · Private repository
-            </p>
+                    <div class="mt-auto pt-8">
+                        <p class="mb-4 text-[10px] text-white/35 uppercase">
+                            Internship project · Private repository
+                        </p>
 
-            <a
-                href="./projects/xd-fusion.html"
-                class="project-open-link inline-flex items-center gap-3 text-xs font-black text-[#ff806b] uppercase transition hover:text-white"
-            >
-                View case study
-                <span>→</span>
-            </a>
-        </div>
-    </div>
-</article>
+                        <a
+                            href="./projects/xd-fusion.html"
+                            class="project-open-link inline-flex items-center gap-3 text-xs font-black text-[#ff806b] uppercase transition hover:text-white"
+                        >
+                            View case study
+                            <span>→</span>
+                        </a>
+                    </div>
+                </div>
+            </article>
         </div>
 
         <!-- SECONDARY PROJECTS -->
         <div class="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             <!-- KEEP IT SIMPLE -->
-<article
-    class="project-card project-link-card group flex h-full flex-col overflow-hidden border border-white/10 bg-panel"
->
-    <a
-        href="./projects/keep-it-simple.html"
-        class="project-case-study block"
-        aria-label="Open KeepItSimple case study"
-    >
-        <div
-            class="project-card-image relative flex h-64 items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_center,rgba(249,115,22,0.16),transparent_55%),linear-gradient(135deg,#1a1008,#07111b)]"
-            style="view-transition-name: keep-it-simple-image;"
-        >
-            <div
-                class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:36px_36px]"
-            ></div>
-
-            <div
-                class="absolute top-5 right-5 z-10 border border-white/15 bg-[#03070c]/75 px-3 py-2 text-[10px] text-white/75 uppercase backdrop-blur-md"
+            <article
+                class="project-card project-link-card group flex h-full flex-col overflow-hidden border border-white/10 bg-panel"
             >
-                Grade 16
-            </div>
-
-            <div
-                class="absolute top-10 left-10 h-16 w-40 border border-orange-300/15"
-            ></div>
-
-            <div
-                class="absolute right-10 bottom-10 h-24 w-24 rotate-45 border border-orange-300/10"
-            ></div>
-
-            <div class="relative text-center">
-                <div
-                    class="font-display text-7xl font-black text-orange-300/90"
+                <a
+                    href="./projects/keep-it-simple.html"
+                    class="project-case-study block"
+                    aria-label="Open KeepItSimple case study"
                 >
-                    KS
+                    <div
+                        class="project-card-image relative flex h-64 items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_center,rgba(249,115,22,0.16),transparent_55%),linear-gradient(135deg,#1a1008,#07111b)]"
+                        style="view-transition-name: keep-it-simple-image;"
+                    >
+                        <div
+                            class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:36px_36px]"
+                        ></div>
+
+                        <div
+                            class="absolute top-5 right-5 z-10 border border-white/15 bg-[#03070c]/75 px-3 py-2 text-[10px] text-white/75 uppercase backdrop-blur-md"
+                        >
+                            Grade 16
+                        </div>
+
+                        <div
+                            class="absolute top-10 left-10 h-16 w-40 border border-orange-300/15"
+                        ></div>
+
+                        <div
+                            class="absolute right-10 bottom-10 h-24 w-24 rotate-45 border border-orange-300/10"
+                        ></div>
+
+                        <div class="relative text-center">
+                            <div
+                                class="font-display text-7xl font-black text-orange-300/90"
+                            >
+                                KS
+                            </div>
+
+                            <p
+                                class="mt-2 text-[10px] text-white/40 uppercase"
+                            >
+                                Production management
+                            </p>
+                        </div>
+                    </div>
+                </a>
+
+                <div class="project-card-content flex flex-1 flex-col p-7">
+                    <p
+                        class="text-[10px] font-bold text-orange-300 uppercase"
+                    >
+                        Industrial software · Production management
+                    </p>
+
+                    <h3
+                        class="font-display mt-4 text-4xl font-black uppercase"
+                    >
+                        KeepItSimple
+                    </h3>
+
+                    <p class="mt-5 text-sm leading-7 text-muted">
+                        Integrated production management solution connecting
+                        factory workstations, operational rules and centralized
+                        industrial data.
+                    </p>
+
+                    <div class="mt-6 flex flex-wrap gap-2">
+                        <span class="project-tag">Java</span>
+                        <span class="project-tag">Oracle SQL</span>
+                        <span class="project-tag">PL/SQL</span>
+                        <span class="project-tag">System Integration</span>
+                    </div>
+
+                    <div class="mt-auto pt-8">
+                        <p class="mb-4 text-[10px] text-white/35 uppercase">
+                            Academic project
+                        </p>
+
+                        <a
+                            href="./projects/keep-it-simple.html"
+                            class="project-open-link inline-flex items-center gap-3 text-xs font-black text-orange-300 uppercase transition hover:text-white"
+                        >
+                            View case study
+                            <span>→</span>
+                        </a>
+                    </div>
                 </div>
-
-                <p class="mt-2 text-[10px] text-white/40 uppercase">
-                    Production management
-                </p>
-            </div>
-        </div>
-    </a>
-
-    <div class="project-card-content flex flex-1 flex-col p-7">
-        <p class="text-[10px] font-bold text-orange-300 uppercase">
-            Industrial software · Production management
-        </p>
-
-        <h3 class="font-display mt-4 text-4xl font-black uppercase">
-            KeepItSimple
-        </h3>
-
-        <p class="mt-5 text-sm leading-7 text-muted">
-            Integrated production management solution connecting
-            factory workstations, operational rules and centralized
-            industrial data.
-        </p>
-
-        <div class="mt-6 flex flex-wrap gap-2">
-    <span class="project-tag">Java</span>
-    <span class="project-tag">Oracle SQL</span>
-    <span class="project-tag">PL/SQL</span>
-    <span class="project-tag">System Integration</span>
-</div>
-
-        <div class="mt-auto pt-8">
-            <p class="mb-4 text-[10px] text-white/35 uppercase">
-                Academic project
-            </p>
-
-            <a
-                href="./projects/keep-it-simple.html"
-                class="project-open-link inline-flex items-center gap-3 text-xs font-black text-orange-300 uppercase transition hover:text-white"
-            >
-                View case study
-                <span>→</span>
-            </a>
-        </div>
-    </div>
-</article>
+            </article>
 
             <!-- ESC -->
             <article
@@ -1409,411 +2023,594 @@
                     aria-label="Open Esc case study"
                 >
                     <div
-    class="project-card-image relative h-64 overflow-hidden"
-    style="view-transition-name: esc-image;"
->
-    <img
-        src="./assets/images/Projects/Esc/esc_mainmenu.png"
-        alt="Esc Game Jam main menu"
-        class="h-full w-full object-cover object-center transition duration-700 group-hover:scale-105"
-    >
+                        class="project-card-image relative h-64 overflow-hidden"
+                        style="view-transition-name: esc-image;"
+                    >
+                        <img
+                            src="./assets/images/Projects/Esc/esc_mainmenu.png"
+                            alt="Esc Game Jam main menu"
+                            class="h-full w-full object-cover object-center transition duration-700 group-hover:scale-105"
+                        >
 
-    <div
-        class="absolute inset-0 bg-gradient-to-t from-[#07111b] via-transparent to-transparent"
-    ></div>
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-[#07111b] via-transparent to-transparent"
+                        ></div>
 
-    <div
-    class="absolute top-5 right-5 z-10 border border-white/15 bg-[#03070c]/75 px-3 py-2 text-[10px] text-white/75 uppercase backdrop-blur-md"
->
-    MAD Game Jam
-</div>
-</div>
+                        <div
+                            class="absolute top-5 right-5 z-10 border border-white/15 bg-[#03070c]/75 px-3 py-2 text-[10px] text-white/75 uppercase backdrop-blur-md"
+                        >
+                            MAD Game Jam
+                        </div>
+                    </div>
                 </a>
 
                 <div class="project-card-content flex flex-1 flex-col p-7">
-    <p class="text-[10px] font-bold text-esc-light uppercase">
-        Interactive media · Gameplay · Visual design
-    </p>
+                    <p
+                        class="text-[10px] font-bold text-esc-light uppercase"
+                    >
+                        Interactive media · Gameplay · Visual design
+                    </p>
 
-    <h3 class="font-display mt-4 text-4xl font-black uppercase">
-        Esc
-    </h3>
+                    <h3
+                        class="font-display mt-4 text-4xl font-black uppercase"
+                    >
+                        Esc
+                    </h3>
 
-    <p class="mt-5 text-sm leading-7 text-muted">
-        Experimental interactive project developed during a
-        Game Jam, with contributions to gameplay, enemies,
-        interface design and implementation.
-    </p>
+                    <p class="mt-5 text-sm leading-7 text-muted">
+                        Experimental interactive project developed during the
+                        MAD Game Jam, with contributions to gameplay, enemies,
+                        interface design and implementation.
+                    </p>
 
-    <div class="mt-6 flex flex-wrap gap-2">
-        <span class="project-tag">Game Design</span>
-        <span class="project-tag">Gameplay</span>
-        <span class="project-tag">UI/UX</span>
-        <span class="project-tag">Godot</span>
-        <span class="project-tag">HTML5</span>
-    </div>
+                    <div class="mt-6 flex flex-wrap gap-2">
+                        <span class="project-tag">Game Design</span>
+                        <span class="project-tag">Gameplay</span>
+                        <span class="project-tag">UI/UX</span>
+                        <span class="project-tag">Godot</span>
+                        <span class="project-tag">HTML5</span>
+                    </div>
 
-    <div class="mt-auto pt-8">
-        <p class="mb-4 text-[10px] text-white/35 uppercase">
-    MAD Game Jam project
-</p>
+                    <div class="mt-auto pt-8">
+                        <p class="mb-4 text-[10px] text-white/35 uppercase">
+                            MAD Game Jam project
+                        </p>
 
-        <a
-            href="./projects/esc.html"
-            class="project-open-link inline-flex items-center gap-3 text-xs font-black text-esc-light uppercase transition hover:text-white"
-        >
-            View case study
-            <span>→</span>
-        </a>
-    </div>
-</div>
+                        <a
+    href="./projects/esc.html"
+    class="project-open-link inline-flex items-center gap-3 text-xs font-black uppercase text-[#f2a7c9] transition hover:text-white"
+>
+    View case study
+    <span>→</span>
+</a>
+                    </div>
+                </div>
             </article>
 
             <!-- SHODRONE -->
-<article
-    class="project-card project-link-card group flex h-full flex-col overflow-hidden border border-white/10 bg-panel"
->
-    <a
-        href="./projects/shodrone.html"
-        class="project-case-study block"
-        aria-label="Open Shodrone case study"
-    >
-        <div
-            class="project-card-image relative flex h-64 items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_center,rgba(168,85,247,0.18),transparent_55%),linear-gradient(135deg,#0b1320,#07111b)]"
-            style="view-transition-name: shodrone-image;"
-        >
-            <div
-                class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:36px_36px]"
-            ></div>
-
-            <div
-                class="absolute top-5 right-5 z-10 border border-white/15 bg-[#03070c]/75 px-3 py-2 text-[10px] text-white/75 uppercase backdrop-blur-md"
+            <article
+                class="project-card project-link-card group flex h-full flex-col overflow-hidden border border-white/10 bg-panel"
             >
-                Grade 16
-            </div>
-
-            <div class="relative text-center">
-                <div
-                    class="font-display text-7xl font-black text-purple-300/90"
+                <a
+                    href="./projects/shodrone.html"
+                    class="project-case-study block"
+                    aria-label="Open Shodrone case study"
                 >
-                    SD
+                    <div
+                        class="project-card-image relative flex h-64 items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_center,rgba(168,85,247,0.18),transparent_55%),linear-gradient(135deg,#0b1320,#07111b)]"
+                        style="view-transition-name: shodrone-image;"
+                    >
+                        <div
+                            class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:36px_36px]"
+                        ></div>
+
+                        <div
+                            class="absolute top-5 right-5 z-10 border border-white/15 bg-[#03070c]/75 px-3 py-2 text-[10px] text-white/75 uppercase backdrop-blur-md"
+                        >
+                            Grade 16
+                        </div>
+
+                        <div class="relative text-center">
+                            <div
+                                class="font-display text-7xl font-black text-purple-300/90"
+                            >
+                                SD
+                            </div>
+
+                            <p
+                                class="mt-2 text-[10px] text-white/40 uppercase"
+                            >
+                                Drone simulation
+                            </p>
+                        </div>
+                    </div>
+                </a>
+
+                <div class="project-card-content flex flex-1 flex-col p-7">
+                    <p
+                        class="text-[10px] font-bold text-purple-300 uppercase"
+                    >
+                        System programming · Simulation
+                    </p>
+
+                    <h3
+                        class="font-display mt-4 text-4xl font-black uppercase"
+                    >
+                        Shodrone
+                    </h3>
+
+                    <p class="mt-5 text-sm leading-7 text-muted">
+                        Drone fleet monitoring and simulation ecosystem using
+                        multithreading, shared memory, semaphores, a custom
+                        network protocol and a domain-specific language.
+                    </p>
+
+                    <div class="mt-6 flex flex-wrap gap-2">
+                        <span class="project-tag">C</span>
+                        <span class="project-tag">Pthreads</span>
+                        <span class="project-tag">Shared Memory</span>
+                        <span class="project-tag">DSL</span>
+                    </div>
+
+                    <div class="mt-auto pt-8">
+                        <p class="mb-4 text-[10px] text-white/35 uppercase">
+                            Academic project
+                        </p>
+
+                        <a
+                            href="./projects/shodrone.html"
+                            class="project-open-link inline-flex items-center gap-3 text-xs font-black text-purple-300 uppercase transition hover:text-white"
+                        >
+                            View case study
+                            <span>→</span>
+                        </a>
+                    </div>
                 </div>
-
-                <p class="mt-2 text-[10px] text-white/40 uppercase">
-                    Drone simulation
-                </p>
-            </div>
-        </div>
-    </a>
-
-    <div class="project-card-content flex flex-1 flex-col p-7">
-        <p class="text-[10px] font-bold text-purple-300 uppercase">
-            System programming · Simulation
-        </p>
-
-        <h3 class="font-display mt-4 text-4xl font-black uppercase">
-            Shodrone
-        </h3>
-
-        <p class="mt-5 text-sm leading-7 text-muted">
-            Drone fleet monitoring and simulation ecosystem using
-            multithreading, shared memory, semaphores, a custom
-            network protocol and a domain-specific language.
-        </p>
-
-        <div class="mt-6 flex flex-wrap gap-2">
-            <span class="project-tag">C</span>
-            <span class="project-tag">Pthreads</span>
-            <span class="project-tag">Shared Memory</span>
-            <span class="project-tag">DSL</span>
+            </article>
         </div>
 
-        <div class="mt-auto pt-8">
-            <p class="mb-4 text-[10px] text-white/35 uppercase">
-                Academic project
-            </p>
-
-            <a
-                href="./projects/shodrone.html"
-                class="project-open-link inline-flex items-center gap-3 text-xs font-black text-purple-300 uppercase transition hover:text-white"
-            >
-                View case study
-                <span>→</span>
-            </a>
-        </div>
-    </div>
-</article>
-
+        <!-- CENTERED PROJECTS -->
+        <div
+            class="mt-6 grid gap-6 md:grid-cols-2 xl:mx-auto xl:max-w-[860px]"
+        >
             <!-- SMART GARDEN -->
-<article
-    class="project-card project-link-card group flex h-full flex-col overflow-hidden border border-white/10 bg-panel xl:col-start-1 xl:translate-x-[50%]"
->
-    <a
-        href="./projects/smart-garden.html"
-        class="project-case-study block"
-        aria-label="Open Smart Garden case study"
-    >
-        <div
-            class="project-card-image relative flex h-64 items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_center,rgba(34,197,94,0.18),transparent_55%),linear-gradient(135deg,#081810,#07111b)]"
-            style="view-transition-name: smart-garden-image;"
-        >
-            <div
-                class="absolute inset-0 bg-[linear-gradient(135deg,transparent_0%,rgba(34,197,94,0.05)_50%,transparent_100%)]"
-            ></div>
-
-            <div
-                class="absolute top-5 right-5 z-10 border border-white/15 bg-[#03070c]/75 px-3 py-2 text-[10px] text-white/75 uppercase backdrop-blur-md"
+            <article
+                class="project-card project-link-card group flex h-full flex-col overflow-hidden border border-white/10 bg-panel"
             >
-                Grade 15
-            </div>
-
-            <div class="relative text-center">
-                <div class="text-7xl">⌁</div>
-
-                <p class="mt-2 text-[10px] text-green-200/50 uppercase">
-                    Resource management
-                </p>
-            </div>
-        </div>
-    </a>
-
-    <div class="project-card-content flex flex-1 flex-col p-7">
-        <p class="text-[10px] font-bold text-green-300 uppercase">
-            Desktop application · Resource management
-        </p>
-
-        <h3 class="font-display mt-4 text-4xl font-black uppercase">
-            Smart Garden
-        </h3>
-
-        <p class="mt-5 text-sm leading-7 text-muted">
-            Green space and resource management application
-            developed with Java, JavaFX, object-oriented design,
-            persistence and automated testing.
-        </p>
-
-        <div class="mt-6 flex flex-wrap gap-2">
-            <span class="project-tag">Java</span>
-            <span class="project-tag">JavaFX</span>
-            <span class="project-tag">JUnit 5</span>
-            <span class="project-tag">JaCoCo</span>
-        </div>
-
-        <div
-            class="mt-auto flex flex-wrap items-end justify-between gap-5 pt-8"
-        >
-            <div>
-                <p class="mb-4 text-[10px] text-white/35 uppercase">
-                    Academic project
-                </p>
-
                 <a
                     href="./projects/smart-garden.html"
-                    class="project-open-link inline-flex items-center gap-3 text-xs font-black text-green-300 uppercase transition hover:text-white"
+                    class="project-case-study block"
+                    aria-label="Open Smart Garden case study"
                 >
-                    View case study
-                    <span>→</span>
-                </a>
-            </div>
+                    <div
+                        class="project-card-image relative flex h-64 items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_center,rgba(34,197,94,0.18),transparent_55%),linear-gradient(135deg,#081810,#07111b)]"
+                        style="view-transition-name: smart-garden-image;"
+                    >
+                        <div
+                            class="absolute inset-0 bg-[linear-gradient(135deg,transparent_0%,rgba(34,197,94,0.05)_50%,transparent_100%)]"
+                        ></div>
 
-            <a
-                href="https://github.com/0DioGoncalves0/lei-24-s2-1dg-h-g071"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="relative z-10 text-[10px] text-white/40 uppercase transition hover:text-white"
-            >
-                GitHub ↗
-            </a>
-        </div>
-    </div>
-</article>
+                        <div
+                            class="absolute top-5 right-5 z-10 border border-white/15 bg-[#03070c]/75 px-3 py-2 text-[10px] text-white/75 uppercase backdrop-blur-md"
+                        >
+                            Grade 15
+                        </div>
+
+                        <div class="relative text-center">
+                            <div class="text-7xl">⌁</div>
+
+                            <p
+                                class="mt-2 text-[10px] text-green-200/50 uppercase"
+                            >
+                                Resource management
+                            </p>
+                        </div>
+                    </div>
+                </a>
+
+                <div class="project-card-content flex flex-1 flex-col p-7">
+                    <p
+                        class="text-[10px] font-bold text-green-300 uppercase"
+                    >
+                        Desktop application · Resource management
+                    </p>
+
+                    <h3
+                        class="font-display mt-4 text-4xl font-black uppercase"
+                    >
+                        Smart Garden
+                    </h3>
+
+                    <p class="mt-5 text-sm leading-7 text-muted">
+                        Green space and resource management application
+                        developed with Java, JavaFX, object-oriented design,
+                        persistence and automated testing.
+                    </p>
+
+                    <div class="mt-6 flex flex-wrap gap-2">
+                        <span class="project-tag">Java</span>
+                        <span class="project-tag">JavaFX</span>
+                        <span class="project-tag">JUnit 5</span>
+                        <span class="project-tag">JaCoCo</span>
+                    </div>
+
+                    <div
+                        class="mt-auto flex flex-wrap items-end justify-between gap-5 pt-8"
+                    >
+                        <div>
+                            <p class="mb-4 text-[10px] text-white/35 uppercase">
+                                Academic project
+                            </p>
+
+                            <a
+                                href="./projects/smart-garden.html"
+                                class="project-open-link inline-flex items-center gap-3 text-xs font-black text-green-300 uppercase transition hover:text-white"
+                            >
+                                View case study
+                                <span>→</span>
+                            </a>
+                        </div>
+
+                        <a
+                            href="https://github.com/0DioGoncalves0/lei-24-s2-1dg-h-g071"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="relative z-10 text-[10px] text-white/40 uppercase transition hover:text-white"
+                        >
+                            GitHub ↗
+                        </a>
+                    </div>
+                </div>
+            </article>
 
             <!-- EPIDEMIC MODELING -->
-<article
-    class="project-card project-link-card group flex h-full flex-col overflow-hidden border border-white/10 bg-panel xl:col-start-2 xl:translate-x-[50%]"
+            <article
+                class="project-card project-link-card group flex h-full flex-col overflow-hidden border border-white/10 bg-panel"
+            >
+                <a
+                    href="./projects/epidemic-modeling.html"
+                    class="project-case-study block"
+                    aria-label="Open Epidemic Modeling case study"
+                >
+                    <div
+                        class="project-card-image relative flex h-64 items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_center,rgba(0,200,255,0.18),transparent_55%),linear-gradient(135deg,#071620,#07111b)]"
+                        style="view-transition-name: epidemic-modeling-image;"
+                    >
+                        <div
+                            class="absolute top-5 right-5 z-10 border border-white/15 bg-[#03070c]/75 px-3 py-2 text-[10px] text-white/75 uppercase backdrop-blur-md"
+                        >
+                            Grade 17
+                        </div>
+
+                        <svg
+                            viewBox="0 0 320 150"
+                            class="relative h-36 w-[85%]"
+                            aria-hidden="true"
+                        >
+                            <path
+                                d="M10 125 C55 110, 80 70, 120 85 S190 130, 310 20"
+                                fill="none"
+                                stroke="rgba(0,200,255,0.9)"
+                                stroke-width="4"
+                            ></path>
+
+                            <path
+                                d="M10 20 C70 25, 110 45, 150 80 S235 120, 310 130"
+                                fill="none"
+                                stroke="rgba(255,255,255,0.32)"
+                                stroke-width="3"
+                            ></path>
+
+                            <path
+                                d="M10 125 C80 120, 125 110, 170 80 S245 45, 310 55"
+                                fill="none"
+                                stroke="rgba(100,220,170,0.7)"
+                                stroke-width="3"
+                            ></path>
+                        </svg>
+
+                        <p
+                            class="absolute bottom-5 text-[10px] text-cyan/50 uppercase"
+                        >
+                            SIR population model
+                        </p>
+                    </div>
+                </a>
+
+                <div class="project-card-content flex flex-1 flex-col p-7">
+                    <p class="text-[10px] font-bold text-cyan uppercase">
+                        Mathematical modeling · Data analysis
+                    </p>
+
+                    <h3
+                        class="font-display mt-4 text-4xl font-black uppercase"
+                    >
+                        Epidemic Modeling
+                    </h3>
+
+                    <p class="mt-5 text-sm leading-7 text-muted">
+                        Java application adapting the SIR model to substance
+                        abuse, including numerical resolution of ODE systems
+                        and population trend analysis.
+                    </p>
+
+                    <div class="mt-6 flex flex-wrap gap-2">
+                        <span class="project-tag">Java</span>
+                        <span class="project-tag">SIR Model</span>
+                        <span class="project-tag">ODEs</span>
+                        <span class="project-tag">Numerical Methods</span>
+                    </div>
+
+                    <div class="mt-auto pt-8">
+                        <p class="mb-4 text-[10px] text-white/35 uppercase">
+                            Academic project
+                        </p>
+
+                        <a
+    href="./projects/epidemic-modeling.html"
+    class="project-open-link inline-flex items-center gap-3 text-xs font-black uppercase text-[#00c8ff] transition hover:text-white"
 >
-    <a
-        href="./projects/epidemic-modeling.html"
-        class="project-case-study block"
-        aria-label="Open Epidemic Modeling case study"
-    >
-        <div
-            class="project-card-image relative flex h-64 items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_center,rgba(0,200,255,0.18),transparent_55%),linear-gradient(135deg,#071620,#07111b)]"
-            style="view-transition-name: epidemic-modeling-image;"
-        >
-            <div
-                class="absolute top-5 right-5 z-10 border border-white/15 bg-[#03070c]/75 px-3 py-2 text-[10px] text-white/75 uppercase backdrop-blur-md"
-            >
-                Grade 17
-            </div>
-
-            <svg
-                viewBox="0 0 320 150"
-                class="relative h-36 w-[85%]"
-                aria-hidden="true"
-            >
-                <path
-                    d="M10 125 C55 110, 80 70, 120 85 S190 130, 310 20"
-                    fill="none"
-                    stroke="rgba(0,200,255,0.9)"
-                    stroke-width="4"
-                />
-
-                <path
-                    d="M10 20 C70 25, 110 45, 150 80 S235 120, 310 130"
-                    fill="none"
-                    stroke="rgba(255,255,255,0.32)"
-                    stroke-width="3"
-                />
-
-                <path
-                    d="M10 125 C80 120, 125 110, 170 80 S245 45, 310 55"
-                    fill="none"
-                    stroke="rgba(100,220,170,0.7)"
-                    stroke-width="3"
-                />
-            </svg>
-
-            <p
-                class="absolute bottom-5 text-[10px] text-cyan/50 uppercase"
-            >
-                SIR population model
-            </p>
-        </div>
-    </a>
-
-    <div class="project-card-content flex flex-1 flex-col p-7">
-        <p class="text-[10px] font-bold text-cyan uppercase">
-            Mathematical modeling · Data analysis
-        </p>
-
-        <h3 class="font-display mt-4 text-4xl font-black uppercase">
-            Epidemic Modeling
-        </h3>
-
-        <p class="mt-5 text-sm leading-7 text-muted">
-            Java application adapting the SIR model to substance
-            abuse, including numerical resolution of ODE systems and
-            population trend analysis.
-        </p>
-
-        <div class="mt-6 flex flex-wrap gap-2">
-            <span class="project-tag">Java</span>
-            <span class="project-tag">SIR Model</span>
-            <span class="project-tag">ODEs</span>
-            <span class="project-tag">Numerical Methods</span>
-        </div>
-
-        <div class="mt-auto pt-8">
-            <p class="mb-4 text-[10px] text-white/35 uppercase">
-                Academic project
-            </p>
-
-            <a
-                href="./projects/epidemic-modeling.html"
-                class="project-open-link inline-flex items-center gap-3 text-xs font-black text-cyan uppercase transition hover:text-white"
-            >
-                View case study
-                <span>→</span>
-            </a>
-        </div>
-    </div>
-</article>
+    View case study
+    <span>→</span>
+</a>
+                    </div>
+                </div>
+            </article>
         </div>
     </div>
 </section>
 
     <!-- ABOUT -->
-    <section
-        id="profile"
-        class="relative border-y border-white/5 bg-panel/30 py-28"
+<section
+    id="profile"
+    class="relative overflow-hidden border-y border-white/5 py-28 md:py-36"
+>
+    <!-- BACKGROUND GRID -->
+    <div
+        class="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.018)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.018)_1px,transparent_1px)] bg-[size:52px_52px]"
+    ></div>
+
+
+    <!-- DARK OVERLAY FOR TEXT READABILITY -->
+    <div
+        class="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#03070c] via-[#03070c]/88 to-[#03070c]/40"
+    ></div>
+
+    <div class="section-container relative z-10">
+        <div class="grid items-start gap-14 lg:grid-cols-[0.72fr_1.28fr]">
+    <!-- TITLE -->
+    <div class="project-reveal relative min-h-[570px]">
+        <div
+    class="about-orb pointer-events-none absolute left-[150%] top-[130%] h-[42rem] w-[42rem] -translate-x-1/2 -translate-y-1/2 opacity-45"
+    aria-hidden="true"
+>
+    <img
+        src="./assets/images/about-orb.png"
+        alt=""
+        class="h-full w-full object-contain opacity-65"
+    >
+</div>
+
+        <div class="relative z-10">
+            <p class="text-xs font-bold uppercase text-cyan">
+                Profile
+            </p>
+
+            <h2
+                class="font-display mt-6 text-[clamp(6rem,12vw,11rem)] leading-[0.72] font-black uppercase"
+            >
+                About
+                <span class="block text-outline-white">
+                    Me
+                </span>
+            </h2>
+
+            <div class="mt-10 h-px w-28 bg-cyan/60"></div>
+        </div>
+    </div>
+
+    <!-- CONTENT CARD -->
+    <div
+        class="project-reveal relative overflow-hidden border border-white/10 bg-[#07111b]/82 p-8 backdrop-blur-md md:p-12"
     >
         <div
-            class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.018)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.018)_1px,transparent_1px)] bg-[size:52px_52px]"
+            class="pointer-events-none absolute inset-0 bg-gradient-to-br from-cyan/[0.045] via-transparent to-white/[0.015]"
         ></div>
 
-        <div
-            class="section-container relative z-10 grid gap-14 lg:grid-cols-[0.75fr_1.25fr] lg:items-center"
-        >
-            <div>
-                <p
-                    class="mb-4 text-xs font-bold text-cyan uppercase"
-                >
-                    Profile
-                </p>
+        <div class="relative z-10">
+            <p class="max-w-3xl text-xl leading-9 text-white/80 md:text-2xl md:leading-11">
+                I am a creative Software Engineer who enjoys exploring
+                new technologies, solving complex problems and building
+                practical, well-structured and visually engaging
+                solutions.
+            </p>
 
-                <h2
-                    class="font-display text-6xl leading-[0.85] font-black uppercase md:text-8xl"
+            <p class="mt-8 max-w-3xl text-base leading-8 text-muted md:text-lg md:leading-9">
+                My interests extend across software engineering,
+                automation, data analysis, simulation, interactive
+                media, UI/UX and visual design. I am particularly
+                motivated by projects where technical thinking and
+                creativity can work together.
+            </p>
+
+            <div class="mt-12 grid gap-8 sm:grid-cols-3">
+                <article class="border-t border-cyan/30 pt-6">
+                    <p class="font-display text-5xl font-black text-white">
+                        06+
+                    </p>
+
+                    <p class="mt-2 text-[10px] uppercase text-muted">
+                        Featured projects
+                    </p>
+                </article>
+
+                <article class="border-t border-cyan/30 pt-6">
+                    <p class="font-display text-5xl font-black text-white">
+                        04
+                    </p>
+
+                    <p class="mt-2 text-[10px] uppercase text-muted">
+                        Automated workflows
+                    </p>
+                </article>
+
+                <article class="border-t border-cyan/30 pt-6">
+    <div class="flex items-start justify-between gap-6">
+        <div>
+            <p class="font-display text-5xl font-black leading-none text-white">
+                03
+            </p>
+
+            <p class="mt-2 text-[10px] uppercase text-muted">
+                Spoken languages
+            </p>
+        </div>
+
+        <div class="mt-2 flex items-start gap-4">
+            <!-- PORTUGUESE -->
+            <div class="group flex flex-col items-center gap-2">
+                <svg
+                    viewBox="0 0 36 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-8 text-cyan transition duration-300 group-hover:-translate-y-1 group-hover:text-white"
+                    aria-hidden="true"
                 >
-                    About
-                    <span class="block text-outline">Me</span>
-                </h2>
+                    <rect
+                        x="1"
+                        y="1"
+                        width="34"
+                        height="22"
+                        rx="1"
+                        stroke="currentColor"
+                        stroke-width="1.4"
+                    ></rect>
+
+                    <path
+                        d="M14 1V23"
+                        stroke="currentColor"
+                        stroke-width="1.4"
+                    ></path>
+
+                    <circle
+                        cx="14"
+                        cy="12"
+                        r="3.4"
+                        stroke="currentColor"
+                        stroke-width="1.2"
+                    ></circle>
+                </svg>
+
+                <span class="text-[10px] font-bold text-white/65">
+                    PT
+                </span>
             </div>
 
-            <div
-                class="border border-white/10 bg-[#07111b]/80 p-8 backdrop-blur-xl md:p-12"
-            >
-                <p class="text-lg leading-9 text-white/80">
-                    I am a creative Software Engineer who enjoys exploring new
-                    technologies, solving complex problems and building
-                    practical, well-structured and visually engaging solutions.
-                </p>
+            <!-- ENGLISH -->
+            <div class="group flex flex-col items-center gap-2">
+                <svg
+                    viewBox="0 0 36 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-8 text-cyan transition duration-300 group-hover:-translate-y-1 group-hover:text-white"
+                    aria-hidden="true"
+                >
+                    <rect
+                        x="1"
+                        y="1"
+                        width="34"
+                        height="22"
+                        rx="1"
+                        stroke="currentColor"
+                        stroke-width="1.4"
+                    ></rect>
 
-                <p class="mt-6 leading-8 text-muted">
-                    My interests extend across software engineering,
-                    automation, data analysis, simulation, interactive media,
-                    UI/UX and visual design. I am particularly motivated by
-                    projects where technical thinking and creativity can work
-                    together.
-                </p>
+                    <path
+                        d="M2 2L34 22M34 2L2 22"
+                        stroke="currentColor"
+                        stroke-width="1"
+                    ></path>
 
-                <div class="mt-10 grid gap-5 sm:grid-cols-3">
-                    <div class="border-t border-cyan/25 pt-5">
-                        <strong class="font-display text-4xl">
-                            06+
-                        </strong>
+                    <path
+                        d="M18 1V23M1 12H35"
+                        stroke="currentColor"
+                        stroke-width="2.2"
+                    ></path>
+                </svg>
 
-                        <p
-                            class="mt-2 text-[10px] text-muted uppercase"
-                        >
-                            Featured projects
-                        </p>
-                    </div>
+                <span class="text-[10px] font-bold text-white/65">
+                    EN
+                </span>
+            </div>
 
-                    <div class="border-t border-cyan/25 pt-5">
-                        <strong class="font-display text-4xl">
-                            04
-                        </strong>
+            <!-- SPANISH -->
+            <div class="group flex flex-col items-center gap-2">
+                <svg
+                    viewBox="0 0 36 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-8 text-cyan transition duration-300 group-hover:-translate-y-1 group-hover:text-white"
+                    aria-hidden="true"
+                >
+                    <rect
+                        x="1"
+                        y="1"
+                        width="34"
+                        height="22"
+                        rx="1"
+                        stroke="currentColor"
+                        stroke-width="1.4"
+                    ></rect>
 
-                        <p
-                            class="mt-2 text-[10px] text-muted uppercase"
-                        >
-                            Automated workflows
-                        </p>
-                    </div>
+                    <path
+                        d="M1 7.5H35M1 16.5H35"
+                        stroke="currentColor"
+                        stroke-width="1.2"
+                    ></path>
 
-                    <div class="border-t border-cyan/25 pt-5">
-                        <strong class="font-display text-4xl">
-                            03
-                        </strong>
+                    <rect
+                        x="8"
+                        y="9.5"
+                        width="4"
+                        height="5"
+                        rx="0.7"
+                        stroke="currentColor"
+                        stroke-width="1"
+                    ></rect>
+                </svg>
 
-                        <p
-                            class="mt-2 text-[10px] text-muted uppercase"
-                        >
-                            Spoken languages
-                        </p>
-                    </div>
-                </div>
+                <span class="text-[10px] font-bold text-white/65">
+                    ES
+                </span>
             </div>
         </div>
-    </section>
+    </div>
+</article>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+</section>
 
     <!-- EXPERIENCE -->
-    <section id="experience" class="py-28">
-        <div class="section-container">
-            <p
-                class="mb-4 text-xs font-bold text-cyan uppercase"
-            >
+<section
+    id="experience"
+    class="relative overflow-hidden border-y border-white/5 py-28 md:py-36"
+>
+    <!-- BACKGROUND -->
+    <div
+        class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_30%,rgba(0,200,255,0.07),transparent_28%),radial-gradient(circle_at_82%_70%,rgba(0,110,255,0.05),transparent_30%)]"
+    ></div>
+
+    <div
+        class="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.018)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.018)_1px,transparent_1px)] bg-[size:52px_52px]"
+    ></div>
+
+    <div class="section-container relative z-10">
+        <!-- SECTION TITLE -->
+        <div>
+            <p class="mb-4 text-xs font-bold uppercase text-cyan">
                 Background
             </p>
 
@@ -1822,19 +2619,38 @@
             >
                 Experience & Education
             </h2>
+        </div>
 
-            <div class="mt-14 grid gap-6 lg:grid-cols-3">
-                <article
-                    class="border border-white/10 bg-panel p-8 transition hover:border-cyan/30"
-                >
-                    <p
-                        class="text-[10px] text-cyan uppercase"
-                    >
-                        Internship · 2026
-                    </p>
+        <!-- EXPERIENCE ITEMS -->
+        <div class="mt-16 grid gap-14 lg:grid-cols-3 lg:gap-12">
+            <!-- XD SOFTWARE -->
+            <article
+                class="group relative min-h-[430px] px-4 py-6 md:px-6 md:py-8"
+            >
+                <!-- LARGE OUTLINED SYMBOL -->
+                <div
+    class="pointer-events-none absolute right-[-2rem] top-2 z-0 select-none"
+    aria-hidden="true"
+>
+    <span
+        class="font-display block text-[10rem] font-black leading-none text-transparent opacity-20 transition duration-500 group-hover:opacity-35 md:text-[13rem]"
+        style="-webkit-text-stroke: 1.5px rgba(0, 200, 255, 0.72);"
+    >
+        XD
+    </span>
+</div>
+
+                <div class="relative z-10 flex h-full flex-col">
+                    <div class="flex items-center gap-3">
+                        <span class="h-px w-8 bg-cyan"></span>
+
+                        <p class="text-[10px] font-bold uppercase text-cyan">
+                            Internship · 2026
+                        </p>
+                    </div>
 
                     <h3
-                        class="font-display mt-4 text-3xl font-bold uppercase"
+                        class="font-display mt-8 text-4xl font-bold uppercase md:text-5xl"
                     >
                         XD Software
                     </h3>
@@ -1843,24 +2659,51 @@
                         Software Engineering Internship
                     </p>
 
-                    <p class="mt-6 text-sm leading-7 text-muted">
+                    <p class="mt-8 max-w-sm text-sm leading-7 text-muted">
                         Developed automated CRM workflows and contributed to an
                         event-driven integration architecture involving ERP
                         events, Redis, Webhooks, REST APIs and n8n.
                     </p>
-                </article>
 
-                <article
-                    class="border border-white/10 bg-panel p-8 transition hover:border-cyan/30"
-                >
-                    <p
-                        class="text-[10px] text-cyan uppercase"
-                    >
-                        Academic background · 2023 to 2026
-                    </p>
+                    <div class="mt-auto pt-10">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="project-tag">C#</span>
+                            <span class="project-tag">.NET 8</span>
+                            <span class="project-tag">Redis</span>
+                            <span class="project-tag">n8n</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ISEP -->
+            <article
+                class="group relative min-h-[430px] px-4 py-6 md:px-6 md:py-8"
+            >
+                <!-- LARGE OUTLINED SYMBOL -->
+                <div
+    class="pointer-events-none absolute right-[-3.5rem] top-8 z-0 select-none"
+    aria-hidden="true"
+>
+    <span
+        class="font-display block text-[7.5rem] font-black leading-none text-transparent opacity-20 transition duration-500 group-hover:opacity-35 md:text-[9.5rem]"
+        style="-webkit-text-stroke: 1.5px rgba(0, 200, 255, 0.72);"
+    >
+        ISEP
+    </span>
+</div>
+
+                <div class="relative z-10 flex h-full flex-col">
+                    <div class="flex items-center gap-3">
+                        <span class="h-px w-8 bg-cyan"></span>
+
+                        <p class="text-[10px] font-bold uppercase text-cyan">
+                            Academic background · 2023 to 2026
+                        </p>
+                    </div>
 
                     <h3
-                        class="font-display mt-4 text-3xl font-bold uppercase"
+                        class="font-display mt-8 text-4xl font-bold uppercase md:text-5xl"
                     >
                         ISEP
                     </h3>
@@ -1869,24 +2712,116 @@
                         Bachelor's Degree in Software Engineering
                     </p>
 
-                    <p class="mt-6 text-sm leading-7 text-muted">
+                    <p class="mt-8 max-w-sm text-sm leading-7 text-muted">
                         Software development, databases, networks, system
                         programming, web technologies, software architecture and
                         project management.
                     </p>
-                </article>
 
-                <article
-                    class="border border-white/10 bg-panel p-8 transition hover:border-cyan/30"
-                >
-                    <p
-                        class="text-[10px] text-cyan uppercase"
-                    >
-                        International experience · 2020
-                    </p>
+                    <div class="mt-auto pt-10">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="project-tag">
+                                Software Engineering
+                            </span>
+
+                            <span class="project-tag">
+                                2023 to 2026
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ERASMUS -->
+            <article
+                class="group relative min-h-[430px] px-4 py-6 md:px-6 md:py-8"
+            >
+                <!-- LARGE OUTLINED ERASMUS SYMBOL -->
+                <div
+    class="pointer-events-none absolute right-[-1rem] top-[-1rem] z-0 h-[15rem] w-[15rem] opacity-20 transition duration-500 group-hover:opacity-35 md:h-[18rem] md:w-[18rem]"
+    aria-hidden="true"
+>
+    <svg
+        viewBox="0 0 240 240"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-full w-full overflow-visible"
+    >
+                        <circle
+                            cx="120"
+                            cy="120"
+                            r="86"
+                            stroke="rgba(0, 200, 255, 0.72)"
+                            stroke-width="2"
+                        ></circle>
+
+                        <path
+                            d="M120 20L127 42L150 42L131 55L138 77L120 64L102 77L109 55L90 42L113 42L120 20Z"
+                            stroke="rgba(0, 200, 255, 0.72)"
+                            stroke-width="1.8"
+                        ></path>
+
+                        <path
+                            d="M188 48L186 71L207 80L184 85L181 108L169 88L146 93L162 76L150 56L171 66L188 48Z"
+                            stroke="rgba(0, 200, 255, 0.72)"
+                            stroke-width="1.8"
+                        ></path>
+
+                        <path
+                            d="M220 120L198 127L198 150L185 131L163 138L176 120L163 102L185 109L198 90L198 113L220 120Z"
+                            stroke="rgba(0, 200, 255, 0.72)"
+                            stroke-width="1.8"
+                        ></path>
+
+                        <path
+                            d="M188 192L171 174L150 184L162 164L146 147L169 152L181 132L184 155L207 160L186 169L188 192Z"
+                            stroke="rgba(0, 200, 255, 0.72)"
+                            stroke-width="1.8"
+                        ></path>
+
+                        <path
+                            d="M120 220L113 198L90 198L109 185L102 163L120 176L138 163L131 185L150 198L127 198L120 220Z"
+                            stroke="rgba(0, 200, 255, 0.72)"
+                            stroke-width="1.8"
+                        ></path>
+
+                        <path
+                            d="M52 192L54 169L33 160L56 155L59 132L71 152L94 147L78 164L90 184L69 174L52 192Z"
+                            stroke="rgba(0, 200, 255, 0.72)"
+                            stroke-width="1.8"
+                        ></path>
+
+                        <path
+                            d="M20 120L42 113L42 90L55 109L77 102L64 120L77 138L55 131L42 150L42 127L20 120Z"
+                            stroke="rgba(0, 200, 255, 0.72)"
+                            stroke-width="1.8"
+                        ></path>
+
+                        <path
+                            d="M52 48L69 66L90 56L78 76L94 93L71 88L59 108L56 85L33 80L54 71L52 48Z"
+                            stroke="rgba(0, 200, 255, 0.72)"
+                            stroke-width="1.8"
+                        ></path>
+
+                        <path
+                            d="M78 120H162M120 78V162"
+                            stroke="rgba(0, 200, 255, 0.5)"
+                            stroke-width="2"
+                        ></path>
+                    </svg>
+                </div>
+
+                <div class="relative z-10 flex h-full flex-col">
+                    <div class="flex items-center gap-3">
+                        <span class="h-px w-8 bg-cyan"></span>
+
+                        <p class="text-[10px] font-bold uppercase text-cyan">
+                            International experience · 2020
+                        </p>
+                    </div>
 
                     <h3
-                        class="font-display mt-4 text-3xl font-bold uppercase"
+                        class="font-display mt-8 text-4xl font-bold uppercase md:text-5xl"
                     >
                         Erasmus+
                     </h3>
@@ -1895,15 +2830,24 @@
                         Türkiye
                     </p>
 
-                    <p class="mt-6 text-sm leading-7 text-muted">
+                    <p class="mt-8 max-w-sm text-sm leading-7 text-muted">
                         International educational and cultural exchange focused
                         on collaboration, communication and intercultural
                         experience.
                     </p>
-                </article>
-            </div>
+
+                    <div class="mt-auto pt-10">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="project-tag">International</span>
+                            <span class="project-tag">Collaboration</span>
+                            <span class="project-tag">2020</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- SKILLS -->
 <section
@@ -2194,11 +3138,11 @@
                 Software Systems
             </h3>
 
-            <p class="mt-4 text-sm leading-7 text-muted">
+            <p class="mt-4 min-h-[84px] text-sm leading-7 text-muted">
                 Design and development of structured software solutions.
             </p>
 
-            <div class="mt-6">
+            <div class="mt-5">
                 <p class="text-[11px] font-bold text-white/35 uppercase">
                     Includes
                 </p>
@@ -2249,11 +3193,11 @@
                 Automation
             </h3>
 
-            <p class="mt-4 text-sm leading-7 text-muted">
+            <p class="mt-4 min-h-[84px] text-sm leading-7 text-muted">
                 Workflow orchestration and technical communication between systems.
             </p>
 
-            <div class="mt-6">
+            <div class="mt-5">
                 <p class="text-[11px] font-bold text-white/35 uppercase">
                     Includes
                 </p>
@@ -2302,11 +3246,11 @@
                 Interactive Media
             </h3>
 
-            <p class="mt-4 text-sm leading-7 text-muted">
+            <p class="mt-4 min-h-[84px] text-sm leading-7 text-muted">
                 Digital experiences that combine interaction, play and visual thinking.
             </p>
 
-            <div class="mt-6">
+            <div class="mt-5">
                 <p class="text-[11px] font-bold text-white/35 uppercase">
                     Includes
                 </p>
@@ -2322,13 +3266,13 @@
     </article>
 
     <article
-        class="focus-card group relative min-h-[280px] overflow-hidden border border-white/10 bg-[linear-gradient(145deg,#07111b,#11151b)] p-7"
-    >
+    class="focus-card group relative min-h-[280px] overflow-hidden border border-white/10 bg-[linear-gradient(145deg,#07111b,#081622)] p-7"
+>
         <div
-            class="pointer-events-none absolute right-4 top-4 font-display text-[4.2rem] font-black leading-none text-cyan/[0.035]"
-            >
-            VISUAL
-        </div>
+    class="pointer-events-none absolute right-4 top-4 font-display text-[4.2rem] font-black leading-none text-cyan/[0.045]"
+>
+    VISUAL
+</div>
 
         <div class="relative z-10 flex h-full flex-col">
             <div class="flex items-center">
@@ -2354,11 +3298,11 @@
                 Visual Design
             </h3>
 
-            <p class="mt-4 text-sm leading-7 text-muted">
+            <p class="mt-4 min-h-[84px] text-sm leading-7 text-muted">
                 Visual communication focused on clarity, aesthetics and digital presentation.
             </p>
 
-            <div class="mt-6">
+            <div class="mt-5">
                 <p class="text-[11px] font-bold text-white/35 uppercase">
                     Includes
                 </p>
@@ -2377,7 +3321,7 @@
     <!-- CONTACT -->
 <section
     id="contact"
-    class="relative overflow-hidden border-t border-white/5 bg-panel/30 py-24"
+    class="relative overflow-hidden py-24"
 >
     <div class="section-container relative z-10">
         <div class="mx-auto max-w-5xl text-center">
@@ -2386,13 +3330,19 @@
             </p>
 
             <h2
-                class="font-display mt-6 text-5xl font-black uppercase leading-none sm:text-6xl md:text-8xl"
-            >
-                Let’s Build
-                <span class="text-outline block">
-                    Something.
-                </span>
-            </h2>
+    class="font-display mt-6 text-5xl font-black uppercase leading-none sm:text-6xl md:text-8xl"
+>
+    <span
+        class="block text-transparent"
+        style="-webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.697);"
+    >
+        Let’s
+    </span>
+
+    <span class="mt-2 block text-white">
+        Bring It To Life
+    </span>
+</h2>
 
             <p class="mx-auto mt-8 max-w-3xl text-base leading-8 text-muted md:text-lg">
                 I am open to new opportunities and collaborations in software,
@@ -2421,67 +3371,71 @@
                 </a>
             </div>
 
-            <div class="mx-auto mt-14 grid max-w-3xl gap-4 sm:grid-cols-3">
-                <!-- GITHUB -->
-                <a
-                    href="https://github.com/DanielFilipeFloresNovo/DanielFilipeFloresNovo"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="group flex items-center justify-center gap-3 border border-white/10 bg-white/[0.02] px-5 py-5 text-sm font-semibold uppercase text-white/80 transition duration-300 hover:-translate-y-1 hover:border-cyan/40 hover:bg-cyan/[0.06] hover:text-white"
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        class="h-5 w-5 text-cyan transition duration-300 group-hover:scale-110"
-                        aria-hidden="true"
-                    >
-                        <path d="M12 .5C5.65.5.5 5.66.5 12.03c0 5.1 3.3 9.43 7.88 10.96.58.1.79-.25.79-.56 0-.28-.01-1.02-.02-2.01-3.2.7-3.88-1.55-3.88-1.55-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.68 0-1.25.44-2.27 1.17-3.07-.12-.29-.51-1.45.11-3.02 0 0 .95-.3 3.12 1.17a10.8 10.8 0 0 1 5.68 0c2.16-1.47 3.11-1.17 3.11-1.17.63 1.57.24 2.73.12 3.02.73.8 1.16 1.82 1.16 3.07 0 4.41-2.69 5.39-5.25 5.67.41.35.78 1.04.78 2.09 0 1.51-.01 2.72-.01 3.09 0 .31.21.67.8.56A11.54 11.54 0 0 0 23.5 12.03C23.5 5.66 18.35.5 12 .5Z"></path>
-                    </svg>
+            <div class="mt-16 flex items-center justify-center gap-8 sm:gap-10">
+    <!-- GITHUB -->
+    <a
+        href="https://github.com/DanielFilipeFloresNovo/DanielFilipeFloresNovo"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="GitHub"
+        title="GitHub"
+        class="inline-flex items-center justify-center text-white/65 transition duration-300 hover:-translate-y-1 hover:scale-110 hover:text-cyan"
+    >
+        <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    class="h-9 w-9 overflow-visible sm:h-10 sm:w-10"
+    aria-hidden="true"
+>
+    <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.167 6.839 9.49.5.092.682-.217.682-.482 0-.237-.009-.866-.014-1.7-2.782.604-3.369-1.341-3.369-1.341-.455-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.607.069-.607 1.004.071 1.532 1.031 1.532 1.031.892 1.529 2.341 1.087 2.91.831.091-.646.349-1.087.635-1.337-2.221-.253-4.555-1.111-4.555-4.945 0-1.092.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0 1 12 6.836a9.564 9.564 0 0 1 2.504.337c1.909-1.294 2.748-1.025 2.748-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.591 1.028 2.683 0 3.844-2.337 4.688-4.566 4.936.359.309.678.919.678 1.852 0 1.337-.012 2.415-.012 2.744 0 .267.18.578.688.48C19.138 20.164 22 16.418 22 12c0-5.523-4.477-10-10-10Z"
+    ></path>
+</svg>
+    </a>
 
-                    <span>GitHub</span>
-                </a>
+    <!-- LINKEDIN -->
+    <a
+        href="https://www.linkedin.com/in/daniel-novo-7079b839a/"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="LinkedIn"
+        title="LinkedIn"
+        class="inline-flex items-center justify-center text-white/65 transition duration-300 hover:-translate-y-1 hover:scale-110 hover:text-cyan"
+    >
+        <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    class="h-9 w-9 sm:h-10 sm:w-10"
+    aria-hidden="true"
+>
+    <path d="M19.5 3h-15A1.5 1.5 0 0 0 3 4.5v15A1.5 1.5 0 0 0 4.5 21h15a1.5 1.5 0 0 0 1.5-1.5v-15A1.5 1.5 0 0 0 19.5 3ZM8.33 18H5.67V9.33h2.66V18ZM7 8.17a1.55 1.55 0 1 1 0-3.1 1.55 1.55 0 0 1 0 3.1ZM18.33 18h-2.66v-4.22c0-1.01-.02-2.31-1.41-2.31-1.42 0-1.64 1.11-1.64 2.24V18H9.96V9.33h2.55v1.18h.04c.35-.67 1.22-1.38 2.51-1.38 2.69 0 3.19 1.77 3.19 4.08V18Z"></path>
+</svg>
+    </a>
 
-                <!-- LINKEDIN -->
-                <a
-                    href="https://www.linkedin.com/in/daniel-novo-7079b839a/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="group flex items-center justify-center gap-3 border border-white/10 bg-white/[0.02] px-5 py-5 text-sm font-semibold uppercase text-white/80 transition duration-300 hover:-translate-y-1 hover:border-cyan/40 hover:bg-cyan/[0.06] hover:text-white"
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        class="h-5 w-5 text-cyan transition duration-300 group-hover:scale-110"
-                        aria-hidden="true"
-                    >
-                        <path d="M4.98 3.5a2.49 2.49 0 1 0 0 4.98 2.49 2.49 0 0 0 0-4.98ZM3 8.98h3.96V21H3V8.98Zm7.02 0H13.8v1.64h.05c.52-.98 1.8-2.01 3.7-2.01 3.96 0 4.69 2.61 4.69 6V21h-3.96v-5.7c0-1.36-.02-3.11-1.9-3.11-1.9 0-2.19 1.48-2.19 3.01V21h-3.96V8.98Z"></path>
-                    </svg>
-
-                    <span>LinkedIn</span>
-                </a>
-
-                <!-- ITCH.IO -->
-                <a
-                    href="https://davidsousa01.itch.io/esc"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="group flex items-center justify-center gap-3 border border-white/10 bg-white/[0.02] px-5 py-5 text-sm font-semibold uppercase text-white/80 transition duration-300 hover:-translate-y-1 hover:border-cyan/40 hover:bg-cyan/[0.06] hover:text-white"
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        class="h-5 w-5 text-cyan transition duration-300 group-hover:scale-110"
-                        aria-hidden="true"
-                    >
-                        <path d="M2 9.5c0-1.2.7-2.3 1.8-2.8l3.3-1.5c.6-.3 1.2-.4 1.8-.4h6.2c.6 0 1.2.1 1.8.4l3.3 1.5c1.1.5 1.8 1.6 1.8 2.8v6c0 1.7-1.3 3-3 3h-1.5c-.8 0-1.5-.7-1.5-1.5V15c0-.6-.4-1-1-1h-1c-.6 0-1 .4-1 1v2c0 .8-.7 1.5-1.5 1.5h-1c-.8 0-1.5-.7-1.5-1.5V15c0-.6-.4-1-1-1h-1c-.6 0-1 .4-1 1v2c0 .8-.7 1.5-1.5 1.5H5c-1.7 0-3-1.3-3-3v-6Zm4.5.5A1.5 1.5 0 1 0 6.5 7a1.5 1.5 0 0 0 0 3Zm11 0A1.5 1.5 0 1 0 17.5 7a1.5 1.5 0 0 0 0 3Z"></path>
-                    </svg>
-
-                    <span>Itch.io</span>
-                </a>
-            </div>
+    <!-- ITCH.IO -->
+    <a
+        href="https://davidsousa01.itch.io/esc"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Itch.io"
+        title="Itch.io"
+        class="inline-flex items-center justify-center text-white/65 transition duration-300 hover:-translate-y-1 hover:scale-110 hover:text-cyan"
+    >
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            class="h-9 w-9 sm:h-10 sm:w-10"
+            aria-hidden="true"
+        >
+            <path d="M21.58 9.19c-.22-.28-.5-.53-.8-.72l-3.42-2.16-.46-1.23A1.64 1.64 0 0 0 15.36 4H8.64c-.68 0-1.29.43-1.54 1.08l-.46 1.23-3.42 2.16c-.3.19-.58.44-.8.72A2.38 2.38 0 0 0 2 10.66V17a3 3 0 0 0 3 3h1.5A2.5 2.5 0 0 0 9 17.5V16h6v1.5a2.5 2.5 0 0 0 2.5 2.5H19a3 3 0 0 0 3-3v-6.34c0-.54-.15-1.05-.42-1.47ZM8 13a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm8 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Z"></path>
+        </svg>
+    </a>
+</div>
         </div>
     </div>
 </section>
