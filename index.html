@@ -1478,6 +1478,223 @@
     }
 }
         }
+
+
+/* RESPONSIVE FIXES */
+.experience-logo {
+    right: 0;
+    top: 0.5rem;
+    max-width: 100%;
+}
+
+.experience-logo-xd span {
+    font-size: clamp(7rem, 15vw, 13rem);
+}
+
+.experience-logo-isep {
+    top: 1.5rem;
+}
+
+.experience-logo-isep span {
+    font-size: clamp(5rem, 11vw, 9.5rem);
+}
+
+.experience-logo-erasmus {
+    right: 0;
+    top: 0;
+}
+
+@media (max-width: 1023px) {
+    #profile {
+        padding-top: 5rem;
+        padding-bottom: 5rem;
+    }
+
+    #profile .project-reveal:first-child {
+        min-height: 0;
+    }
+
+    #profile .about-orb {
+        left: 72%;
+        top: 72%;
+        width: 22rem;
+        height: 22rem;
+        opacity: 0.18;
+    }
+
+    #experience article {
+        min-height: 390px;
+        overflow: hidden;
+    }
+
+    .experience-logo {
+        right: 0.5rem;
+        top: 0.75rem;
+        transform: none;
+    }
+
+    .experience-logo-xd span {
+        font-size: clamp(7rem, 28vw, 11rem);
+    }
+
+    .experience-logo-isep {
+        top: 1.25rem;
+    }
+
+    .experience-logo-isep span {
+        font-size: clamp(5rem, 22vw, 8rem);
+    }
+
+    .experience-logo-erasmus {
+        right: 0.25rem;
+        top: 0.25rem;
+        width: 14rem;
+        height: 14rem;
+    }
+}
+
+@media (max-width: 767px) {
+    #profile {
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+    }
+
+    #profile h2 {
+        margin-top: 1rem;
+        font-size: clamp(4.5rem, 25vw, 7rem);
+    }
+
+    #profile .project-reveal:first-child {
+        min-height: auto;
+    }
+
+    #profile .project-reveal + .project-reveal {
+        margin-top: 0;
+    }
+
+    #profile .about-orb {
+        left: 68%;
+        top: 74%;
+        width: 18rem;
+        height: 18rem;
+        opacity: 0.14;
+    }
+
+    #experience {
+        padding-top: 5rem;
+        padding-bottom: 5rem;
+    }
+
+    #experience .mt-16 {
+        margin-top: 2.5rem;
+    }
+
+    #experience article {
+        min-height: 360px;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .experience-logo {
+        right: 0;
+        top: 0.5rem;
+    }
+
+    .experience-logo-xd span {
+        font-size: clamp(6rem, 34vw, 9rem);
+    }
+
+    .experience-logo-isep {
+        top: 1rem;
+    }
+
+    .experience-logo-isep span {
+        font-size: clamp(4.5rem, 27vw, 7rem);
+    }
+
+    .experience-logo-erasmus {
+        right: 0;
+        top: 0;
+        width: 11rem;
+        height: 11rem;
+    }
+
+    #skills-modal {
+        align-items: flex-start;
+        padding-top: 4.25rem;
+        padding-bottom: 4.75rem;
+    }
+
+    #skill-stage {
+        width: calc(100vw - 1rem);
+        height: calc(100dvh - 9.5rem);
+        min-height: 0;
+    }
+
+    .skill-viewer-card {
+        height: 100%;
+        max-height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .skill-detail-reveal {
+        display: block !important;
+        min-height: auto;
+    }
+
+    .skill-detail-reveal > div {
+        min-width: 0;
+        padding: 1.25rem;
+    }
+
+    .skill-viewer-card h3 {
+        font-size: clamp(2.4rem, 13vw, 3.5rem) !important;
+        overflow-wrap: anywhere;
+    }
+
+    .skill-viewer-card p,
+    .skill-viewer-card li,
+    .skill-viewer-card span {
+        overflow-wrap: anywhere;
+        word-break: normal;
+    }
+
+    .skill-viewer-card .skill-reveal-item {
+        min-width: 0;
+    }
+
+    .skill-viewer-card .grid-cols-2 {
+        grid-template-columns: 1fr;
+    }
+
+    .skill-visual {
+        height: 170px;
+    }
+
+    #skill-close {
+        top: 0.75rem;
+        right: 0.75rem;
+    }
+}
+
+@media (max-width: 420px) {
+    #skill-stage {
+        width: calc(100vw - 0.5rem);
+        height: calc(100dvh - 9rem);
+    }
+
+    .skill-detail-reveal > div {
+        padding: 1rem;
+    }
+
+    .skill-viewer-card h3 {
+        font-size: 2.25rem !important;
+    }
+}
+
     </style>
 </head>
 
@@ -2377,9 +2594,9 @@
     ></div>
 
     <div class="section-container relative z-10">
-        <div class="grid items-start gap-14 lg:grid-cols-[0.72fr_1.28fr]">
+        <div class="grid items-start gap-8 md:gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-14">
     <!-- TITLE -->
-    <div class="project-reveal relative min-h-[570px]">
+    <div class="project-reveal relative min-h-0 lg:min-h-[570px]">
         <div
     class="about-orb pointer-events-none absolute left-[150%] top-[130%] h-[42rem] w-[42rem] -translate-x-1/2 -translate-y-1/2 opacity-45"
     aria-hidden="true"
@@ -2392,21 +2609,26 @@
 </div>
 
         <div class="relative z-10">
-            <p class="text-xs font-bold uppercase text-cyan">
-                Profile
-            </p>
+    <p class="text-xs font-bold uppercase text-cyan">
+        Profile
+    </p>
 
-            <h2
-                class="font-display mt-6 text-[clamp(6rem,12vw,11rem)] leading-[0.72] font-black uppercase"
-            >
-                About
-                <span class="block text-outline-white">
-                    Me
-                </span>
-            </h2>
+    <h2 class="font-display mt-6 font-black uppercase">
+        <span
+            class="block text-[clamp(5rem,15vw,8rem)] leading-[0.72] text-white"
+        >
+            About
+        </span>
 
-            <div class="mt-10 h-px w-28 bg-cyan/60"></div>
-        </div>
+        <span
+            class="mt-4 block text-[clamp(5rem,15vw,8rem)] leading-[0.72] text-outline-white"
+        >
+            Me
+        </span>
+    </h2>
+
+    <div class="mt-12 h-px w-32 bg-cyan"></div>
+</div>
     </div>
 
     <!-- CONTENT CARD -->
@@ -2629,7 +2851,7 @@
             >
                 <!-- LARGE OUTLINED SYMBOL -->
                 <div
-    class="pointer-events-none absolute right-[-2rem] top-2 z-0 select-none"
+    class="experience-logo experience-logo-xd pointer-events-none absolute z-0 select-none"
     aria-hidden="true"
 >
     <span
@@ -2682,7 +2904,7 @@
             >
                 <!-- LARGE OUTLINED SYMBOL -->
                 <div
-    class="pointer-events-none absolute right-[-3.5rem] top-8 z-0 select-none"
+    class="experience-logo experience-logo-isep pointer-events-none absolute z-0 select-none"
     aria-hidden="true"
 >
     <span
@@ -2738,7 +2960,7 @@
             >
                 <!-- LARGE OUTLINED ERASMUS SYMBOL -->
                 <div
-    class="pointer-events-none absolute right-[-1rem] top-[-1rem] z-0 h-[15rem] w-[15rem] opacity-20 transition duration-500 group-hover:opacity-35 md:h-[18rem] md:w-[18rem]"
+    class="experience-logo experience-logo-erasmus pointer-events-none absolute z-0 h-[15rem] w-[15rem] opacity-20 transition duration-500 group-hover:opacity-35 md:h-[18rem] md:w-[18rem]"
     aria-hidden="true"
 >
     <svg
@@ -3453,7 +3675,7 @@
 <!-- SKILLS VIEWER -->
 <div
     id="skills-modal"
-    class="skills-modal-overlay fixed inset-0 z-[200] hidden items-center justify-center overflow-hidden px-4 py-5"
+    class="skills-modal-overlay fixed inset-0 z-[200] hidden items-center justify-center overflow-y-auto overflow-x-hidden px-2 py-3 sm:px-4 sm:py-5"
     aria-hidden="true"
 >
     <button
@@ -3474,7 +3696,7 @@
 
     <div
         id="skill-stage"
-        class="relative z-20 h-[min(860px,92vh)] w-[min(940px,calc(100vw-8rem))] [perspective:1600px]"
+        class="relative z-20 h-[min(860px,92dvh)] w-[min(940px,calc(100vw-8rem))] [perspective:1600px]"
     ></div>
 
     <button
