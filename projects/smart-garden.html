@@ -15,6 +15,12 @@
 
     <title>Smart Garden | Daniel Novo</title>
 
+<link
+    rel="icon"
+    type="image/svg+xml"
+    href="../favicon.svg"
+>
+
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -420,6 +426,102 @@
     .project-entry-content,
     .project-entry-line {
         transition-duration: 1ms;
+    }
+}
+
+/* CUSTOM CURSOR */
+
+@media (pointer: fine) {
+    html,
+    body,
+    a,
+    button,
+    [role="button"],
+    input,
+    textarea,
+    select,
+    summary,
+    .project-gallery-item {
+        cursor: none !important;
+    }
+
+    .custom-cursor-dot,
+    .custom-cursor-ring {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 10050;
+        pointer-events: none;
+        border-radius: 999px;
+        opacity: 0;
+        transform: translate(-50%, -50%);
+        will-change: left, top, width, height, opacity, transform;
+    }
+
+    .custom-cursor-dot {
+        width: 7px;
+        height: 7px;
+        background: var(--cursor-accent, #00c8ff);
+        box-shadow:
+            0 0 8px var(--cursor-accent, #00c8ff),
+            0 0 18px var(--cursor-accent, #00c8ff);
+
+        transition:
+            width 180ms ease,
+            height 180ms ease,
+            background 180ms ease,
+            opacity 180ms ease,
+            transform 120ms ease;
+    }
+
+    .custom-cursor-ring {
+        width: 34px;
+        height: 34px;
+        border: 1px solid var(--cursor-accent, #00c8ff);
+
+        box-shadow:
+            0 0 18px rgba(0, 0, 0, 0.12),
+            inset 0 0 12px rgba(255, 255, 255, 0.025);
+
+        transition:
+            width 260ms cubic-bezier(0.22, 1, 0.36, 1),
+            height 260ms cubic-bezier(0.22, 1, 0.36, 1),
+            border-color 220ms ease,
+            background 220ms ease,
+            opacity 220ms ease,
+            transform 120ms ease;
+    }
+
+    .custom-cursor-dot.is-visible,
+    .custom-cursor-ring.is-visible {
+        opacity: 1;
+    }
+
+    .custom-cursor-dot.is-hovering {
+        width: 5px;
+        height: 5px;
+        background: #ffffff;
+    }
+
+    .custom-cursor-ring.is-hovering {
+        width: 54px;
+        height: 54px;
+        background: rgba(255, 255, 255, 0.045);
+    }
+
+    .custom-cursor-dot.is-clicking {
+        transform: translate(-50%, -50%) scale(0.65);
+    }
+
+    .custom-cursor-ring.is-clicking {
+        transform: translate(-50%, -50%) scale(0.78);
+    }
+}
+
+@media (pointer: coarse), (max-width: 767px) {
+    .custom-cursor-dot,
+    .custom-cursor-ring {
+        display: none;
     }
 }
 
@@ -1474,6 +1576,166 @@
     } else {
         startProjectEntryAnimation();
     }
+</script>
+
+<!-- CUSTOM CURSOR -->
+<div
+    id="custom-cursor-dot"
+    class="custom-cursor-dot"
+    aria-hidden="true"
+></div>
+
+<div
+    id="custom-cursor-ring"
+    class="custom-cursor-ring"
+    aria-hidden="true"
+></div>
+
+<script>
+    (() => {
+        const cursorDot = document.querySelector(
+            "#custom-cursor-dot",
+        );
+
+        const cursorRing = document.querySelector(
+            "#custom-cursor-ring",
+        );
+
+        const supportsCustomCursor = window.matchMedia(
+            "(pointer: fine)",
+        ).matches;
+
+        if (
+            !cursorDot ||
+            !cursorRing ||
+            !supportsCustomCursor
+        ) {
+            return;
+        }
+
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let ringX = mouseX;
+        let ringY = mouseY;
+
+        const interactiveSelector = [
+            "a",
+            "button",
+            "[role='button']",
+            "input",
+            "textarea",
+            "select",
+            "summary",
+            ".project-gallery-item",
+            ".project-lightbox-panel",
+        ].join(",");
+
+        function showCursor() {
+            cursorDot.classList.add("is-visible");
+            cursorRing.classList.add("is-visible");
+        }
+
+        function hideCursor() {
+            cursorDot.classList.remove("is-visible");
+            cursorRing.classList.remove("is-visible");
+        }
+
+        document.addEventListener(
+            "mousemove",
+            (event) => {
+                mouseX = event.clientX;
+                mouseY = event.clientY;
+
+                cursorDot.style.left = `${mouseX}px`;
+                cursorDot.style.top = `${mouseY}px`;
+
+                showCursor();
+            },
+        );
+
+        function animateCursorRing() {
+            ringX += (mouseX - ringX) * 0.16;
+            ringY += (mouseY - ringY) * 0.16;
+
+            cursorRing.style.left = `${ringX}px`;
+            cursorRing.style.top = `${ringY}px`;
+
+            requestAnimationFrame(animateCursorRing);
+        }
+
+        document.addEventListener(
+            "mouseover",
+            (event) => {
+                const interactiveElement =
+                    event.target.closest?.(
+                        interactiveSelector,
+                    );
+
+                cursorDot.classList.toggle(
+                    "is-hovering",
+                    Boolean(interactiveElement),
+                );
+
+                cursorRing.classList.toggle(
+                    "is-hovering",
+                    Boolean(interactiveElement),
+                );
+            },
+        );
+
+        document.addEventListener(
+            "mouseout",
+            (event) => {
+                const nextInteractiveElement =
+                    event.relatedTarget?.closest?.(
+                        interactiveSelector,
+                    );
+
+                if (!nextInteractiveElement) {
+                    cursorDot.classList.remove(
+                        "is-hovering",
+                    );
+
+                    cursorRing.classList.remove(
+                        "is-hovering",
+                    );
+                }
+            },
+        );
+
+        document.addEventListener(
+            "mousedown",
+            () => {
+                cursorDot.classList.add("is-clicking");
+                cursorRing.classList.add("is-clicking");
+            },
+        );
+
+        document.addEventListener(
+            "mouseup",
+            () => {
+                cursorDot.classList.remove("is-clicking");
+                cursorRing.classList.remove("is-clicking");
+            },
+        );
+
+        document.addEventListener(
+            "mouseleave",
+            hideCursor,
+        );
+
+        document.addEventListener(
+            "mouseenter",
+            showCursor,
+        );
+
+        window.addEventListener(
+            "blur",
+            hideCursor,
+        );
+
+        animateCursorRing();
+    })();
 </script>
 
 </body>
