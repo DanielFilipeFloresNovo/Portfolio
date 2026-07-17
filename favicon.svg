@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="12" fill="#03070c"/>
+
+  <!-- Precisely centered 50px-wide monogram: x = (64 - 50) / 2 = 7 -->
+  <g transform="translate(7 13)">
+    <!-- D: 24px wide -->
+    <path
+      d="M0 0H9.5C19 0 24 6.2 24 19C24 31.8 19 38 9.5 38H0V0ZM7 6.5V31.5H9.2C14.5 31.5 17 28.1 17 19C17 9.9 14.5 6.5 9.2 6.5H7Z"
+      fill="#ffffff"
+    />
+
+    <!-- N: starts at x=26, 24px wide -->
+    <path
+      d="M26 0H33L43 22.5V0H50V38H43L33 15.5V38H26V0Z"
+      fill="#00c8ff"
+    />
+  </g>
+</svg>

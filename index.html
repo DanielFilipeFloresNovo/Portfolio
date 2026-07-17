@@ -15,6 +15,12 @@
 
     <title>Daniel Novo | Creative Software Engineer</title>
 
+    <link
+    rel="icon"
+    type="image/svg+xml"
+    href="./favicon.svg"
+>
+
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -867,87 +873,175 @@
     transition: opacity 350ms ease;
 }
 
-.project-card.is-leaving .project-card-content {
-    opacity: 0;
-}
-
 .project-card.is-leaving {
+    z-index: 40;
     pointer-events: none;
+    transform: translateY(-12px) scale(1.018);
+    border-color: rgba(0, 200, 255, 0.5);
+    box-shadow: 0 30px 100px rgba(0, 0, 0, 0.48);
 }
 
-.project-card.is-leaving .project-card-image {
-    transform: scale(1.035);
+.project-card.is-leaving .project-card-image img {
+    transform: scale(1.1);
+    filter: saturate(1.08) brightness(0.78);
+}
+
+.project-card.is-leaving .project-card-content {
+    opacity: 0.28;
+    transform: translateY(12px);
 }
 
 .project-page-transition {
+    --project-accent: #00c8ff;
     position: fixed;
     inset: 0;
     z-index: 300;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
     pointer-events: none;
-    background: #03070c;
-    opacity: 0;
     visibility: hidden;
+}
+
+.project-transition-shutter {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 51%;
+    background: #03070c;
+    transform: scaleY(0);
+    transition: transform 620ms cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.project-transition-shutter-top {
+    top: 0;
+    transform-origin: top;
+}
+
+.project-transition-shutter-bottom {
+    bottom: 0;
+    transform-origin: bottom;
+}
+
+.project-transition-grid {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    background-size: 52px 52px;
+    transition: opacity 350ms ease 260ms;
+}
+
+.project-transition-glow {
+    position: absolute;
+    width: min(62rem, 95vw);
+    height: min(62rem, 95vw);
+    border-radius: 999px;
+    background: var(--project-accent);
+    opacity: 0;
+    filter: blur(190px);
+    transform: scale(0.35);
     transition:
-        opacity 500ms ease,
-        visibility 0s linear 500ms;
+        opacity 500ms ease 220ms,
+        transform 850ms cubic-bezier(0.22, 1, 0.36, 1) 120ms;
+}
+
+.project-transition-content {
+    position: relative;
+    z-index: 4;
+    width: min(100% - 2rem, 900px);
+    text-align: center;
+    opacity: 0;
+    transform: translateY(30px) scale(0.96);
+    transition:
+        opacity 360ms ease 350ms,
+        transform 650ms cubic-bezier(0.22, 1, 0.36, 1) 300ms;
+}
+
+.project-transition-kicker {
+    color: var(--project-accent);
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.project-transition-title {
+    margin-top: 1rem;
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 12vw, 9rem);
+    font-weight: 900;
+    line-height: 0.82;
+    text-transform: uppercase;
+    color: white;
+}
+
+.project-transition-line {
+    width: 0;
+    height: 2px;
+    margin: 2rem auto 0;
+    background: var(--project-accent);
+    box-shadow: 0 0 24px color-mix(in srgb, var(--project-accent) 75%, transparent);
+    transition: width 700ms cubic-bezier(0.22, 1, 0.36, 1) 360ms;
+}
+
+.project-transition-status {
+    margin-top: 1.25rem;
+    color: rgba(255, 255, 255, 0.42);
+    font-size: 0.66rem;
+    font-weight: 700;
+    text-transform: uppercase;
 }
 
 .project-page-transition.is-visible {
-    opacity: 1;
     visibility: visible;
-    transition:
-        opacity 500ms ease,
-        visibility 0s;
 }
 
-@view-transition {
-    navigation: auto;
+.project-page-transition.is-visible .project-transition-shutter {
+    transform: scaleY(1);
 }
 
-::view-transition-old(root),
-::view-transition-new(root) {
-    animation-duration: 750ms;
-    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+.project-page-transition.is-visible .project-transition-grid {
+    opacity: 1;
 }
 
-::view-transition-old(root) {
-    animation-name: projectPageLeave;
+.project-page-transition.is-visible .project-transition-glow {
+    opacity: 0.08;
+    transform: scale(1);
 }
 
-::view-transition-new(root) {
-    animation-name: projectPageEnter;
+.project-page-transition.is-visible .project-transition-content {
+    opacity: 1;
+    transform: translateY(0) scale(1);
 }
 
-@keyframes projectPageLeave {
-    from {
-        opacity: 1;
-        transform: scale(1);
+.project-page-transition.is-visible .project-transition-line {
+    width: min(340px, 68vw);
+}
+
+@media (max-width: 767px) {
+    .project-transition-title {
+        font-size: clamp(3.5rem, 20vw, 6rem);
     }
 
-    to {
-        opacity: 0;
-        transform: scale(0.985);
-    }
-}
-
-@keyframes projectPageEnter {
-    from {
-        opacity: 0;
-        transform: translateY(24px) scale(1.01);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
+    .project-transition-line {
+        margin-top: 1.5rem;
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
     .project-card,
     .project-card-image,
+    .project-card-image img,
     .project-card-content,
-    .project-page-transition {
+    .project-transition-shutter,
+    .project-transition-grid,
+    .project-transition-glow,
+    .project-transition-content,
+    .project-transition-line {
         transition-duration: 1ms;
+        transition-delay: 0ms;
     }
 }
 
@@ -1475,6 +1569,102 @@
     .home-layout .flex.flex-wrap.gap-4 a {
         width: 100%;
         justify-content: center;
+    }
+}
+
+/* Custom cursor */
+
+@media (pointer: fine) {
+    body,
+    a,
+    button,
+    [role="button"],
+    input,
+    textarea,
+    select,
+    summary {
+        cursor: none;
+    }
+
+    .custom-cursor-dot,
+    .custom-cursor-ring {
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 9999;
+        pointer-events: none;
+        border-radius: 999px;
+        transform: translate(-50%, -50%);
+        will-change: left, top, width, height, opacity, transform;
+    }
+
+    .custom-cursor-dot {
+        width: 7px;
+        height: 7px;
+        background: #00c8ff;
+        box-shadow:
+            0 0 8px rgba(0, 200, 255, 0.9),
+            0 0 18px rgba(0, 200, 255, 0.45);
+
+        transition:
+            width 180ms ease,
+            height 180ms ease,
+            background 180ms ease,
+            opacity 180ms ease,
+            transform 120ms ease;
+    }
+
+    .custom-cursor-ring {
+        width: 34px;
+        height: 34px;
+        border: 1px solid rgba(0, 200, 255, 0.65);
+        box-shadow:
+            0 0 18px rgba(0, 200, 255, 0.08),
+            inset 0 0 12px rgba(0, 200, 255, 0.025);
+
+        transition:
+            width 260ms cubic-bezier(0.22, 1, 0.36, 1),
+            height 260ms cubic-bezier(0.22, 1, 0.36, 1),
+            border-color 220ms ease,
+            background 220ms ease,
+            opacity 220ms ease,
+            transform 120ms ease;
+    }
+
+    .custom-cursor-dot.is-hovering {
+        width: 5px;
+        height: 5px;
+        background: #ffffff;
+    }
+
+    .custom-cursor-ring.is-hovering {
+        width: 54px;
+        height: 54px;
+        border-color: rgba(0, 200, 255, 0.95);
+        background: rgba(0, 200, 255, 0.07);
+        box-shadow:
+            0 0 28px rgba(0, 200, 255, 0.12),
+            inset 0 0 18px rgba(0, 200, 255, 0.04);
+    }
+
+    .custom-cursor-dot.is-clicking {
+        transform: translate(-50%, -50%) scale(0.65);
+    }
+
+    .custom-cursor-ring.is-clicking {
+        transform: translate(-50%, -50%) scale(0.78);
+    }
+
+    .custom-cursor-dot.is-hidden,
+    .custom-cursor-ring.is-hidden {
+        opacity: 0;
+    }
+}
+
+@media (pointer: coarse), (max-width: 767px) {
+    .custom-cursor-dot,
+    .custom-cursor-ring {
+        display: none;
     }
 }
         }
@@ -3743,6 +3933,33 @@
 <div
     id="project-page-transition"
     class="project-page-transition"
+    aria-hidden="true"
+>
+    <div class="project-transition-shutter project-transition-shutter-top"></div>
+    <div class="project-transition-shutter project-transition-shutter-bottom"></div>
+    <div class="project-transition-grid"></div>
+    <div class="project-transition-glow"></div>
+
+    <div class="project-transition-content">
+        <p class="project-transition-kicker">Opening case study</p>
+        <p id="project-transition-title" class="project-transition-title">
+            Project
+        </p>
+        <div class="project-transition-line"></div>
+        <p class="project-transition-status">Loading project</p>
+    </div>
+</div>
+
+<!-- CUSTOM CURSOR -->
+<div
+    id="custom-cursor-dot"
+    class="custom-cursor-dot is-hidden"
+    aria-hidden="true"
+></div>
+
+<div
+    id="custom-cursor-ring"
+    class="custom-cursor-ring is-hidden"
     aria-hidden="true"
 ></div>
 
