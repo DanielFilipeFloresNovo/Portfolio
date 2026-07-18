@@ -539,6 +539,125 @@
     }
 }
 
+
+/* VISUAL ASSET PREVIEWS */
+
+.asset-preview {
+    position: relative;
+    display: flex;
+    height: 18rem;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 2rem;
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(215, 111, 159, 0.08),
+            transparent 48%
+        ),
+        linear-gradient(
+            180deg,
+            #101925 0%,
+            #0b131d 100%
+        );
+}
+
+.asset-preview::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(
+            rgba(255, 255, 255, 0.018) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.018) 1px,
+            transparent 1px
+        );
+    background-size: 28px 28px;
+}
+
+.asset-preview img {
+    position: relative;
+    z-index: 1;
+    max-width: 78%;
+    max-height: 100%;
+    object-fit: contain;
+    filter:
+        drop-shadow(0 0 2px rgba(255, 255, 255, 0.4))
+        drop-shadow(0 12px 26px rgba(0, 0, 0, 0.42));
+}
+
+.asset-preview-dark {
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(226, 235, 245, 0.18),
+            transparent 45%
+        ),
+        linear-gradient(
+            180deg,
+            #263442 0%,
+            #182431 100%
+        );
+}
+
+.asset-preview-dark img {
+    filter:
+        drop-shadow(0 0 1px rgba(255, 255, 255, 0.8))
+        drop-shadow(0 0 9px rgba(255, 255, 255, 0.15))
+        drop-shadow(0 14px 28px rgba(0, 0, 0, 0.46));
+}
+
+.asset-preview-light {
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(215, 111, 159, 0.11),
+            transparent 46%
+        ),
+        linear-gradient(
+            180deg,
+            #0c1520 0%,
+            #071019 100%
+        );
+}
+
+.asset-preview-white {
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(255, 255, 255, 0.08),
+            transparent 45%
+        ),
+        linear-gradient(
+            180deg,
+            #0c1520 0%,
+            #071019 100%
+        );
+}
+
+.asset-preview-compact {
+    height: 15rem;
+    padding: 2.5rem;
+}
+
+@media (max-width: 767px) {
+    .asset-preview {
+        height: 16rem;
+        padding: 1.5rem;
+    }
+
+    .asset-preview-compact {
+        height: 14rem;
+        padding: 2rem;
+    }
+}
+
 </style>
 </head>
 
@@ -1221,6 +1340,447 @@
             </div>
         </section>
 
+
+
+        <!-- GAME ENVIRONMENTS -->
+        <section
+            class="relative overflow-hidden border-y border-white/5 bg-[#040a11] py-20"
+        >
+            <div
+                class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(88,213,245,0.055),transparent_38%)]"
+            ></div>
+
+            <div class="section-container relative z-10">
+                <div
+                    class="project-reveal flex flex-col justify-between gap-6 md:flex-row md:items-end"
+                >
+                    <div>
+                        <p class="text-xs font-bold text-esc-light uppercase">
+                            04 · Game environments
+                        </p>
+
+                        <h2
+                            class="font-display mt-4 text-5xl font-black uppercase md:text-7xl"
+                        >
+                            Three distinct
+                            <span class="text-outline">scenarios</span>
+                        </h2>
+                    </div>
+
+                    <p class="max-w-md text-sm leading-7 text-muted">
+                        Each level places the same core interaction inside a
+                        different digital environment, with its own composition,
+                        colour palette and visual references.
+                    </p>
+                </div>
+
+                <div class="mt-12 grid gap-6 lg:grid-cols-3">
+                    <figure
+                        class="project-gallery-item project-image-reveal overflow-hidden border border-white/10 bg-[#07111b]"
+                        data-gallery-title="Circuit-board environment"
+                        data-gallery-description="A green circuit-board scenario built around layered electronic components, glowing pathways and a central gameplay area."
+                    >
+                        <div class="relative overflow-hidden">
+                            <img
+                                src="../assets/images/Projects/Esc/map-circuit.png"
+                                alt="Esc circuit-board gameplay environment"
+                                class="h-72 w-full object-cover object-center"
+                            >
+
+                            <button
+                                type="button"
+                                class="project-gallery-zoom"
+                                aria-label="Enlarge circuit-board environment"
+                            >
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    class="h-5 w-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                    aria-hidden="true"
+                                >
+                                    <path d="M8 3H3v5"></path>
+                                    <path d="M16 3h5v5"></path>
+                                    <path d="M8 21H3v-5"></path>
+                                    <path d="M16 21h5v5"></path>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <figcaption class="p-6">
+                            <p class="text-[10px] font-bold text-esc-light uppercase">
+                                Scenario 01
+                            </p>
+
+                            <h3 class="font-display mt-3 text-3xl font-bold uppercase">
+                                Circuit board
+                            </h3>
+
+                            <p class="mt-3 text-sm leading-7 text-muted">
+                                A dense electronic environment with circuit paths,
+                                hardware modules and a green illuminated centre.
+                            </p>
+                        </figcaption>
+                    </figure>
+
+                    <figure
+                        class="project-gallery-item project-image-reveal overflow-hidden border border-white/10 bg-[#07111b]"
+                        data-gallery-title="Desktop environment"
+                        data-gallery-description="A light-blue computer desktop scenario using familiar operating-system elements as part of the game world."
+                    >
+                        <div class="relative overflow-hidden">
+                            <img
+                                src="../assets/images/Projects/Esc/map-desktop.png"
+                                alt="Esc desktop gameplay environment"
+                                class="h-72 w-full object-cover object-center"
+                            >
+
+                            <button
+                                type="button"
+                                class="project-gallery-zoom"
+                                aria-label="Enlarge desktop environment"
+                            >
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    class="h-5 w-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                    aria-hidden="true"
+                                >
+                                    <path d="M8 3H3v5"></path>
+                                    <path d="M16 3h5v5"></path>
+                                    <path d="M8 21H3v-5"></path>
+                                    <path d="M16 21h5v5"></path>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <figcaption class="p-6">
+                            <p class="text-[10px] font-bold text-esc-light uppercase">
+                                Scenario 02
+                            </p>
+
+                            <h3 class="font-display mt-3 text-3xl font-bold uppercase">
+                                Desktop
+                            </h3>
+
+                            <p class="mt-3 text-sm leading-7 text-muted">
+                                A computer desktop reinterpreted as a playable
+                                space, with applications, folders and a taskbar.
+                            </p>
+                        </figcaption>
+                    </figure>
+
+                    <figure
+                        class="project-gallery-item project-image-reveal overflow-hidden border border-white/10 bg-[#07111b]"
+                        data-gallery-title="Keyboard environment"
+                        data-gallery-description="A keyboard-inspired scenario that connects the game’s input mechanic directly with the level’s visual design."
+                    >
+                        <div class="relative overflow-hidden">
+                            <img
+                                src="../assets/images/Projects/Esc/map-keyboard.png"
+                                alt="Esc keyboard gameplay environment"
+                                class="h-72 w-full object-cover object-center"
+                            >
+
+                            <button
+                                type="button"
+                                class="project-gallery-zoom"
+                                aria-label="Enlarge keyboard environment"
+                            >
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    class="h-5 w-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                    aria-hidden="true"
+                                >
+                                    <path d="M8 3H3v5"></path>
+                                    <path d="M16 3h5v5"></path>
+                                    <path d="M8 21H3v-5"></path>
+                                    <path d="M16 21h5v5"></path>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <figcaption class="p-6">
+                            <p class="text-[10px] font-bold text-esc-light uppercase">
+                                Scenario 03
+                            </p>
+
+                            <h3 class="font-display mt-3 text-3xl font-bold uppercase">
+                                Keyboard
+                            </h3>
+
+                            <p class="mt-3 text-sm leading-7 text-muted">
+                                A keyboard becomes the level itself, reinforcing
+                                the connection between visual space and player input.
+                            </p>
+                        </figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <!-- VISUAL ASSETS -->
+        <section
+            class="relative overflow-hidden border-y border-white/5 bg-panel/30 py-20"
+        >
+            <div
+                class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(215,111,159,0.07),transparent_36%)]"
+            ></div>
+
+            <div class="section-container relative z-10">
+                <div
+                    class="project-reveal flex flex-col justify-between gap-6 md:flex-row md:items-end"
+                >
+                    <div>
+                        <p class="text-xs font-bold text-esc-light uppercase">
+                            05 · Visual assets
+                        </p>
+
+                        <h2
+                            class="font-display mt-4 text-5xl font-black uppercase md:text-7xl"
+                        >
+                            Characters, enemies
+                            <span class="text-outline">and interface elements</span>
+                        </h2>
+                    </div>
+
+                    <p class="max-w-md text-sm leading-7 text-muted">
+                        A selection of assets I developed or helped produce,
+                        including character states, enemy concepts, interface
+                        feedback, the knife cursor and boss designs.
+                    </p>
+                </div>
+
+                <div class="mt-12 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                    <figure
+                        class="project-gallery-item project-image-reveal overflow-hidden border border-white/10 bg-[#07111b]"
+                        data-gallery-title="Knife cursor"
+                        data-gallery-description="A hand-drawn knife cursor created to reinforce the dark and playful visual identity of the game."
+                    >
+                        <div class="asset-preview asset-preview-white" style="position:relative;display:flex;height:18rem;align-items:center;justify-content:center;overflow:hidden;padding:2rem;background:radial-gradient(circle at center,rgba(255,255,255,0.22),transparent 48%),linear-gradient(180deg,#344554 0%,#22313f 100%);">
+                            <img
+                                src="../assets/images/Projects/Esc/cursor.png"
+                                alt="Hand-drawn knife cursor for Esc"
+                                class="max-h-full max-w-full object-contain" style="position:relative;z-index:1;filter:drop-shadow(0 0 1px rgba(255,255,255,0.95)) drop-shadow(0 0 10px rgba(255,255,255,0.22)) drop-shadow(0 14px 28px rgba(0,0,0,0.48));"
+                            >
+                        </div>
+
+                        <figcaption class="p-6">
+                            <p class="text-[10px] font-bold text-esc-light uppercase">
+                                Interface asset
+                            </p>
+
+                            <h3 class="font-display mt-3 text-3xl font-bold uppercase">
+                                Knife cursor
+                            </h3>
+                        </figcaption>
+                    </figure>
+
+                    <figure
+                        class="project-gallery-item project-image-reveal overflow-hidden border border-white/10 bg-[#07111b]"
+                        data-gallery-title="Player character"
+                        data-gallery-description="The main bat-like player character, combining a hand-drawn silhouette with the game’s dark humorous style."
+                    >
+                        <div class="asset-preview asset-preview-dark" style="position:relative;display:flex;height:18rem;align-items:center;justify-content:center;overflow:hidden;padding:2rem;background:radial-gradient(circle at center,rgba(255,255,255,0.22),transparent 48%),linear-gradient(180deg,#344554 0%,#22313f 100%);">
+                            <img
+                                src="../assets/images/Projects/Esc/idle1.png"
+                                alt="Main bat-like player character"
+                                class="max-h-full max-w-full object-contain" style="position:relative;z-index:1;filter:drop-shadow(0 0 1px rgba(255,255,255,0.95)) drop-shadow(0 0 10px rgba(255,255,255,0.22)) drop-shadow(0 14px 28px rgba(0,0,0,0.48));"
+                            >
+                        </div>
+
+                        <figcaption class="p-6">
+                            <p class="text-[10px] font-bold text-esc-light uppercase">
+                                Character design
+                            </p>
+
+                            <h3 class="font-display mt-3 text-3xl font-bold uppercase">
+                                Player character
+                            </h3>
+                        </figcaption>
+                    </figure>
+
+                    <figure
+    class="project-gallery-item project-image-reveal overflow-hidden border border-white/10 bg-[#07111b]"
+    data-gallery-title="Idle animation"
+    data-gallery-description="An animated idle state prepared for the main character."
+>
+    <div
+        class="asset-preview asset-preview-dark"
+        style="position:relative;display:flex;height:18rem;align-items:center;justify-content:center;overflow:hidden;padding:2rem;background:radial-gradient(circle at center,rgba(255,255,255,0.22),transparent 48%),linear-gradient(180deg,#344554 0%,#22313f 100%);"
+    >
+        <img
+            src="./idle-transparent.gif"
+            alt="Animated idle state of the main character"
+            class="max-h-full max-w-full object-contain"
+            style="position:relative;z-index:1;max-width:78%;max-height:78%;filter:drop-shadow(0 0 1px rgba(255,255,255,0.95)) drop-shadow(0 0 10px rgba(255,255,255,0.22)) drop-shadow(0 14px 28px rgba(0,0,0,0.48));"
+        >
+    </div>
+
+    <figcaption class="p-6">
+        <p class="text-[10px] font-bold text-esc-light uppercase">
+            Animation
+        </p>
+
+        <h3 class="font-display mt-3 text-3xl font-bold uppercase">
+            Idle state
+        </h3>
+    </figcaption>
+</figure>
+
+                    <figure
+                        class="project-gallery-item project-image-reveal overflow-hidden border border-white/10 bg-[#07111b]"
+                        data-gallery-title="Enemy concept"
+                        data-gallery-description="A hand-drawn enemy concept created for the gameplay encounters."
+                    >
+                        <div class="asset-preview asset-preview-dark" style="position:relative;display:flex;height:18rem;align-items:center;justify-content:center;overflow:hidden;padding:2rem;background:radial-gradient(circle at center,rgba(255,255,255,0.22),transparent 48%),linear-gradient(180deg,#344554 0%,#22313f 100%);">
+                            <img
+                                src="../assets/images/Projects/Esc/enemyidle1.png"
+                                alt="Hand-drawn enemy concept"
+                                class="max-h-full max-w-full object-contain" style="position:relative;z-index:1;filter:drop-shadow(0 0 1px rgba(255,255,255,0.95)) drop-shadow(0 0 10px rgba(255,255,255,0.22)) drop-shadow(0 14px 28px rgba(0,0,0,0.48));"
+                            >
+                        </div>
+
+                        <figcaption class="p-6">
+                            <p class="text-[10px] font-bold text-esc-light uppercase">
+                                Enemy design
+                            </p>
+
+                            <h3 class="font-display mt-3 text-3xl font-bold uppercase">
+                                Enemy concept
+                            </h3>
+                        </figcaption>
+                    </figure>
+
+                    <figure
+                        class="project-gallery-item project-image-reveal overflow-hidden border border-white/10 bg-[#07111b]"
+                        data-gallery-title="Final boss"
+                        data-gallery-description="The final boss design combines several hostile visual motifs into a larger central enemy."
+                    >
+                        <div class="asset-preview asset-preview-dark" style="position:relative;display:flex;height:18rem;align-items:center;justify-content:center;overflow:hidden;padding:2rem;background:radial-gradient(circle at center,rgba(255,255,255,0.22),transparent 48%),linear-gradient(180deg,#344554 0%,#22313f 100%);">
+                            <img
+                                src="../assets/images/Projects/Esc/finalboss.png"
+                                alt="Final boss design for Esc"
+                                class="max-h-full max-w-full object-contain" style="position:relative;z-index:1;filter:drop-shadow(0 0 1px rgba(255,255,255,0.95)) drop-shadow(0 0 10px rgba(255,255,255,0.22)) drop-shadow(0 14px 28px rgba(0,0,0,0.48));"
+                            >
+                        </div>
+
+                        <figcaption class="p-6">
+                            <p class="text-[10px] font-bold text-esc-light uppercase">
+                                Boss design
+                            </p>
+
+                            <h3 class="font-display mt-3 text-3xl font-bold uppercase">
+                                Final boss
+                            </h3>
+                        </figcaption>
+                    </figure>
+
+                    <figure
+                        class="project-gallery-item project-image-reveal overflow-hidden border border-white/10 bg-[#07111b]"
+                        data-gallery-title="Secondary boss"
+                        data-gallery-description="A coloured boss concept expanding the enemy variety and visual hierarchy of the game."
+                    >
+                        <div class="asset-preview asset-preview-light" style="position:relative;display:flex;height:18rem;align-items:center;justify-content:center;overflow:hidden;padding:2rem;background:radial-gradient(circle at center,rgba(255,255,255,0.22),transparent 48%),linear-gradient(180deg,#344554 0%,#22313f 100%);">
+                            <img
+                                src="../assets/images/Projects/Esc/boss2color.png"
+                                alt="Purple secondary boss concept"
+                                class="max-h-full max-w-full object-contain" style="position:relative;z-index:1;filter:drop-shadow(0 0 1px rgba(255,255,255,0.95)) drop-shadow(0 0 10px rgba(255,255,255,0.22)) drop-shadow(0 14px 28px rgba(0,0,0,0.48));"
+                            >
+                        </div>
+
+                        <figcaption class="p-6">
+                            <p class="text-[10px] font-bold text-esc-light uppercase">
+                                Boss design
+                            </p>
+
+                            <h3 class="font-display mt-3 text-3xl font-bold uppercase">
+                                Secondary boss
+                            </h3>
+                        </figcaption>
+                    </figure>
+
+                    <figure
+                        class="project-gallery-item project-image-reveal overflow-hidden border border-white/10 bg-[#07111b]"
+                        data-gallery-title="Full heart"
+                        data-gallery-description="The full-heart state used by the health interface."
+                    >
+                        <div class="asset-preview asset-preview-dark asset-preview-compact" style="position:relative;display:flex;height:15rem;align-items:center;justify-content:center;overflow:hidden;padding:2.5rem;background:radial-gradient(circle at center,rgba(255,255,255,0.22),transparent 48%),linear-gradient(180deg,#344554 0%,#22313f 100%);">
+                            <img
+                                src="../assets/images/Projects/Esc/heart.png"
+                                alt="Full heart health indicator"
+                                class="max-h-full max-w-full object-contain" style="position:relative;z-index:1;filter:drop-shadow(0 0 1px rgba(255,255,255,0.95)) drop-shadow(0 0 10px rgba(255,255,255,0.22)) drop-shadow(0 14px 28px rgba(0,0,0,0.48));"
+                            >
+                        </div>
+
+                        <figcaption class="p-6">
+                            <p class="text-[10px] font-bold text-esc-light uppercase">
+                                UI feedback
+                            </p>
+
+                            <h3 class="font-display mt-3 text-3xl font-bold uppercase">
+                                Full heart
+                            </h3>
+                        </figcaption>
+                    </figure>
+
+                    <figure
+                        class="project-gallery-item project-image-reveal overflow-hidden border border-white/10 bg-[#07111b]"
+                        data-gallery-title="Empty heart"
+                        data-gallery-description="The empty-heart state communicates lost health while preserving the same hand-drawn style."
+                    >
+                        <div class="asset-preview asset-preview-white asset-preview-compact" style="position:relative;display:flex;height:15rem;align-items:center;justify-content:center;overflow:hidden;padding:2.5rem;background:radial-gradient(circle at center,rgba(255,255,255,0.22),transparent 48%),linear-gradient(180deg,#344554 0%,#22313f 100%);">
+                            <img
+                                src="../assets/images/Projects/Esc/empty-heart.png"
+                                alt="Empty heart health indicator"
+                                class="max-h-full max-w-full object-contain" style="position:relative;z-index:1;filter:drop-shadow(0 0 1px rgba(255,255,255,0.95)) drop-shadow(0 0 10px rgba(255,255,255,0.22)) drop-shadow(0 14px 28px rgba(0,0,0,0.48));"
+                            >
+                        </div>
+
+                        <figcaption class="p-6">
+                            <p class="text-[10px] font-bold text-esc-light uppercase">
+                                UI feedback
+                            </p>
+
+                            <h3 class="font-display mt-3 text-3xl font-bold uppercase">
+                                Empty heart
+                            </h3>
+                        </figcaption>
+                    </figure>
+
+                    <figure
+                        class="project-gallery-item project-image-reveal overflow-hidden border border-white/10 bg-[#07111b]"
+                        data-gallery-title="Alternate player sprite"
+                        data-gallery-description="An alternate player sprite used during visual development and animation tests."
+                    >
+                        <div class="asset-preview asset-preview-dark asset-preview-compact" style="position:relative;display:flex;height:15rem;align-items:center;justify-content:center;overflow:hidden;padding:2.5rem;background:radial-gradient(circle at center,rgba(255,255,255,0.22),transparent 48%),linear-gradient(180deg,#344554 0%,#22313f 100%);">
+                            <img
+                                src="../assets/images/Projects/Esc/idle-alternate.png"
+                                alt="Alternate bat character sprite"
+                                class="max-h-full max-w-full object-contain" style="position:relative;z-index:1;filter:drop-shadow(0 0 1px rgba(255,255,255,0.95)) drop-shadow(0 0 10px rgba(255,255,255,0.22)) drop-shadow(0 14px 28px rgba(0,0,0,0.48));"
+                            >
+                        </div>
+
+                        <figcaption class="p-6">
+                            <p class="text-[10px] font-bold text-esc-light uppercase">
+                                Character asset
+                            </p>
+
+                            <h3 class="font-display mt-3 text-3xl font-bold uppercase">
+                                Alternate sprite
+                            </h3>
+                        </figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
         <!-- TECHNICAL STACK -->
 <section class="py-20">
     <div class="section-container">
@@ -1230,7 +1790,7 @@
                     class="project-reveal border-b border-white/10 p-8 md:p-10 lg:border-r lg:border-b-0"
                 >
                     <p class="text-xs font-bold text-esc-light uppercase">
-                        04 · Design and development
+                        06 · Design and development
                     </p>
 
                     <h2
